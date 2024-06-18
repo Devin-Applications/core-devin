@@ -543,7 +543,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('initialize with initial state', () => {
+  it('should initialize with initial state', () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -592,7 +592,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('initiate without preventPollingOnNetworkRestart', async () => {
+  it('should initiate without preventPollingOnNetworkRestart', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -611,7 +611,7 @@ describe('TokenListController', () => {
 });
 
 describe('TokenListController polling behavior', () => {
-  it('not poll before being started', async () => {
+  it('should not poll before being started', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -627,7 +627,7 @@ describe('TokenListController polling behavior', () => {
     controller.destroy();
   });
 
-  it('update tokenList state when network updates are passed via onNetworkStateChange callback', async () => {
+  it('should update tokenList state when network updates are passed via onNetworkStateChange callback', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -672,7 +672,7 @@ describe('TokenListController polling behavior', () => {
 });
 
 describe('TokenListController polling intervals', () => {
-  it('poll and update rate in the right interval', async () => {
+  it('should poll and update rate in the right interval', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -697,7 +697,7 @@ describe('TokenListController polling intervals', () => {
     controller.destroy();
   });
 
-  it('not poll after being stopped', async () => {
+  it('should not poll after being stopped', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
