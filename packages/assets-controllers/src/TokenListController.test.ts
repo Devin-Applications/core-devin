@@ -668,7 +668,8 @@ describe('TokenListController polling behavior', () => {
   });
 
   it('not poll after being stopped', async () => {
-    const tokenListMock = sinon.stub(
+    let tokenListMock;
+    tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
     );
@@ -692,10 +693,12 @@ describe('TokenListController polling behavior', () => {
     expect(tokenListMock.calledTwice).toBe(false);
 
     controller.destroy();
+    tokenListMock.restore();
   });
 
   it('poll correctly after being started, stopped, and started again', async () => {
-    const tokenListMock = sinon.stub(
+    let tokenListMock;
+    tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
     );
@@ -723,6 +726,7 @@ describe('TokenListController polling behavior', () => {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
     expect(tokenListMock.calledThrice).toBe(true);
     controller.destroy();
+    tokenListMock.restore();
   });
 
   it('call fetchTokenList on network that supports token detection', async () => {
@@ -745,6 +749,7 @@ describe('TokenListController polling behavior', () => {
     // called once upon initial start
     expect(tokenListMock.called).toBe(true);
     controller.destroy();
+    tokenListMock.restore();
   });
 
   it('not call fetchTokenList on network that does not support token detection', async () => {
@@ -789,13 +794,13 @@ describe('TokenListController polling behavior', () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       expect(controller.state.tokenList).toStrictEqual(
-        sampleSingleChainState.tokenList,
+        sampleMainnetTokenList,
       );
 
       expect(
         controller.state.tokensChainsCache[ChainId.mainnet].data,
       ).toStrictEqual(
-        sampleSingleChainState.tokensChainsCache[ChainId.mainnet].data,
+        sampleMainnetTokenList,
       );
       controller.destroy();
     } catch (error) {
