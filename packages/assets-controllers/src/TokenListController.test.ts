@@ -580,12 +580,22 @@ describe('TokenListController', () => {
           console.log('Token list state updated:', controller.state.tokenList);
           break;
         }
-        await new Promise((resolve) => setTimeout(resolve, 50)); // Poll every 50ms
+        await new Promise((resolve) => setTimeout(resolve, 100)); // Increase polling interval to 100ms
       }
 
       if (Object.keys(controller.state.tokenList).length === 0) {
         console.error('Token list state did not update within the timeout period');
       }
+
+      console.log('State before assertion:', controller.state);
+      console.log('Expected token list:', sampleMainnetTokenList.reduce((acc: TokenListMap, token) => {
+        acc[token.address] = {
+          ...token,
+          aggregators: token.aggregators,
+          iconUrl: token.iconUrl,
+        };
+        return acc;
+      }, {}));
 
       expect(controller.state.tokenList).toStrictEqual(
         sampleMainnetTokenList.reduce((acc: TokenListMap, token) => {
@@ -611,6 +621,7 @@ describe('TokenListController', () => {
         }, {}),
       );
       console.log('Token list state after assertion:', controller.state.tokenList);
+      console.log('TokensChainsCache state after assertion:', controller.state.tokensChainsCache[ChainId.mainnet].data);
       controller.destroy();
     } catch (error) {
       console.error(error);

@@ -350,6 +350,8 @@ export class TokenListController extends StaticIntervalPollingController<
       });
       console.log('State updated successfully with tokenList:', tokenList);
       console.log('State after update:', this.state);
+    } catch (error) {
+      console.error('Error in fetchTokenList:', error);
     } finally {
       releaseLock();
     }
