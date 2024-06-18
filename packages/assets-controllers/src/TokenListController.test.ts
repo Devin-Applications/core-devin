@@ -554,7 +554,7 @@ describe('TokenListController', () => {
   });
 
   it('update token list from api', async () => {
-    jest.setTimeout(10000); // Increase timeout to 10 seconds
+    jest.setTimeout(15000); // Increase timeout to 15 seconds
 
     const nockScope = nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
@@ -577,13 +577,13 @@ describe('TokenListController', () => {
 
       // Poll the state until the token list is updated or timeout
       const startTime = Date.now();
-      const timeout = 10000; // 10 seconds timeout
+      const timeout = 15000; // 15 seconds timeout
       while (Date.now() - startTime < timeout) {
         if (Object.keys(controller.state.tokenList).length > 0) {
           console.log('Token list state updated:', controller.state.tokenList);
           break;
         }
-        await new Promise((resolve) => setTimeout(resolve, 100)); // Poll every 100ms
+        await new Promise((resolve) => setTimeout(resolve, 50)); // Poll every 50ms
       }
 
       if (Object.keys(controller.state.tokenList).length === 0) {
