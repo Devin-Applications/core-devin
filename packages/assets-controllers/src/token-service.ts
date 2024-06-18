@@ -138,10 +138,16 @@ async function queryApi(
   fetchOptions.headers = new window.Headers();
   fetchOptions.headers.set('Content-Type', 'application/json');
   try {
-    return await timeoutFetch(apiURL, fetchOptions, timeout);
+    const response = await timeoutFetch(apiURL, fetchOptions, timeout);
+    if (!response.ok) {
+      console.error('Fetch request failed with status:', response.status, response.statusText);
+    }
+    return response;
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
       console.log('Request is aborted');
+    } else {
+      console.error('Error during fetch request:', error);
     }
   }
   return undefined;
@@ -156,10 +162,12 @@ async function queryApi(
  */
 async function parseJsonResponse(apiResponse: Response): Promise<unknown> {
   const responseObj = await apiResponse.json();
+  console.log('API response object:', responseObj);
   // api may return errors as json without setting an error http status code
   if (responseObj?.error) {
     // TODO: Either fix this lint violation or explain why it's necessary to ignore.
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    console.error('Error in API response:', responseObj.error);
     throw new Error(`TokenService Error: ${responseObj.error}`);
   }
   return responseObj;
