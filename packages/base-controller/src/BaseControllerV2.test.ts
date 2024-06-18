@@ -182,7 +182,7 @@ describe('BaseController', () => {
     sinon.restore();
   });
 
-  it('should set initial state', () => {
+  it('set initial state', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: countControllerName,
@@ -193,7 +193,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 0 });
   });
 
-  it('should allow getting state via the getState action', () => {
+  it('allow getting state via getState action', () => {
     const controllerMessenger = new ControllerMessenger<
       CountControllerAction,
       CountControllerEvent
@@ -210,7 +210,7 @@ describe('BaseController', () => {
     });
   });
 
-  it('should set initial schema', () => {
+  it('set initial schema', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -221,7 +221,7 @@ describe('BaseController', () => {
     expect(controller.metadata).toStrictEqual(countControllerStateMetadata);
   });
 
-  it('should not allow reassigning the `state` property', () => {
+  it('not allow reassigning `state` property', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -236,7 +236,7 @@ describe('BaseController', () => {
     );
   });
 
-  it('should not allow reassigning an object property that exists in state', () => {
+  it('not allow reassigning object property that exists in state', () => {
     const controller = new MessagesController({
       messenger: getMessagesMessenger(),
       name: messagesControllerName,
@@ -259,7 +259,7 @@ describe('BaseController', () => {
     }).toThrow('Cannot add property X-Baz, object is not extensible');
   });
 
-  it('should not allow pushing a value onto an array property that exists in state', () => {
+  it('not allow pushing value onto array property that exists in state', () => {
     const controller = new MessagesController({
       messenger: getMessagesMessenger(),
       name: messagesControllerName,
@@ -286,7 +286,7 @@ describe('BaseController', () => {
     }).toThrow('Cannot add property 1, object is not extensible');
   });
 
-  it('should allow updating state by modifying draft', () => {
+  it('allow updating state by modifying draft', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -301,7 +301,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 1 });
   });
 
-  it('should allow updating state by return a value', () => {
+  it('allow updating state by returning value', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -316,7 +316,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 1 });
   });
 
-  it('should return next state, patches and inverse patches after an update', () => {
+  it('return next state, patches, inverse patches after update', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -339,7 +339,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should throw an error if update callback modifies draft and returns value', () => {
+  it('throw error if update callback modifies draft and returns value', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -357,7 +357,7 @@ describe('BaseController', () => {
     );
   });
 
-  it('should allow for applying immer patches to state', () => {
+  it('allow applying immer patches to state', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -374,7 +374,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 0 });
   });
 
-  it('should inform subscribers of state changes as a result of applying patches', () => {
+  it('inform subscribers of state changes as result of applying patches', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -406,7 +406,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should inform subscribers of state changes', () => {
+  it('inform subscribers of state changes', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -438,7 +438,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should notify a subscriber with a selector of state changes', () => {
+  it('notify subscriber with selector of state changes', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -467,7 +467,7 @@ describe('BaseController', () => {
     expect(listener.firstCall.args).toStrictEqual([1, 0]);
   });
 
-  it('should not inform a subscriber of state changes if the selected value is unchanged', () => {
+  it('not inform subscriber of state changes if selected value is unchanged', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -496,7 +496,7 @@ describe('BaseController', () => {
     expect(listener.callCount).toBe(0);
   });
 
-  it('should inform a subscriber of each state change once even after multiple subscriptions', () => {
+  it('inform subscriber of each state change once even after multiple subscriptions', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -523,7 +523,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should no longer inform a subscriber about state changes after unsubscribing', () => {
+  it('no longer inform subscriber about state changes after unsubscribing', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -545,7 +545,7 @@ describe('BaseController', () => {
     expect(listener1.callCount).toBe(0);
   });
 
-  it('should no longer inform a subscriber about state changes after unsubscribing once, even if they subscribed many times', () => {
+  it('no longer inform subscriber about state changes after unsubscribing once, even if they subscribed many times', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -560,6 +560,7 @@ describe('BaseController', () => {
 
     controllerMessenger.subscribe('CountController:stateChange', listener1);
     controllerMessenger.subscribe('CountController:stateChange', listener1);
+
     controllerMessenger.unsubscribe('CountController:stateChange', listener1);
     controller.update(() => {
       return { count: 1 };
@@ -568,7 +569,7 @@ describe('BaseController', () => {
     expect(listener1.callCount).toBe(0);
   });
 
-  it('should throw when unsubscribing listener who was never subscribed', () => {
+  it('throw when unsubscribing listener who was never subscribed', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -586,7 +587,7 @@ describe('BaseController', () => {
     }).toThrow('Subscription not found for event: CountController:stateChange');
   });
 
-  it('should no longer update subscribers after being destroyed', () => {
+  it('no longer update subscribers after being destroyed', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
