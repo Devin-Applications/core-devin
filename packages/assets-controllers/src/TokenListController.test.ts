@@ -522,7 +522,7 @@ describe('TokenListController', () => {
     sinon.restore();
   });
 
-  it('should set default state', async () => {
+  it('sets default state', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -543,7 +543,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initialize with initial state', () => {
+  it('initializes with initial state', () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -592,7 +592,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initiate without preventPollingOnNetworkRestart', async () => {
+  it('initiates without preventPollingOnNetworkRestart', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
