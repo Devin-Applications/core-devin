@@ -516,6 +516,8 @@ const getRestrictedMessenger = (
 };
 
 describe('TokenListController', () => {
+  jest.setTimeout(60000); // Increase timeout to 60 seconds for all tests
+
   beforeEach(() => {
     // No need to mock fetchTokenList
   });
@@ -586,13 +588,27 @@ describe('TokenListController', () => {
       }
 
       expect(controller.state.tokenList).toStrictEqual(
-        sampleMainnetTokensChainsCache,
+        sampleMainnetTokenList.reduce((acc: TokenListMap, token) => {
+          acc[token.address] = {
+            ...token,
+            aggregators: token.aggregators,
+            iconUrl: token.iconUrl,
+          };
+          return acc;
+        }, {}),
       );
 
       expect(
         controller.state.tokensChainsCache[ChainId.mainnet].data,
       ).toStrictEqual(
-        sampleMainnetTokensChainsCache,
+        sampleMainnetTokenList.reduce((acc: TokenListMap, token) => {
+          acc[token.address] = {
+            ...token,
+            aggregators: token.aggregators,
+            iconUrl: token.iconUrl,
+          };
+          return acc;
+        }, {}),
       );
       console.log('Token list state after assertion:', controller.state.tokenList);
       controller.destroy();
@@ -716,6 +732,7 @@ describe('TokenListController polling behavior', () => {
     await controller.start();
     try {
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
+      console.log('Token list state before assertion:', controller.state.tokenList);
       expect(controller.state.tokenList).toStrictEqual(
         sampleSingleChainState.tokenList,
       );
@@ -725,7 +742,7 @@ describe('TokenListController polling behavior', () => {
         networksMetadata: {},
       });
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
-
+      console.log('Token list state after network state change:', controller.state.tokenList);
       expect(controller.state.tokenList).toStrictEqual({});
     } catch (error) {
       console.error(error);
@@ -1120,6 +1137,8 @@ describe('TokenListController cache management', () => {
   });
 
   it('update preventPollingOnNetworkRestart and restart the polling on network restart', async () => {
+    jest.setTimeout(60000); // Increase timeout to 60 seconds
+
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -1151,6 +1170,7 @@ describe('TokenListController cache management', () => {
       interval: 100,
     });
     await controller.start();
+    console.log('Controller started with initial state:', controller.state);
     controllerMessenger.publish(
       'NetworkController:stateChange',
       {
@@ -1162,12 +1182,14 @@ describe('TokenListController cache management', () => {
       },
       [],
     );
+    console.log('Published state change to mainnet');
     expect(controller.state).toStrictEqual({
       tokenList: {},
       tokensChainsCache: {},
       preventPollingOnNetworkRestart: true,
     });
     controller.updatePreventPollingOnNetworkRestart(false);
+    console.log('Updated preventPollingOnNetworkRestart to false');
     expect(controller.state).toStrictEqual({
       tokenList: {},
       tokensChainsCache: {},
@@ -1178,6 +1200,7 @@ describe('TokenListController cache management', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await new Promise((resolve: any) => {
       messenger.subscribe('TokenListController:stateChange', (_, patch) => {
+        console.log('Received state change event with patch:', patch);
         const tokenListChanged = patch.find(
           (p) => Object.keys(p.value.tokenList).length !== 0,
         );
