@@ -555,7 +555,7 @@ describe('TokenListController', () => {
 
     const nockScope = nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet) + '?occurrenceFloor=3&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false')
-      .reply(200, sampleMainnetTokenList)
+      .reply(200, sampleMainnetTokenList, { 'Content-Type': 'application/json' })
       .persist();
 
     const controllerMessenger = getControllerMessenger();
