@@ -1613,7 +1613,7 @@ describe('AccountsController', () => {
       KeyringTypes.lattice,
       KeyringTypes.qr,
       'Custody - JSON - RPC',
-    ])('should add accounts for %s type', async (keyringType) => {
+    ])('adds accounts for %s type', async (keyringType) => {
       mockUUID.mockReturnValue('mock-id');
 
       const messenger = buildMessenger();
@@ -1826,7 +1826,7 @@ describe('AccountsController', () => {
         expected: mockNewerEvmAccount,
       },
     ])(
-      'last selected account type is $lastSelectedAccount.type should return the selectedAccount with id $expected.id',
+      'returns selectedAccount with correct id',
       ({ lastSelectedAccount, expected }) => {
         const { accountsController } = setupAccountsController({
           initialState: {
@@ -1909,7 +1909,7 @@ describe('AccountsController', () => {
         expected: mockNonEvmAccount,
       },
     ])(
-      "chainId $chainId with selectedAccount '$selectedAccount.id' should return $expected.id",
+      "returns $expected.id for chainId $chainId with selectedAccount '$selectedAccount.id'",
       ({ chainId, selectedAccount, expected }) => {
         const { accountsController } = setupAccountsController({
           initialState: {
@@ -1999,7 +1999,7 @@ describe('AccountsController', () => {
       [undefined, [mockAccount, mockAccount2, mockNonEvmAccount]],
       ['eip155:1', [mockAccount, mockAccount2]],
       ['bip122:000000000019d6689c085ae165831e93', [mockNonEvmAccount]],
-    ])(`%s should return %s`, (chainId, expected) => {
+    ])(`%s returns %s`, (chainId, expected) => {
       const { accountsController } = setupAccountsController({
         initialState: {
           internalAccounts: {
@@ -2351,7 +2351,7 @@ describe('AccountsController', () => {
       expect(account).toStrictEqual(mockAccount);
     });
 
-    it("should return undefined if there isn't an account with the address", () => {
+    it('returns undefined for missing account address', () => {
       const { accountsController } = setupAccountsController({
         initialState: {
           internalAccounts: {
