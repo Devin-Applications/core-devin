@@ -592,6 +592,51 @@ describe('TokenListController', () => {
     );
   });
 
+  it('updates tokenList on network state change', async () => {
+    nock(tokenService.TOKEN_END_POINT_API)
+      .get(getTokensPath(ChainId.mainnet))
+      .reply(200, sampleMainnetTokenList)
+      .persist();
+    const selectedNetworkClientId = 'selectedNetworkClientId';
+    const controllerMessenger = getControllerMessenger();
+    const getNetworkClientById = buildMockGetNetworkClientById({
+      [selectedNetworkClientId]: buildCustomNetworkClientConfiguration({
+        chainId: toHex(1337),
+      }),
+    });
+    controllerMessenger.registerActionHandler(
+      'NetworkController:getNetworkClientById',
+      getNetworkClientById,
+    );
+    const messenger = getRestrictedMessenger(controllerMessenger);
+    let onNetworkStateChangeCallback!: (state: NetworkState) => void;
+    const controller = new TokenListController({
+      chainId: ChainId.mainnet,
+      onNetworkStateChange: (cb) => (onNetworkStateChangeCallback = cb),
+      preventPollingOnNetworkRestart: false,
+      interval: 100,
+      messenger,
+    });
+    // TODO: Either fix this lint violation or explain why it's necessary to ignore.
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    controller.start();
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
+    expect(controller.state.tokenList).toStrictEqual(
+      sampleSingleChainState.tokenList,
+    );
+    onNetworkStateChangeCallback({
+      selectedNetworkClientId,
+      networkConfigurations: {},
+      networksMetadata: {},
+      // @ts-expect-error This property isn't used and will get removed later.
+      providerConfig: {},
+    });
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
+
+    expect(controller.state.tokenList).toStrictEqual({});
+    controller.destroy();
+  });
+
   it('initiates without preventPollingOnNetworkRestart', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
