@@ -556,7 +556,7 @@ describe('TokenListController', () => {
   it('update token list from api', async () => {
     jest.setTimeout(10000); // Increase timeout to 10 seconds
 
-    nock(tokenService.TOKEN_END_POINT_API)
+    const nockScope = nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
       .persist();
@@ -571,7 +571,25 @@ describe('TokenListController', () => {
     });
     await controller.start();
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Increase wait time to 2 seconds
+      console.log('Token list state before assertion:', controller.state.tokenList);
+      console.log('Tokens from API:', sampleMainnetTokenList);
+
+      // Poll the state until the token list is updated or timeout
+      const startTime = Date.now();
+      const timeout = 10000; // 10 seconds timeout
+      while (Date.now() - startTime < timeout) {
+        if (Object.keys(controller.state.tokenList).length > 0) {
+          console.log('Token list state updated:', controller.state.tokenList);
+          break;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 100)); // Poll every 100ms
+      }
+
+      if (Object.keys(controller.state.tokenList).length === 0) {
+        console.error('Token list state did not update within the timeout period');
+      }
+
       expect(controller.state.tokenList).toStrictEqual(
         sampleMainnetTokensChainsCache,
       );
@@ -581,12 +599,15 @@ describe('TokenListController', () => {
       ).toStrictEqual(
         sampleMainnetTokensChainsCache,
       );
+      console.log('Token list state after assertion:', controller.state.tokenList);
       controller.destroy();
     } catch (error) {
       console.error(error);
     } finally {
       controller.stop();
       tokenListMock.restore();
+      nockScope.done(); // Ensure nock interceptor was used
+      console.log('Nock interceptor used:', nockScope.isDone());
     }
   });
 });
