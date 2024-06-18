@@ -309,7 +309,7 @@ export class TokenListController extends StaticIntervalPollingController<
         if (!tokensFromAPI) {
           // Fallback to expired cached tokens
           tokenList = { ...(tokensChainsCache[chainId]?.data || {}) };
-          this.update(() => {
+          await this.update(() => {
             return {
               ...this.state,
               tokenList,
@@ -341,7 +341,7 @@ export class TokenListController extends StaticIntervalPollingController<
       console.log('State before update:', this.state);
       console.log('Updating state with tokenList:', tokenList);
       console.log('Updated tokensChainsCache:', updatedTokensChainsCache);
-      this.update(() => {
+      await this.update(() => {
         return {
           ...this.state,
           tokenList,
