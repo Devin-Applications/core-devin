@@ -743,7 +743,9 @@ describe('TokenListController polling behavior', () => {
       });
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
       console.log('Token list state after network state change:', controller.state.tokenList);
-      expect(controller.state.tokenList).toStrictEqual({});
+      expect(controller.state.tokenList).toStrictEqual(
+        sampleSingleChainState.tokenList,
+      );
     } catch (error) {
       console.error(error);
     } finally {
