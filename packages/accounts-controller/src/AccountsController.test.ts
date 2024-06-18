@@ -320,7 +320,7 @@ describe('AccountsController', () => {
   });
 
   describe('onSnapStateChange', () => {
-    it('be used enable an account if the Snap is enabled and not blocked', async () => {
+    it('enables account if Snap is enabled and not blocked', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
