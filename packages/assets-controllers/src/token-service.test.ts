@@ -239,7 +239,7 @@ const sampleChainId = toHex(sampleDecimalChainId);
 
 describe('Token service', () => {
   describe('fetchTokenListByChainId', () => {
-    it('should call the tokens api and return the list of tokens', async () => {
+    it('should return tokens list from API', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
@@ -253,7 +253,7 @@ describe('Token service', () => {
       expect(tokens).toStrictEqual(sampleTokenList);
     });
 
-    it('should call the tokens api and return the list of tokens on linea mainnet', async () => {
+    it('should return tokens on linea mainnet from API', async () => {
       const { signal } = new AbortController();
       const lineaChainId = 59144;
       const lineaHexChain = toHex(lineaChainId);
@@ -270,7 +270,7 @@ describe('Token service', () => {
       expect(tokens).toStrictEqual(sampleTokenListLinea);
     });
 
-    it('should return undefined if the fetch is aborted', async () => {
+    it('should return undefined on fetch abort', async () => {
       const abortController = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
@@ -290,7 +290,7 @@ describe('Token service', () => {
       expect(await fetchPromise).toBeUndefined();
     });
 
-    it('should return undefined if the fetch fails with a network error', async () => {
+    it('should return undefined on network error', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
@@ -304,7 +304,7 @@ describe('Token service', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should return undefined if the fetch fails with an unsuccessful status code', async () => {
+    it('should return undefined on unsuccessful status', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
@@ -318,7 +318,7 @@ describe('Token service', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should return undefined if the fetch fails with a timeout', async () => {
+    it('should return undefined on timeout', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
@@ -338,7 +338,7 @@ describe('Token service', () => {
   });
 
   describe('fetchTokenMetadata', () => {
-    it('should call the api to return the token metadata for eth address provided', async () => {
+    it('should return token metadata for given eth address', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
@@ -356,7 +356,7 @@ describe('Token service', () => {
       expect(token).toStrictEqual(sampleToken);
     });
 
-    it('should return undefined if the fetch is aborted', async () => {
+    it('should return undefined on fetch abort', async () => {
       const abortController = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(`/tokens/${sampleDecimalChainId}`)
@@ -375,7 +375,7 @@ describe('Token service', () => {
       expect(await fetchPromise).toBeUndefined();
     });
 
-    it('should return undefined if the fetch fails with a network error', async () => {
+    it('should return undefined on network error', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(`/tokens/${sampleDecimalChainId}`)
@@ -391,7 +391,7 @@ describe('Token service', () => {
       expect(tokenMetadata).toBeUndefined();
     });
 
-    it('should return undefined if the fetch fails with an unsuccessful status code', async () => {
+    it('should return undefined on unsuccessful status', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(`/tokens/${sampleDecimalChainId}`)
@@ -407,7 +407,7 @@ describe('Token service', () => {
       expect(tokenMetadata).toBeUndefined();
     });
 
-    it('should return undefined if the fetch fails with a timeout', async () => {
+    it('should return undefined on timeout', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(`/tokens/${sampleDecimalChainId}`)
@@ -426,7 +426,7 @@ describe('Token service', () => {
       expect(tokenMetadata).toBeUndefined();
     });
 
-    it('should throw error if fetching from non supported network', async () => {
+    it('should error on non supported network fetch', async () => {
       const { signal } = new AbortController();
       await expect(
         fetchTokenMetadata(

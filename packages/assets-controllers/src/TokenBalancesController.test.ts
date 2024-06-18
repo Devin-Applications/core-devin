@@ -63,7 +63,7 @@ describe('TokenBalancesController', () => {
     expect(controller.state).toStrictEqual({ contractBalances: {} });
   });
 
-  it('should poll and update balances in the right interval', async () => {
+  it('should update balances at correct interval', async () => {
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
       jest.fn().mockReturnValue({ selectedAddress: '0x1234' }),
@@ -88,7 +88,7 @@ describe('TokenBalancesController', () => {
     expect(updateBalancesSpy).toHaveBeenCalledTimes(2);
   });
 
-  it('should update balances if enabled', async () => {
+  it('should update balances when enabled', async () => {
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
@@ -109,7 +109,7 @@ describe('TokenBalancesController', () => {
     });
   });
 
-  it('should not update balances if disabled', async () => {
+  it('should skip update when disabled', async () => {
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
@@ -128,7 +128,7 @@ describe('TokenBalancesController', () => {
     expect(controller.state.contractBalances).toStrictEqual({});
   });
 
-  it('should update balances if controller is manually enabled', async () => {
+  it('should update when manually enabled', async () => {
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
@@ -154,7 +154,7 @@ describe('TokenBalancesController', () => {
     });
   });
 
-  it('should not update balances if controller is manually disabled', async () => {
+  it('should not update when manually disabled', async () => {
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
@@ -182,7 +182,7 @@ describe('TokenBalancesController', () => {
     });
   });
 
-  it('should update balances if tokens change and controller is manually enabled', async () => {
+  it('should update on token change when enabled', async () => {
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
@@ -220,7 +220,7 @@ describe('TokenBalancesController', () => {
     });
   });
 
-  it('should not update balances if tokens change and controller is manually disabled', async () => {
+  it('should not update on token change when disabled', async () => {
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
@@ -311,7 +311,7 @@ describe('TokenBalancesController', () => {
     expect(controller.state.contractBalances[address]).not.toBe(toHex(0));
   });
 
-  it('should handle `getERC20BalanceOf` error case', async () => {
+  it('should handle balance fetch error', async () => {
     const errorMsg = 'Failed to get balance';
     const address = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
     const getERC20BalanceOfStub = jest
@@ -353,7 +353,7 @@ describe('TokenBalancesController', () => {
     expect(controller.state.contractBalances[address]).not.toBe(0);
   });
 
-  it('should update balances when tokens change', async () => {
+  it('should update on token change', async () => {
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
       jest.fn().mockReturnValue({ selectedAddress: '0x1234' }),
@@ -382,7 +382,7 @@ describe('TokenBalancesController', () => {
     expect(updateBalancesSpy).toHaveBeenCalled();
   });
 
-  it('should update token balances when detected tokens are added', async () => {
+  it('should update when new tokens detected', async () => {
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
       jest.fn().mockReturnValue({ selectedAddress: '0x1234' }),
