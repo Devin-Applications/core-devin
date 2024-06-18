@@ -63,16 +63,23 @@ export async function fetchTokenListByChainId(
   { timeout = defaultTimeout } = {},
 ): Promise<unknown> {
   const tokenURL = getTokensURL(chainId);
-  const response = await queryApi(tokenURL, abortSignal, timeout);
-  if (response) {
-    const result = await parseJsonResponse(response);
-    if (Array.isArray(result) && chainId === ChainId['linea-mainnet']) {
-      return result.filter(
-        (elm) =>
-          elm.aggregators.includes('lineaTeam') || elm.aggregators.length >= 3,
-      );
+  console.log('Fetching token list from URL:', tokenURL);
+  try {
+    const response = await queryApi(tokenURL, abortSignal, timeout);
+    console.log('API response:', response);
+    if (response) {
+      const result = await parseJsonResponse(response);
+      console.log('Parsed JSON response:', result);
+      if (Array.isArray(result) && chainId === ChainId['linea-mainnet']) {
+        return result.filter(
+          (elm) =>
+            elm.aggregators.includes('lineaTeam') || elm.aggregators.length >= 3,
+        );
+      }
+      return result;
     }
-    return result;
+  } catch (error) {
+    console.error('Error fetching token list:', error);
   }
   return undefined;
 }
