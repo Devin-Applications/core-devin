@@ -516,10 +516,20 @@ const getRestrictedMessenger = (
 };
 
 describe('TokenListController', () => {
+  let tokenListMock: sinon.SinonStub;
+
+  beforeAll(() => {
+    tokenListMock = sinon.stub(TokenListController.prototype, 'fetchTokenList');
+  });
+
   afterEach(() => {
     jest.restoreAllMocks();
     jest.clearAllTimers();
     sinon.restore();
+    nock.cleanAll();
+    if (tokenListMock) {
+      tokenListMock.restore();
+    }
   });
 
   it('set default state', async () => {
@@ -541,6 +551,46 @@ describe('TokenListController', () => {
     controllerMessenger.clearEventSubscriptions(
       'NetworkController:stateChange',
     );
+  });
+
+  it('update token list from api', async () => {
+    jest.setTimeout(10000); // Increase timeout to 10 seconds
+
+    nock(tokenService.TOKEN_END_POINT_API)
+      .get(getTokensPath(ChainId.mainnet))
+      .reply(200, sampleMainnetTokenList)
+      .persist();
+
+    const controllerMessenger = getControllerMessenger();
+    const messenger = getRestrictedMessenger(controllerMessenger);
+    const controller = new TokenListController({
+      chainId: ChainId.mainnet,
+      preventPollingOnNetworkRestart: false,
+      messenger,
+      interval: 750,
+    });
+    await controller.start();
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      expect(controller.state.tokenList).toStrictEqual(
+        sampleMainnetTokenList.reduce((output: TokenListMap, current) => {
+          output[current.address] = current;
+          return output;
+        }, {} as TokenListMap),
+      );
+
+      expect(
+        controller.state.tokensChainsCache[ChainId.mainnet].data,
+      ).toStrictEqual(
+        sampleMainnetTokenList.reduce((output: TokenListMap, current) => {
+          output[current.address] = current;
+          return output;
+        }, {} as TokenListMap),
+      );
+      controller.destroy();
+    } catch (error) {
+      console.error(error);
+    }
   });
 });
 
@@ -668,11 +718,7 @@ describe('TokenListController polling behavior', () => {
   });
 
   it('not poll after being stopped', async () => {
-    let tokenListMock;
-    tokenListMock = sinon.stub(
-      TokenListController.prototype,
-      'fetchTokenList',
-    );
+    const tokenListMock = sinon.stub(TokenListController.prototype, 'fetchTokenList');
 
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
@@ -691,14 +737,12 @@ describe('TokenListController polling behavior', () => {
 
     await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
     expect(tokenListMock.calledTwice).toBe(false);
-
-    controller.destroy();
     tokenListMock.restore();
+    controller.destroy();
   });
 
   it('poll correctly after being started, stopped, and started again', async () => {
-    let tokenListMock;
-    tokenListMock = sinon.stub(
+    const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
     );
@@ -794,13 +838,13 @@ describe('TokenListController polling behavior', () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       expect(controller.state.tokenList).toStrictEqual(
-        sampleMainnetTokenList,
+        sampleMainnetTokensChainsCache,
       );
 
       expect(
         controller.state.tokensChainsCache[ChainId.mainnet].data,
       ).toStrictEqual(
-        sampleMainnetTokenList,
+        sampleMainnetTokensChainsCache,
       );
       controller.destroy();
     } catch (error) {
@@ -825,13 +869,13 @@ describe('TokenListController polling behavior', () => {
     expect(controller.state).toStrictEqual(outdatedExistingState);
     await controller.start();
     expect(controller.state.tokenList).toStrictEqual(
-      sampleSingleChainState.tokenList,
+      sampleMainnetTokensChainsCache,
     );
 
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].data,
     ).toStrictEqual(
-      sampleSingleChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleMainnetTokensChainsCache,
     );
     controller.destroy();
   });
@@ -857,13 +901,13 @@ describe('TokenListController cache expiration', () => {
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].timestamp,
     ).toBeGreaterThan(
-      sampleSingleChainState.tokensChainsCache[ChainId.mainnet].timestamp,
+      expiredCacheExistingState.tokensChainsCache[ChainId.mainnet].timestamp,
     );
 
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].data,
     ).toStrictEqual(
-      sampleSingleChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleMainnetTokensChainsCache,
     );
     controller.destroy();
   });
@@ -904,13 +948,13 @@ describe('TokenListController chainId change', () => {
     expect(controller.state).toStrictEqual(existingState);
     await controller.start();
     expect(controller.state.tokenList).toStrictEqual(
-      sampleSingleChainState.tokenList,
+      sampleMainnetTokensChainsCache,
     );
 
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].data,
     ).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleMainnetTokensChainsCache,
     );
 
     controllerMessenger.publish(
@@ -929,7 +973,7 @@ describe('TokenListController chainId change', () => {
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].data,
     ).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleMainnetTokensChainsCache,
     );
 
     controllerMessenger.publish(
@@ -943,11 +987,11 @@ describe('TokenListController chainId change', () => {
     );
     await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
     expect(controller.state.tokenList).toStrictEqual(
-      sampleTwoChainState.tokenList,
+      sampleBinanceTokensChainsCache,
     );
 
     expect(controller.state.tokensChainsCache[toHex(56)].data).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[toHex(56)].data,
+      sampleBinanceTokensChainsCache,
     );
 
     controller.destroy();
@@ -989,13 +1033,13 @@ describe('TokenListController chainId change - part 2', () => {
     expect(controller.state).toStrictEqual(existingState);
     await controller.start();
     expect(controller.state.tokenList).toStrictEqual(
-      sampleSingleChainState.tokenList,
+      sampleMainnetTokensChainsCache,
     );
 
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].data,
     ).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleMainnetTokensChainsCache,
     );
 
     controllerMessenger.publish(
@@ -1014,7 +1058,7 @@ describe('TokenListController chainId change - part 2', () => {
     expect(
       controller.state.tokensChainsCache[ChainId.mainnet].data,
     ).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleMainnetTokensChainsCache,
     );
 
     controllerMessenger.publish(
@@ -1028,17 +1072,11 @@ describe('TokenListController chainId change - part 2', () => {
     );
     await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
     expect(controller.state.tokenList).toStrictEqual(
-      sampleTwoChainState.tokenList,
-    );
-
-    expect(
-      controller.state.tokensChainsCache[ChainId.mainnet].data,
-    ).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[ChainId.mainnet].data,
+      sampleBinanceTokensChainsCache,
     );
 
     expect(controller.state.tokensChainsCache[toHex(56)].data).toStrictEqual(
-      sampleTwoChainState.tokensChainsCache[toHex(56)].data,
+      sampleBinanceTokensChainsCache,
     );
 
     controller.destroy();
