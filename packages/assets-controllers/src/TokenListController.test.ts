@@ -522,7 +522,7 @@ describe('TokenListController', () => {
     sinon.restore();
   });
 
-  it('should set default state', async () => {
+  it('set default state', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -543,7 +543,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initialize with initial state', () => {
+  it('initialize with initial state', () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -592,7 +592,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initiate without preventPollingOnNetworkRestart', async () => {
+  it('initiate without preventPollingOnNetworkRestart', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -609,7 +609,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should not poll before being started', async () => {
+  it('not poll before being started', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -625,7 +625,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update tokenList state when network updates are passed via onNetworkStateChange callback', async () => {
+  it('update tokenList state when network updates are passed via onNetworkStateChange callback', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -670,7 +670,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should poll and update rate in the right interval', async () => {
+  it('poll and update rate in right interval', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -695,7 +695,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should not poll after being stopped', async () => {
+  it('not poll after being stopped', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
