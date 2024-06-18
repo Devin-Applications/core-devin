@@ -105,7 +105,7 @@ function getProvider() {
 }
 
 describe('EnsController', () => {
-  it('should set default state', () => {
+  it('set default state', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -114,7 +114,7 @@ describe('EnsController', () => {
     expect(controller.state).toStrictEqual(defaultState);
   });
 
-  it('should return registry address for `.`', () => {
+  it('returns registry address for `.`', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -127,7 +127,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should not return registry address for unrecognized chains', () => {
+  it('does not return registry address for unrecognized chains', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
