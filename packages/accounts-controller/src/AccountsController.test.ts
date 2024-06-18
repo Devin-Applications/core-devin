@@ -320,7 +320,7 @@ describe('AccountsController', () => {
   });
 
   describe('onSnapStateChange', () => {
-    it('be used enable an account if the Snap is enabled and not blocked', async () => {
+    it('enable account if Snap enabled', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -363,7 +363,7 @@ describe('AccountsController', () => {
       expect(updatedAccount.metadata.snap?.enabled).toBe(true);
     });
 
-    it('be used disable an account if the Snap is disabled', async () => {
+    it('disable account if Snap disabled', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -405,7 +405,7 @@ describe('AccountsController', () => {
       expect(updatedAccount.metadata.snap?.enabled).toBe(false);
     });
 
-    it('be used disable an account if the Snap is blocked', async () => {
+    it('disable account if Snap blocked', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -475,7 +475,7 @@ describe('AccountsController', () => {
       expect(accounts).toStrictEqual([]);
     });
 
-    it('only update if the keyring is unlocked and when there are keyrings', async () => {
+    it('update if keyring unlocked', async () => {
       const messenger = buildMessenger();
 
       const mockNewKeyringState = {
@@ -676,7 +676,7 @@ describe('AccountsController', () => {
         ]);
       });
 
-      it('increment the default account number when adding an account', async () => {
+      it('increment default account number', async () => {
         const messenger = buildMessenger();
         mockUUID
           .mockReturnValueOnce('mock-id') // call to check if its a new account
@@ -732,7 +732,7 @@ describe('AccountsController', () => {
         ]);
       });
 
-      it('use the next number after the total number of accounts of a keyring when adding an account, if the index is lower', async () => {
+      it('use next number after total accounts', async () => {
         const messenger = buildMessenger();
         mockUUID
           .mockReturnValueOnce('mock-id') // call to check if its a new account
@@ -795,7 +795,7 @@ describe('AccountsController', () => {
         ]);
       });
 
-      it('handle when the account to set as selectedAccount is undefined', async () => {
+      it('handle undefined selectedAccount', async () => {
         mockUUID.mockReturnValueOnce('mock-id'); // call to check if its a new account
 
         const messenger = buildMessenger();
@@ -844,7 +844,7 @@ describe('AccountsController', () => {
         expect(selectedAccount).toBe('');
       });
 
-      it('selectedAccount remains the same after adding a new account', async () => {
+      it('selectedAccount remains same after add', async () => {
         const messenger = buildMessenger();
         mockUUID
           .mockReturnValueOnce('mock-id') // call to check if its a new account
@@ -890,7 +890,7 @@ describe('AccountsController', () => {
     });
 
     describe('deleting account', () => {
-      it('delete accounts if its gone from the keyring state', async () => {
+      it('delete accounts if gone from keyring', async () => {
         const messenger = buildMessenger();
         mockUUID.mockReturnValueOnce('mock-id2');
 
@@ -930,7 +930,7 @@ describe('AccountsController', () => {
         );
       });
 
-      it('delete accounts and set the most recent lastSelected account', async () => {
+      it('delete accounts and set lastSelected', async () => {
         const messenger = buildMessenger();
         mockUUID
           .mockReturnValueOnce('mock-id')
@@ -986,7 +986,7 @@ describe('AccountsController', () => {
         );
       });
 
-      it('delete accounts and set the most recent lastSelected account when there are accounts that have never been selected', async () => {
+      it('delete accounts and set lastSelected if never selected', async () => {
         const messenger = buildMessenger();
         mockUUID
           .mockReturnValueOnce('mock-id')
@@ -1049,7 +1049,7 @@ describe('AccountsController', () => {
         );
       });
 
-      it('delete the account and select the account with the most recent lastSelected', async () => {
+      it('delete account and select most recent lastSelected', async () => {
         const messenger = buildMessenger();
         mockUUID.mockReturnValueOnce('mock-id').mockReturnValueOnce('mock-id2');
 
@@ -1122,7 +1122,7 @@ describe('AccountsController', () => {
       });
     });
 
-    it('handle keyring reinitialization', async () => {
+    it('handle keyring reinit', async () => {
       const messenger = buildMessenger();
       const mockInitialAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -1197,7 +1197,7 @@ describe('AccountsController', () => {
         expectedSelectedId: 'mock-id',
       },
     ])(
-      'handle keyring reinitialization with multiple accounts. Account 1 lastSelected $lastSelectedForAccount1, Account 2 lastSelected $lastSelectedForAccount2. Expected selected account: $expectedSelectedId',
+      'handle keyring reinit with multiple accounts. Account 1 lastSelected $lastSelectedForAccount1, Account 2 lastSelected $lastSelectedForAccount2. Expected selected account: $expectedSelectedId',
       async ({
         lastSelectedForAccount1,
         lastSelectedForAccount2,
@@ -1360,7 +1360,7 @@ describe('AccountsController', () => {
       expect(accountsController.listAccounts()).toStrictEqual(expectedAccounts);
     });
 
-    it('update accounts with Snap accounts when snap keyring is defined and has accounts', async () => {
+    it('update Snap accounts if keyring defined', async () => {
       const messenger = buildMessenger();
       messenger.registerActionHandler(
         'KeyringController:getAccounts',
@@ -1613,7 +1613,7 @@ describe('AccountsController', () => {
       KeyringTypes.lattice,
       KeyringTypes.qr,
       'Custody - JSON - RPC',
-    ])('should add accounts for %s type', async (keyringType) => {
+    ])('add accounts for %s type', async (keyringType) => {
       mockUUID.mockReturnValue('mock-id');
 
       const messenger = buildMessenger();
