@@ -65,7 +65,11 @@ export async function fetchTokenListByChainId(
   const tokenURL = getTokensURL(chainId);
   console.log('Fetching token list from URL:', tokenURL);
   try {
-    const response = await queryApi(tokenURL, abortSignal, timeout);
+    const response = await queryApi(tokenURL, abortSignal, timeout, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     console.log('API response:', response);
     if (response) {
       const result = await parseJsonResponse(response);
@@ -120,12 +124,14 @@ export async function fetchTokenMetadata<T>(
  * @param apiURL - The URL of the API to fetch.
  * @param abortSignal - The abort signal used to cancel the request if necessary.
  * @param timeout - The fetch timeout.
+ * @param options - Additional fetch options.
  * @returns Promise resolving request response.
  */
 async function queryApi(
   apiURL: string,
   abortSignal: AbortSignal,
   timeout: number,
+  options: RequestInit = {},
 ): Promise<Response | undefined> {
   const fetchOptions: RequestInit = {
     referrer: apiURL,
@@ -134,8 +140,9 @@ async function queryApi(
     mode: 'cors',
     signal: abortSignal,
     cache: 'default',
+    ...options,
   };
-  fetchOptions.headers = new window.Headers();
+  fetchOptions.headers = new window.Headers(options.headers || {});
   fetchOptions.headers.set('Content-Type', 'application/json');
   try {
     const response = await timeoutFetch(apiURL, fetchOptions, timeout);
