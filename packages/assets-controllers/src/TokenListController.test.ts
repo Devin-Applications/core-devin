@@ -516,10 +516,8 @@ const getRestrictedMessenger = (
 };
 
 describe('TokenListController', () => {
-  let tokenListMock: sinon.SinonStub;
-
   beforeEach(() => {
-    tokenListMock = sinon.stub(TokenListController.prototype, 'fetchTokenList');
+    // No need to mock fetchTokenList
   });
 
   afterEach(() => {
@@ -527,9 +525,6 @@ describe('TokenListController', () => {
     jest.clearAllTimers();
     sinon.restore();
     nock.cleanAll();
-    if (tokenListMock) {
-      tokenListMock.restore();
-    }
   });
 
   it('set default state', async () => {
@@ -605,7 +600,6 @@ describe('TokenListController', () => {
       console.error(error);
     } finally {
       controller.stop();
-      tokenListMock.restore();
       nockScope.done(); // Ensure nock interceptor was used
       console.log('Nock interceptor used:', nockScope.isDone());
     }
