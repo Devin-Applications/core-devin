@@ -320,7 +320,7 @@ describe('AccountsController', () => {
   });
 
   describe('onSnapStateChange', () => {
-    it('be used enable an account if the Snap is enabled and not blocked', async () => {
+    it('enable account if Snap is enabled and not blocked', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -363,7 +363,7 @@ describe('AccountsController', () => {
       expect(updatedAccount.metadata.snap?.enabled).toBe(true);
     });
 
-    it('be used disable an account if the Snap is disabled', async () => {
+    it('disable account if Snap is disabled', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -405,7 +405,7 @@ describe('AccountsController', () => {
       expect(updatedAccount.metadata.snap?.enabled).toBe(false);
     });
 
-    it('be used disable an account if the Snap is blocked', async () => {
+    it('disable account if Snap is blocked', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -452,7 +452,7 @@ describe('AccountsController', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    it('not update state when only keyring is unlocked without any keyrings', async () => {
+    it('not update state when keyring is unlocked without keyrings', async () => {
       const messenger = buildMessenger();
       const { accountsController } = setupAccountsController({
         initialState: {
@@ -475,7 +475,7 @@ describe('AccountsController', () => {
       expect(accounts).toStrictEqual([]);
     });
 
-    it('only update if the keyring is unlocked and when there are keyrings', async () => {
+    it('update if keyring is unlocked and has keyrings', async () => {
       const messenger = buildMessenger();
 
       const mockNewKeyringState = {
@@ -619,7 +619,7 @@ describe('AccountsController', () => {
         ]);
       });
 
-      it('handle the event when a Snap deleted the account before the it was added', async () => {
+      it('handle Snap account deletion before addition', async () => {
         mockUUID.mockReturnValueOnce('mock-id'); // call to check if its a new account
         const messenger = buildMessenger();
         messenger.registerActionHandler(
@@ -676,7 +676,7 @@ describe('AccountsController', () => {
         ]);
       });
 
-      it('increment the default account number when adding an account', async () => {
+      it('increment default account number when adding', async () => {
         const messenger = buildMessenger();
         mockUUID
           .mockReturnValueOnce('mock-id') // call to check if its a new account
@@ -795,7 +795,7 @@ describe('AccountsController', () => {
         ]);
       });
 
-      it('handle when the account to set as selectedAccount is undefined', async () => {
+      it('handle undefined selectedAccount', async () => {
         mockUUID.mockReturnValueOnce('mock-id'); // call to check if its a new account
 
         const messenger = buildMessenger();
@@ -1197,7 +1197,7 @@ describe('AccountsController', () => {
         expectedSelectedId: 'mock-id',
       },
     ])(
-      'handle keyring reinitialization with multiple accounts. Account 1 lastSelected $lastSelectedForAccount1, Account 2 lastSelected $lastSelectedForAccount2. Expected selected account: $expectedSelectedId',
+      'handle keyring reinit with multiple accounts. Account 1 lastSelected $lastSelectedForAccount1, Account 2 lastSelected $lastSelectedForAccount2. Expected selected account: $expectedSelectedId',
       async ({
         lastSelectedForAccount1,
         lastSelectedForAccount2,
@@ -1613,7 +1613,7 @@ describe('AccountsController', () => {
       KeyringTypes.lattice,
       KeyringTypes.qr,
       'Custody - JSON - RPC',
-    ])('should add accounts for %s type', async (keyringType) => {
+    ])('add accounts for %s type', async (keyringType) => {
       mockUUID.mockReturnValue('mock-id');
 
       const messenger = buildMessenger();
