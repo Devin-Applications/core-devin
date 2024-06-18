@@ -8,7 +8,7 @@ describe('ControllerMessenger', () => {
     sinon.restore();
   });
 
-  it('should allow registering and calling an action handler', () => {
+  it('should register and call an action handler', () => {
     type CountAction = { type: 'count'; handler: (increment: number) => void };
     const controllerMessenger = new ControllerMessenger<CountAction, never>();
 
@@ -21,7 +21,7 @@ describe('ControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling multiple different action handlers', () => {
+  it('registers and calls multiple action handlers', () => {
     // These 'Other' types are included to demonstrate that controller messenger
     // generics can indeed be unions of actions and events from different
     // controllers.
@@ -61,7 +61,7 @@ describe('ControllerMessenger', () => {
     expect(message).toBe('hello, world');
   });
 
-  it('should allow registering and calling an action handler with no parameters', () => {
+  it('registers and calls action handler with no params', () => {
     type IncrementAction = { type: 'increment'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<
       IncrementAction,
@@ -77,7 +77,7 @@ describe('ControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling an action handler with multiple parameters', () => {
+  it('registers and calls action handler with multiple params', () => {
     type MessageAction = {
       type: 'message';
       handler: (to: string, message: string) => void;
@@ -93,7 +93,7 @@ describe('ControllerMessenger', () => {
     expect(messages['0x123']).toBe('hello');
   });
 
-  it('should allow registering and calling an action handler with a return value', () => {
+  it('registers and calls action handler with return value', () => {
     type AddAction = { type: 'add'; handler: (a: number, b: number) => number };
     const controllerMessenger = new ControllerMessenger<AddAction, never>();
 
@@ -105,7 +105,7 @@ describe('ControllerMessenger', () => {
     expect(result).toBe(15);
   });
 
-  it('should not allow registering multiple action handlers under the same name', () => {
+  it('prevents multiple handlers under same name', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -116,7 +116,7 @@ describe('ControllerMessenger', () => {
     }).toThrow('A handler for ping has already been registered');
   });
 
-  it('should throw when calling unregistered action', () => {
+  it('throws when calling unregistered action', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -125,7 +125,7 @@ describe('ControllerMessenger', () => {
     }).toThrow('A handler for ping has not been registered');
   });
 
-  it('should throw when calling an action that has been unregistered', () => {
+  it('throws when calling unregistered action after unregistering', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -146,7 +146,7 @@ describe('ControllerMessenger', () => {
     expect(pingCount).toBe(0);
   });
 
-  it('should throw when calling an action after actions have been reset', () => {
+  it('throws when calling action after reset', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -167,7 +167,7 @@ describe('ControllerMessenger', () => {
     expect(pingCount).toBe(0);
   });
 
-  it('should publish event to subscriber', () => {
+  it('publishes event to subscriber', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -179,7 +179,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should allow publishing multiple different events to subscriber', () => {
+  it('publishes multiple events to subscriber', () => {
     type MessageEvent =
       | { type: 'message'; payload: [string] }
       | { type: 'ping'; payload: [] };
@@ -199,7 +199,7 @@ describe('ControllerMessenger', () => {
     expect(pingHandler.callCount).toBe(1);
   });
 
-  it('should publish event with no payload to subscriber', () => {
+  it('publishes event with no payload', () => {
     type PingEvent = { type: 'ping'; payload: [] };
     const controllerMessenger = new ControllerMessenger<never, PingEvent>();
 
@@ -211,7 +211,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should publish event with multiple payload parameters to subscriber', () => {
+  it('publishes event with multiple payload params', () => {
     type MessageEvent = { type: 'message'; payload: [string, string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -223,7 +223,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should publish event once to subscriber even if subscribed multiple times', () => {
+  it('publishes event once to subscriber even if subscribed multiple times', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -236,7 +236,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should publish event to many subscribers', () => {
+  it('publishes event to many subscribers', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -253,7 +253,7 @@ describe('ControllerMessenger', () => {
   });
 
   describe('on first state change with an initial payload function registered', () => {
-    it('should publish event if selected payload differs', () => {
+    it('publishes event if selected payload differs', () => {
       const state = {
         propA: 1,
         propB: 1,
