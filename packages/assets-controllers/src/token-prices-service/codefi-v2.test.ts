@@ -208,7 +208,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should not include token price object for token address when token price in not included the response data', async () => {
+    it('should omit token price object when response lacks token price', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -358,7 +358,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should not include token price object for token address when price is undefined for token response data', async () => {
+    it('should omit token price object when token price is undefined', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -469,7 +469,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should correctly handle null market data for a token address', async () => {
+    it('should handle null market data for token address', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
