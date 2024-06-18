@@ -744,6 +744,16 @@ describe('TokenListController polling behavior', () => {
     try {
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
       console.log('Token list state before assertion:', controller.state.tokenList);
+
+      // Polling mechanism to wait for state update
+      let retries = 0;
+      const maxRetries = 20;
+      while (Object.keys(controller.state.tokenList).length === 0 && retries < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, 100)); // Poll every 100ms
+        retries++;
+      }
+
+      console.log('Token list state after polling:', controller.state.tokenList);
       expect(controller.state.tokenList).toStrictEqual(
         sampleSingleChainState.tokenList,
       );
