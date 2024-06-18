@@ -522,7 +522,7 @@ describe('TokenListController', () => {
     sinon.restore();
   });
 
-  it('should set default state', async () => {
+  it('sets default state', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -543,7 +543,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initialize with initial state', () => {
+  it('initializes with initial state', () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -592,7 +592,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initiate without preventPollingOnNetworkRestart', async () => {
+  it('initiates without preventPollingOnNetworkRestart', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -609,7 +609,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should not poll before being started', async () => {
+  it('does not poll before being started', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -625,7 +625,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update tokenList state when network updates are passed via onNetworkStateChange callback', async () => {
+  it('updates tokenList state on network state change', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -670,7 +670,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should poll and update rate in the right interval', async () => {
+  it('polls and updates rate at correct interval', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -695,7 +695,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should not poll after being stopped', async () => {
+  it('does not poll after being stopped', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -722,7 +722,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should poll correctly after being started, stopped, and started again', async () => {
+  it('polls correctly after being started, stopped, and started again', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -753,7 +753,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should call fetchTokenList on network that supports token detection', async () => {
+  it('calls fetchTokenList on network that supports token detection', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -775,7 +775,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should not call fetchTokenList on network that does not support token detection', async () => {
+  it('does not call fetchTokenList on network that does not support token detection', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -799,7 +799,7 @@ describe('TokenListController', () => {
     tokenListMock.restore();
   });
 
-  it('should update token list from api', async () => {
+  it('updates token list from api', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -837,7 +837,7 @@ describe('TokenListController', () => {
     }
   });
 
-  it('should update the cache before threshold time if the current data is undefined', async () => {
+  it('updates cache before threshold time if current data is undefined', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .once()
@@ -869,7 +869,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update token list from cache before reaching the threshold time', async () => {
+  it('updates token list from cache before reaching threshold time', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -892,7 +892,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update token list when the token property changes', async () => {
+  it('updates token list when token property changes', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -920,7 +920,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update the cache when the timestamp expires', async () => {
+  it('updates cache when timestamp expires', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -950,7 +950,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update token list when the chainId change', async () => {
+  it('updates token list when the chainId change', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -1044,7 +1044,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should clear the tokenList and tokensChainsCache', async () => {
+  it('clears the tokenList and tokensChainsCache', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -1062,7 +1062,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should update preventPollingOnNetworkRestart and restart the polling on network restart', async () => {
+  it('updates preventPollingOnNetworkRestart and restarts polling on network restart', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -1169,7 +1169,7 @@ describe('TokenListController', () => {
       clock.restore();
     });
 
-    it('should call fetchTokenListByChainId with the correct chainId', async () => {
+    it('calls fetchTokenListByChainId with the correct chainId', async () => {
       nock(tokenService.TOKEN_END_POINT_API)
         .get(getTokensPath(ChainId.sepolia))
         .reply(200, sampleSepoliaTokenList)
@@ -1209,7 +1209,7 @@ describe('TokenListController', () => {
       );
     });
 
-    it('should start polling against the token list API at the interval passed to the constructor', async () => {
+    it('starts polling against the token list API at the interval passed to the constructor', async () => {
       const fetchTokenListByChainIdSpy = jest.spyOn(
         tokenService,
         'fetchTokenListByChainId',
@@ -1252,7 +1252,7 @@ describe('TokenListController', () => {
       expect(fetchTokenListByChainIdSpy).toHaveBeenCalledTimes(3);
     });
 
-    it('should update tokenList state and tokensChainsCache', async () => {
+    it('updates tokenList state and tokensChainsCache', async () => {
       const startingState: TokenListState = {
         tokenList: {},
         tokensChainsCache: {},
