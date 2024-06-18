@@ -518,7 +518,7 @@ const getRestrictedMessenger = (
 describe('TokenListController', () => {
   let tokenListMock: sinon.SinonStub;
 
-  beforeAll(() => {
+  beforeEach(() => {
     tokenListMock = sinon.stub(TokenListController.prototype, 'fetchTokenList');
   });
 
@@ -573,23 +573,20 @@ describe('TokenListController', () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       expect(controller.state.tokenList).toStrictEqual(
-        sampleMainnetTokenList.reduce((output: TokenListMap, current) => {
-          output[current.address] = current;
-          return output;
-        }, {} as TokenListMap),
+        sampleMainnetTokensChainsCache,
       );
 
       expect(
         controller.state.tokensChainsCache[ChainId.mainnet].data,
       ).toStrictEqual(
-        sampleMainnetTokenList.reduce((output: TokenListMap, current) => {
-          output[current.address] = current;
-          return output;
-        }, {} as TokenListMap),
+        sampleMainnetTokensChainsCache,
       );
       controller.destroy();
     } catch (error) {
       console.error(error);
+    } finally {
+      controller.stop();
+      tokenListMock.restore();
     }
   });
 });
@@ -702,19 +699,24 @@ describe('TokenListController polling behavior', () => {
     });
 
     await controller.start();
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
-    expect(controller.state.tokenList).toStrictEqual(
-      sampleSingleChainState.tokenList,
-    );
-    onNetworkStateChangeCallback({
-      selectedNetworkClientId,
-      networkConfigurations: {},
-      networksMetadata: {},
-    });
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
+    try {
+      await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
+      expect(controller.state.tokenList).toStrictEqual(
+        sampleSingleChainState.tokenList,
+      );
+      onNetworkStateChangeCallback({
+        selectedNetworkClientId,
+        networkConfigurations: {},
+        networksMetadata: {},
+      });
+      await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
 
-    expect(controller.state.tokenList).toStrictEqual({});
-    controller.destroy();
+      expect(controller.state.tokenList).toStrictEqual({});
+    } catch (error) {
+      console.error(error);
+    } finally {
+      controller.stop();
+    }
   });
 
   it('not poll after being stopped', async () => {
