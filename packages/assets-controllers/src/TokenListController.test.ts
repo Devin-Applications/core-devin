@@ -522,7 +522,7 @@ describe('TokenListController', () => {
     sinon.restore();
   });
 
-  it('should set default state', async () => {
+  it('sets default state', async () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -543,7 +543,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initialize with initial state', () => {
+  it('initializes with predefined state', () => {
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
     const controller = new TokenListController({
@@ -592,40 +592,7 @@ describe('TokenListController', () => {
     );
   });
 
-  it('should initiate without preventPollingOnNetworkRestart', async () => {
-    const controllerMessenger = getControllerMessenger();
-    const messenger = getRestrictedMessenger(controllerMessenger);
-    const controller = new TokenListController({
-      chainId: ChainId.mainnet,
-      messenger,
-    });
-
-    expect(controller.state).toStrictEqual({
-      tokenList: {},
-      tokensChainsCache: {},
-      preventPollingOnNetworkRestart: false,
-    });
-
-    controller.destroy();
-  });
-
-  it('should not poll before being started', async () => {
-    const controllerMessenger = getControllerMessenger();
-    const messenger = getRestrictedMessenger(controllerMessenger);
-    const controller = new TokenListController({
-      chainId: ChainId.mainnet,
-      preventPollingOnNetworkRestart: false,
-      interval: 100,
-      messenger,
-    });
-
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
-    expect(controller.state.tokenList).toStrictEqual({});
-
-    controller.destroy();
-  });
-
-  it('should update tokenList state when network updates are passed via onNetworkStateChange callback', async () => {
+  it('updates tokenList on network state change', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
       .get(getTokensPath(ChainId.mainnet))
       .reply(200, sampleMainnetTokenList)
@@ -670,7 +637,85 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should poll and update rate in the right interval', async () => {
+  it('initiates without preventPollingOnNetworkRestart', async () => {
+    const controllerMessenger = getControllerMessenger();
+    const messenger = getRestrictedMessenger(controllerMessenger);
+    const controller = new TokenListController({
+      chainId: ChainId.mainnet,
+      messenger,
+    });
+
+    expect(controller.state).toStrictEqual({
+      tokenList: {},
+      tokensChainsCache: {},
+      preventPollingOnNetworkRestart: false,
+    });
+
+    controller.destroy();
+  });
+
+  it('does not poll before start', async () => {
+    const controllerMessenger = getControllerMessenger();
+    const messenger = getRestrictedMessenger(controllerMessenger);
+    const controller = new TokenListController({
+      chainId: ChainId.mainnet,
+      preventPollingOnNetworkRestart: false,
+      interval: 100,
+      messenger,
+    });
+
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
+    expect(controller.state.tokenList).toStrictEqual({});
+
+    controller.destroy();
+  });
+
+  it('updates tokenList on network state change', async () => {
+    nock(tokenService.TOKEN_END_POINT_API)
+      .get(getTokensPath(ChainId.mainnet))
+      .reply(200, sampleMainnetTokenList)
+      .persist();
+    const selectedNetworkClientId = 'selectedNetworkClientId';
+    const controllerMessenger = getControllerMessenger();
+    const getNetworkClientById = buildMockGetNetworkClientById({
+      [selectedNetworkClientId]: buildCustomNetworkClientConfiguration({
+        chainId: toHex(1337),
+      }),
+    });
+    controllerMessenger.registerActionHandler(
+      'NetworkController:getNetworkClientById',
+      getNetworkClientById,
+    );
+    const messenger = getRestrictedMessenger(controllerMessenger);
+    let onNetworkStateChangeCallback!: (state: NetworkState) => void;
+    const controller = new TokenListController({
+      chainId: ChainId.mainnet,
+      onNetworkStateChange: (cb) => (onNetworkStateChangeCallback = cb),
+      preventPollingOnNetworkRestart: false,
+      interval: 100,
+      messenger,
+    });
+    // TODO: Either fix this lint violation or explain why it's necessary to ignore.
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    controller.start();
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 150));
+    expect(controller.state.tokenList).toStrictEqual(
+      sampleSingleChainState.tokenList,
+    );
+    onNetworkStateChangeCallback({
+      selectedNetworkClientId,
+      networkConfigurations: {},
+      networksMetadata: {},
+      // @ts-expect-error This property isn't used and will get removed later.
+      providerConfig: {},
+    });
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 500));
+
+    expect(controller.state.tokenList).toStrictEqual({});
+    controller.destroy();
+  });
+
+  it('polls and updates rate at interval', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
@@ -695,7 +740,7 @@ describe('TokenListController', () => {
     controller.destroy();
   });
 
-  it('should not poll after being stopped', async () => {
+  it('does not poll after stop', async () => {
     const tokenListMock = sinon.stub(
       TokenListController.prototype,
       'fetchTokenList',
