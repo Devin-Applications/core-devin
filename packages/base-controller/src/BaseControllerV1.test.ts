@@ -18,38 +18,38 @@ describe('BaseController', () => {
     sinon.restore();
   });
 
-  it('should set initial state', () => {
+  it('set initial state', () => {
     const controller = new TestController(undefined, STATE);
     expect(controller.state).toStrictEqual(STATE);
   });
 
-  it('should set initial config', () => {
+  it('set initial config', () => {
     const controller = new TestController(CONFIG);
     expect(controller.config).toStrictEqual(CONFIG);
   });
 
-  it('should overwrite state', () => {
+  it('overwrite state', () => {
     const controller = new TestController();
     expect(controller.state).toStrictEqual({});
     controller.update(STATE, true);
     expect(controller.state).toStrictEqual(STATE);
   });
 
-  it('should overwrite config', () => {
+  it('overwrite config', () => {
     const controller = new TestController();
     expect(controller.config).toStrictEqual({});
     controller.configure(CONFIG, true);
     expect(controller.config).toStrictEqual(CONFIG);
   });
 
-  it('should be able to partially update the config', () => {
+  it('partially update config', () => {
     const controller = new TestController(CONFIG);
     expect(controller.config).toStrictEqual(CONFIG);
     controller.configure({ disabled: false }, false, false);
     expect(controller.config).toStrictEqual({ disabled: false });
   });
 
-  it('should notify all listeners', () => {
+  it('notify all listeners', () => {
     const controller = new TestController(undefined, STATE);
     const listenerOne = sinon.stub();
     const listenerTwo = sinon.stub();
@@ -62,7 +62,7 @@ describe('BaseController', () => {
     expect(listenerTwo.getCall(0).args[0]).toStrictEqual(STATE);
   });
 
-  it('should not notify unsubscribed listeners', () => {
+  it('not notify unsubscribed listeners', () => {
     const controller = new TestController();
     const listener = sinon.stub();
     controller.subscribe(listener);
