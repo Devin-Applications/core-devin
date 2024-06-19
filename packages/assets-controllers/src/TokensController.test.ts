@@ -71,7 +71,7 @@ describe('TokensController', () => {
     jest.resetAllMocks();
   });
 
-  it('should set default state', async () => {
+  it('sets default state', async () => {
     await withController(({ controller }) => {
       expect(controller.state).toStrictEqual({
         allTokens: {},
@@ -84,7 +84,7 @@ describe('TokensController', () => {
     });
   });
 
-  it('should add a token', async () => {
+  it('adds a token', async () => {
     await withController(async ({ controller }) => {
       ContractMock.mockReturnValue(
         buildMockEthersERC721Contract({ supportsInterface: false }),
@@ -121,8 +121,6 @@ describe('TokensController', () => {
       });
     });
   });
-
-  it('should add tokens', async () => {
     await withController(async ({ controller }) => {
       await controller.addTokens([
         {
