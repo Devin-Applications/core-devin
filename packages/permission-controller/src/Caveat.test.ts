@@ -40,7 +40,7 @@ describe('decorateWithCaveats', () => {
     ).toStrictEqual([3, 2, 1]);
   });
 
-  it('decorates a method with multiple caveats', async () => {
+  it('applies multiple caveats to a method', async () => {
     const methodImplementation = () => [1, 2, 3];
 
     const caveatSpecifications = {
@@ -88,7 +88,7 @@ describe('decorateWithCaveats', () => {
     ).toStrictEqual([3]);
   });
 
-  it('returns the unmodified method implementation if there are no caveats', () => {
+  it('returns the unmodified method implementation when no caveats are present', () => {
     const methodImplementation = () => [1, 2, 3];
 
     const permission: PermissionConstraint = {
@@ -108,7 +108,7 @@ describe('decorateWithCaveats', () => {
     );
   });
 
-  it('throws an error if the caveat type is unrecognized', () => {
+  it('throws an error when the caveat type is unrecognized', () => {
     const methodImplementation = () => [1, 2, 3];
 
     const caveatSpecifications = {
@@ -143,7 +143,7 @@ describe('decorateWithCaveats', () => {
     ).toThrow(new errors.UnrecognizedCaveatTypeError('kaplar'));
   });
 
-  it('throws an error if no decorator is present', async () => {
+  it('throws an error when no decorator is present', async () => {
     const methodImplementation = () => [1, 2, 3];
 
     const caveatSpecifications = {
