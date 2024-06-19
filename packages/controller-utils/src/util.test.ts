@@ -100,7 +100,7 @@ describe('util', () => {
   });
 
   describe('gweiDecToWEIBN', () => {
-    it('should convert a whole number to WEI', () => {
+    it('converts a whole number to WEI', () => {
       expect(util.gweiDecToWEIBN(1).toNumber()).toBe(1000000000);
       expect(util.gweiDecToWEIBN(123).toNumber()).toBe(123000000000);
       expect(util.gweiDecToWEIBN(101).toNumber()).toBe(101000000000);
@@ -108,7 +108,7 @@ describe('util', () => {
       expect(util.gweiDecToWEIBN(1000).toNumber()).toBe(1000000000000);
     });
 
-    it('should convert a number with a decimal part to WEI', () => {
+    it('converts a number with a decimal part to WEI', () => {
       expect(util.gweiDecToWEIBN(1.1).toNumber()).toBe(1100000000);
       expect(util.gweiDecToWEIBN(123.01).toNumber()).toBe(123010000000);
       expect(util.gweiDecToWEIBN(101.001).toNumber()).toBe(101001000000);
@@ -116,62 +116,54 @@ describe('util', () => {
       expect(util.gweiDecToWEIBN(1234.567).toNumber()).toBe(1234567000000);
     });
 
-    it('should convert a number < 1 to WEI', () => {
+    it('converts a number < 1 to WEI', () => {
       expect(util.gweiDecToWEIBN(0.1).toNumber()).toBe(100000000);
       expect(util.gweiDecToWEIBN(0.01).toNumber()).toBe(10000000);
       expect(util.gweiDecToWEIBN(0.001).toNumber()).toBe(1000000);
       expect(util.gweiDecToWEIBN(0.567).toNumber()).toBe(567000000);
     });
 
-    it('should round to whole WEI numbers', () => {
+    it('rounds to whole WEI numbers', () => {
       expect(util.gweiDecToWEIBN(0.1001).toNumber()).toBe(100100000);
       expect(util.gweiDecToWEIBN(0.0109).toNumber()).toBe(10900000);
       expect(util.gweiDecToWEIBN(0.0014).toNumber()).toBe(1400000);
       expect(util.gweiDecToWEIBN(0.5676).toNumber()).toBe(567600000);
     });
 
-    it('should handle inputs with more than 9 decimal places', () => {
+    it('handles inputs with more than 9 decimal places', () => {
       expect(util.gweiDecToWEIBN(1.0000000162).toNumber()).toBe(1000000016);
       expect(util.gweiDecToWEIBN(1.0000000165).toNumber()).toBe(1000000017);
       expect(util.gweiDecToWEIBN(1.0000000199).toNumber()).toBe(1000000020);
       expect(util.gweiDecToWEIBN(1.9999999999).toNumber()).toBe(2000000000);
       expect(util.gweiDecToWEIBN(1.0000005998).toNumber()).toBe(1000000600);
-      expect(util.gweiDecToWEIBN(123456.0000005998).toNumber()).toBe(
-        123456000000600,
-      );
+      expect(util.gweiDecToWEIBN(123456.0000005998).toNumber()).toBe(123456000000600);
       expect(util.gweiDecToWEIBN(1.000000016025).toNumber()).toBe(1000000016);
-      expect(util.gweiDecToWEIBN('1.0000000160000028').toNumber()).toBe(
-        1000000016,
-      );
+      expect(util.gweiDecToWEIBN('1.0000000160000028').toNumber()).toBe(1000000016);
       expect(util.gweiDecToWEIBN(1.000000016522).toNumber()).toBe(1000000017);
-      expect(util.gweiDecToWEIBN(1.000000016800022).toNumber()).toBe(
-        1000000017,
-      );
+      expect(util.gweiDecToWEIBN(1.000000016800022).toNumber()).toBe(1000000017);
     });
 
-    it('should work if there are extraneous trailing decimal zeroes', () => {
+    it('works if there are extraneous trailing decimal zeroes', () => {
       expect(util.gweiDecToWEIBN('0.5000').toNumber()).toBe(500000000);
       expect(util.gweiDecToWEIBN('123.002300').toNumber()).toBe(123002300000);
-      expect(util.gweiDecToWEIBN('123.002300000000').toNumber()).toBe(
-        123002300000,
-      );
+      expect(util.gweiDecToWEIBN('123.002300000000').toNumber()).toBe(123002300000);
       expect(util.gweiDecToWEIBN('0.00000200000').toNumber()).toBe(2000);
     });
 
-    it('should work if there is no whole number specified', () => {
+    it('works if there is no whole number specified', () => {
       expect(util.gweiDecToWEIBN('.1').toNumber()).toBe(100000000);
       expect(util.gweiDecToWEIBN('.01').toNumber()).toBe(10000000);
       expect(util.gweiDecToWEIBN('.001').toNumber()).toBe(1000000);
       expect(util.gweiDecToWEIBN('.567').toNumber()).toBe(567000000);
     });
 
-    it('should handle NaN', () => {
+    it('handles NaN', () => {
       expect(util.gweiDecToWEIBN(NaN).toNumber()).toBe(0);
     });
   });
 
   describe('weiHexToGweiDec', () => {
-    it('should convert a whole number to WEI', () => {
+    it('converts a whole number to WEI', () => {
       const testData = [
         {
           input: '3b9aca00',
@@ -195,7 +187,7 @@ describe('util', () => {
       });
     });
 
-    it('should convert a number with a decimal part to WEI', () => {
+    it('converts a number with a decimal part to WEI', () => {
       const testData = [
         {
           input: '4190ab00',
@@ -220,7 +212,7 @@ describe('util', () => {
       });
     });
 
-    it('should convert a number < 1 to WEI', () => {
+    it('converts a number < 1 to WEI', () => {
       const testData = [
         {
           input: '5f5e100',
@@ -245,13 +237,13 @@ describe('util', () => {
       });
     });
 
-    it('should work with 0x prefixed values', () => {
+    it('works with 0x prefixed values', () => {
       expect(util.weiHexToGweiDec('0x5f48b0f7')).toBe('1.598599415');
     });
   });
 
   describe('safelyExecute', () => {
-    it('should swallow errors', async () => {
+    it('swallows errors', async () => {
       expect(
         await util.safelyExecute(() => {
           throw new Error('ahh');
@@ -261,7 +253,7 @@ describe('util', () => {
   });
 
   describe('safelyExecuteWithTimeout', () => {
-    it('should swallow errors', async () => {
+    it('swallows errors', async () => {
       expect(
         await util.safelyExecuteWithTimeout(() => {
           throw new Error('ahh');
@@ -269,14 +261,14 @@ describe('util', () => {
       ).toBeUndefined();
     });
 
-    it('should resolve', async () => {
+    it('resolves', async () => {
       const response = await util.safelyExecuteWithTimeout(() => {
         return new Promise((res) => setTimeout(() => res('response'), 200));
       });
       expect(response).toBe('response');
     });
 
-    it('should timeout', async () => {
+    it('times out', async () => {
       expect(
         await util.safelyExecuteWithTimeout(() => {
           return new Promise((res) => setTimeout(res, 800));
@@ -286,32 +278,32 @@ describe('util', () => {
   });
 
   describe('toChecksumHexAddress', () => {
-    it('should return an 0x-prefixed checksum address untouched', () => {
+    it('returns an 0x-prefixed checksum address untouched', () => {
       const address = '0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0';
       expect(util.toChecksumHexAddress(address)).toBe(address);
     });
 
-    it('should prefix a non-0x-prefixed checksum address with 0x', () => {
+    it('prefixes a non-0x-prefixed checksum address with 0x', () => {
       expect(
         util.toChecksumHexAddress('4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0'),
       ).toBe('0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0');
     });
 
-    it('should convert a non-checksum address to a checksum address', () => {
+    it('converts a non-checksum address to a checksum address', () => {
       expect(
         util.toChecksumHexAddress('0x4e1ff7229bddaf0a73df183a88d9c3a04cc975e0'),
       ).toBe('0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0');
     });
 
-    it('should return "0x" if given an empty string', () => {
+    it('returns "0x" if given an empty string', () => {
       expect(util.toChecksumHexAddress('')).toBe('0x');
     });
 
-    it('should return the input untouched if it is undefined', () => {
+    it('returns the input untouched if it is undefined', () => {
       expect(util.toChecksumHexAddress(undefined)).toBeUndefined();
     });
 
-    it('should return the input untouched if it is null', () => {
+    it('returns the input untouched if it is null', () => {
       expect(util.toChecksumHexAddress(null)).toBeNull();
     });
   });
