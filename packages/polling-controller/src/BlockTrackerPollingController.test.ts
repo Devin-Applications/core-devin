@@ -93,7 +93,7 @@ describe('BlockTrackerPollingController', () => {
   });
 
   describe('startPollingByNetworkClientId', () => {
-    it('should call _executePoll on "latest" block events emitted by blockTrackers for each networkClientId passed to startPollingByNetworkClientId', async () => {
+    it('calls _executePoll on "latest" block events emitted by blockTrackers for each networkClientId passed to startPollingByNetworkClientId', async () => {
       controller.startPollingByNetworkClientId('mainnet');
       controller.startPollingByNetworkClientId('goerli');
       // await advanceTime({ clock, duration: 5 });
@@ -160,7 +160,7 @@ describe('BlockTrackerPollingController', () => {
   });
 
   describe('stopPollingByPollingToken', () => {
-    it('should should stop polling when all polling tokens for a networkClientId are deleted', async () => {
+    it('stops polling when all polling tokens for a networkClientId are deleted', async () => {
       const pollingToken1 = controller.startPollingByNetworkClientId('mainnet');
 
       // await advanceTime({ clock, duration: 5 });
@@ -204,7 +204,7 @@ describe('BlockTrackerPollingController', () => {
       ]);
     });
 
-    it('should should stop polling for one networkClientId when all polling tokens for that networkClientId are deleted, without stopping polling for networkClientIds with active pollingTokens', async () => {
+    it('stops polling for one networkClientId when all polling tokens for that networkClientId are deleted, without stopping polling for networkClientIds with active pollingTokens', async () => {
       const pollingToken1 = controller.startPollingByNetworkClientId('mainnet');
 
       mainnetBlockTracker.emitBlockEvent();
@@ -268,7 +268,7 @@ describe('BlockTrackerPollingController', () => {
   });
 
   describe('onPollingCompleteByNetworkClientId', () => {
-    it('should publish "pollingComplete" callback function set by "onPollingCompleteByNetworkClientId" when polling stops', async () => {
+    it('publishes "pollingComplete" callback function set by "onPollingCompleteByNetworkClientId" when polling stops', async () => {
       // TODO: Replace `any` with type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pollingComplete: any = jest.fn();

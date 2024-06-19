@@ -59,7 +59,7 @@ describe('StaticIntervalPollingController', () => {
   });
 
   describe('startPollingByNetworkClientId', () => {
-    it('should start polling if not already polling', async () => {
+    it('starts polling if not already polling', async () => {
       controller.startPollingByNetworkClientId('mainnet');
       await advanceTime({ clock, duration: 0 });
       expect(controller._executePoll).toHaveBeenCalledTimes(1);
@@ -69,7 +69,7 @@ describe('StaticIntervalPollingController', () => {
       controller.stopAllPolling();
     });
 
-    it('should call _executePoll immediately once and continue calling _executePoll on interval when called again with the same networkClientId', async () => {
+    it('calls _executePoll immediately once and continues calling _executePoll on interval when called again with the same networkClientId', async () => {
       controller.startPollingByNetworkClientId('mainnet');
       await advanceTime({ clock, duration: 0 });
 
@@ -88,7 +88,7 @@ describe('StaticIntervalPollingController', () => {
     });
 
     describe('multiple networkClientIds', () => {
-      it('should poll for each networkClientId', async () => {
+      it('polls for each networkClientId', async () => {
         controller.startPollingByNetworkClientId('mainnet');
         await advanceTime({ clock, duration: 0 });
 
@@ -126,7 +126,7 @@ describe('StaticIntervalPollingController', () => {
         controller.stopAllPolling();
       });
 
-      it('should poll multiple networkClientIds when setting interval length', async () => {
+      it('polls multiple networkClientIds when setting interval length', async () => {
         controller.setIntervalLength(TICK_TIME * 2);
         controller.startPollingByNetworkClientId('mainnet');
         await advanceTime({ clock, duration: 0 });
@@ -191,7 +191,7 @@ describe('StaticIntervalPollingController', () => {
   });
 
   describe('stopPollingByPollingToken', () => {
-    it('should stop polling when called with a valid polling that was the only active pollingToken for a given networkClient', async () => {
+    it('stops polling when called with a valid polling that was the only active pollingToken for a given networkClient', async () => {
       const pollingToken = controller.startPollingByNetworkClientId('mainnet');
       await advanceTime({ clock, duration: 0 });
       expect(controller._executePoll).toHaveBeenCalledTimes(1);
@@ -203,7 +203,7 @@ describe('StaticIntervalPollingController', () => {
       controller.stopAllPolling();
     });
 
-    it('should not stop polling if called with one of multiple active polling tokens for a given networkClient', async () => {
+    it('does not stop polling if called with one of multiple active polling tokens for a given networkClient', async () => {
       const pollingToken1 = controller.startPollingByNetworkClientId('mainnet');
       await advanceTime({ clock, duration: 0 });
 
@@ -218,7 +218,7 @@ describe('StaticIntervalPollingController', () => {
       controller.stopAllPolling();
     });
 
-    it('should error if no pollingToken is passed', () => {
+    it('errors if no pollingToken is passed', () => {
       controller.startPollingByNetworkClientId('mainnet');
       expect(() => {
         controller.stopPollingByPollingToken();
@@ -226,7 +226,7 @@ describe('StaticIntervalPollingController', () => {
       controller.stopAllPolling();
     });
 
-    it('should start and stop polling sessions for different networkClientIds with the same options', async () => {
+    it('starts and stops polling sessions for different networkClientIds with the same options', async () => {
       const pollToken1 = controller.startPollingByNetworkClientId('mainnet', {
         address: '0x1',
       });
@@ -274,7 +274,7 @@ describe('StaticIntervalPollingController', () => {
       ]);
     });
 
-    it('should stop polling session after current iteration if stop is requested while current iteration is still executing', async () => {
+    it('stops polling session after current iteration if stop is requested while current iteration is still executing', async () => {
       const pollingToken = controller.startPollingByNetworkClientId('mainnet');
       await advanceTime({ clock, duration: 0 });
       expect(controller._executePoll).toHaveBeenCalledTimes(1);
@@ -289,7 +289,7 @@ describe('StaticIntervalPollingController', () => {
   });
 
   describe('onPollingCompleteByNetworkClientId', () => {
-    it('should publish "pollingComplete" callback function set by "onPollingCompleteByNetworkClientId" when polling stops', async () => {
+    it('publishes "pollingComplete" callback function set by "onPollingCompleteByNetworkClientId" when polling stops', async () => {
       // TODO: Replace `any` with type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pollingComplete: any = jest.fn();
