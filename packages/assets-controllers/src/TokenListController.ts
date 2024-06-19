@@ -286,14 +286,17 @@ export class TokenListController extends StaticIntervalPollingController<
     try {
       const { tokensChainsCache } = this.state;
       let tokenList: TokenListMap = {};
+      console.log('Fetching from cache for chainId:', chainId);
       const cachedTokens = await safelyExecute(() =>
         this.#fetchFromCache(chainId),
       );
+      console.log('Cached tokens:', cachedTokens);
       if (cachedTokens) {
         // Use non-expired cached tokens
         tokenList = { ...cachedTokens };
       } else {
         // Fetch fresh token list
+        console.log('Fetching from API for chainId:', chainId);
         const tokensFromAPI = await safelyExecute(
           () =>
             fetchTokenListByChainId(
@@ -301,17 +304,19 @@ export class TokenListController extends StaticIntervalPollingController<
               this.abortController.signal,
             ) as Promise<TokenListToken[]>,
         );
+        console.log('Tokens from API:', tokensFromAPI);
 
         if (!tokensFromAPI) {
           // Fallback to expired cached tokens
           tokenList = { ...(tokensChainsCache[chainId]?.data || {}) };
-          this.update(() => {
+          await this.update(() => {
             return {
               ...this.state,
               tokenList,
               tokensChainsCache,
             };
           });
+          console.log('State updated with expired cached tokens:', tokenList);
           return;
         }
         for (const token of tokensFromAPI) {
@@ -333,13 +338,20 @@ export class TokenListController extends StaticIntervalPollingController<
           data: tokenList,
         },
       };
-      this.update(() => {
+      console.log('State before update:', this.state);
+      console.log('Updating state with tokenList:', tokenList);
+      console.log('Updated tokensChainsCache:', updatedTokensChainsCache);
+      await this.update(() => {
         return {
           ...this.state,
           tokenList,
           tokensChainsCache: updatedTokensChainsCache,
         };
       });
+      console.log('State updated successfully with tokenList:', tokenList);
+      console.log('State after update:', this.state);
+    } catch (error) {
+      console.error('Error in fetchTokenList:', error);
     } finally {
       releaseLock();
     }

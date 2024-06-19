@@ -184,7 +184,8 @@ export class CurrencyRateController extends StaticIntervalPollingController<
           currentCurrency,
           nativeCurrencyForExchangeRate,
           this.includeUsdRate,
-        );
+        ) || { conversionRate: null, usdConversionRate: null };
+
         conversionRate = fetchExchangeRateResponse.conversionRate;
         usdConversionRate = fetchExchangeRateResponse.usdConversionRate;
         conversionDate = Date.now() / 1000;

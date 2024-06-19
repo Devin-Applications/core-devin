@@ -242,10 +242,22 @@ describe('Token service', () => {
     it('should call the tokens api and return the list of tokens', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
-        .get(
-          `/tokens/${sampleDecimalChainId}?occurrenceFloor=3&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false`,
-        )
-        .reply(200, sampleTokenList)
+        .get('/tokens/1')
+        .query({
+          occurrenceFloor: 3,
+          includeNativeAssets: 'false',
+          includeDuplicateSymbolAssets: 'false',
+          includeTokenFees: 'false',
+          includeAssetType: 'false',
+          includeERC20Permit: 'false',
+          includeStorage: 'false',
+        })
+        .reply(200, sampleTokenList, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const tokens = await fetchTokenListByChainId(sampleChainId, signal);
@@ -259,10 +271,22 @@ describe('Token service', () => {
       const lineaHexChain = toHex(lineaChainId);
 
       nock(TOKEN_END_POINT_API)
-        .get(
-          `/tokens/${lineaChainId}?occurrenceFloor=1&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false`,
-        )
-        .reply(200, sampleTokenListLinea)
+        .get(`/tokens/${lineaChainId}`)
+        .query({
+          occurrenceFloor: 1,
+          includeNativeAssets: 'false',
+          includeDuplicateSymbolAssets: 'false',
+          includeTokenFees: 'false',
+          includeAssetType: 'false',
+          includeERC20Permit: 'false',
+          includeStorage: 'false',
+        })
+        .reply(200, sampleTokenListLinea, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const tokens = await fetchTokenListByChainId(lineaHexChain, signal);
@@ -273,12 +297,24 @@ describe('Token service', () => {
     it('should return undefined if the fetch is aborted', async () => {
       const abortController = new AbortController();
       nock(TOKEN_END_POINT_API)
-        .get(
-          `/tokens/${sampleDecimalChainId}?occurrenceFloor=3&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false`,
-        )
+        .get(`/tokens/${sampleDecimalChainId}`)
+        .query({
+          occurrenceFloor: 3,
+          includeNativeAssets: 'false',
+          includeDuplicateSymbolAssets: 'false',
+          includeTokenFees: 'false',
+          includeAssetType: 'false',
+          includeERC20Permit: 'false',
+          includeStorage: 'false',
+        })
         // well beyond time it will take to abort
         .delay(ONE_SECOND_IN_MILLISECONDS)
-        .reply(200, sampleTokenList)
+        .reply(200, sampleTokenList, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const fetchPromise = fetchTokenListByChainId(
@@ -293,9 +329,16 @@ describe('Token service', () => {
     it('should return undefined if the fetch fails with a network error', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
-        .get(
-          `/tokens/${sampleDecimalChainId}?occurrenceFloor=3&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false`,
-        )
+        .get(`/tokens/${sampleDecimalChainId}`)
+        .query({
+          occurrenceFloor: 3,
+          includeNativeAssets: 'false',
+          includeDuplicateSymbolAssets: 'false',
+          includeTokenFees: 'false',
+          includeAssetType: 'false',
+          includeERC20Permit: 'false',
+          includeStorage: 'false',
+        })
         .replyWithError('Example network error')
         .persist();
 
@@ -307,10 +350,22 @@ describe('Token service', () => {
     it('should return undefined if the fetch fails with an unsuccessful status code', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
-        .get(
-          `/tokens/${sampleDecimalChainId}?occurrenceFloor=3&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false`,
-        )
-        .reply(500)
+        .get(`/tokens/${sampleDecimalChainId}`)
+        .query({
+          occurrenceFloor: 3,
+          includeNativeAssets: 'false',
+          includeDuplicateSymbolAssets: 'false',
+          includeTokenFees: 'false',
+          includeAssetType: 'false',
+          includeERC20Permit: 'false',
+          includeStorage: 'false',
+        })
+        .reply(500, undefined, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const result = await fetchTokenListByChainId(sampleChainId, signal);
@@ -321,12 +376,24 @@ describe('Token service', () => {
     it('should return undefined if the fetch fails with a timeout', async () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
-        .get(
-          `/tokens/${sampleDecimalChainId}?occurrenceFloor=3&includeNativeAssets=false&includeDuplicateSymbolAssets=false&includeTokenFees=false&includeAssetType=false&includeERC20Permit=false&includeStorage=false`,
-        )
+        .get(`/tokens/${sampleDecimalChainId}`)
+        .query({
+          occurrenceFloor: 3,
+          includeNativeAssets: 'false',
+          includeDuplicateSymbolAssets: 'false',
+          includeTokenFees: 'false',
+          includeAssetType: 'false',
+          includeERC20Permit: 'false',
+          includeStorage: 'false',
+        })
         // well beyond timeout
         .delay(ONE_SECOND_IN_MILLISECONDS)
-        .reply(200, sampleTokenList)
+        .reply(200, sampleTokenList, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const result = await fetchTokenListByChainId(sampleChainId, signal, {
@@ -342,9 +409,14 @@ describe('Token service', () => {
       const { signal } = new AbortController();
       nock(TOKEN_END_POINT_API)
         .get(
-          `/token/${sampleDecimalChainId}?address=0x514910771af9ca656af840dff83e8264ecf986ca`,
+          `/tokens/1?address=0x514910771af9ca656af840dff83e8264ecf986ca`,
         )
-        .reply(200, sampleToken)
+        .reply(200, sampleToken, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const token = await fetchTokenMetadata(
@@ -362,7 +434,12 @@ describe('Token service', () => {
         .get(`/tokens/${sampleDecimalChainId}`)
         // well beyond time it will take to abort
         .delay(ONE_SECOND_IN_MILLISECONDS)
-        .reply(200, sampleTokenList)
+        .reply(200, sampleTokenList, {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+          'Accept-Encoding': 'gzip,deflate',
+        })
         .persist();
 
       const fetchPromise = fetchTokenMetadata(

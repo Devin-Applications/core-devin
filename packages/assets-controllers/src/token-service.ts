@@ -63,16 +63,27 @@ export async function fetchTokenListByChainId(
   { timeout = defaultTimeout } = {},
 ): Promise<unknown> {
   const tokenURL = getTokensURL(chainId);
-  const response = await queryApi(tokenURL, abortSignal, timeout);
-  if (response) {
-    const result = await parseJsonResponse(response);
-    if (Array.isArray(result) && chainId === ChainId['linea-mainnet']) {
-      return result.filter(
-        (elm) =>
-          elm.aggregators.includes('lineaTeam') || elm.aggregators.length >= 3,
-      );
+  console.log('Fetching token list from URL:', tokenURL);
+  try {
+    const response = await queryApi(tokenURL, abortSignal, timeout, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('API response:', response);
+    if (response) {
+      const result = await parseJsonResponse(response);
+      console.log('Parsed JSON response:', result);
+      if (Array.isArray(result) && chainId === ChainId['linea-mainnet']) {
+        return result.filter(
+          (elm) =>
+            elm.aggregators.includes('lineaTeam') || elm.aggregators.length >= 3,
+        );
+      }
+      return result;
     }
-    return result;
+  } catch (error) {
+    console.error('Error fetching token list:', error);
   }
   return undefined;
 }
@@ -113,12 +124,14 @@ export async function fetchTokenMetadata<T>(
  * @param apiURL - The URL of the API to fetch.
  * @param abortSignal - The abort signal used to cancel the request if necessary.
  * @param timeout - The fetch timeout.
+ * @param options - Additional fetch options.
  * @returns Promise resolving request response.
  */
 async function queryApi(
   apiURL: string,
   abortSignal: AbortSignal,
   timeout: number,
+  options: RequestInit = {},
 ): Promise<Response | undefined> {
   const fetchOptions: RequestInit = {
     referrer: apiURL,
@@ -127,14 +140,21 @@ async function queryApi(
     mode: 'cors',
     signal: abortSignal,
     cache: 'default',
+    ...options,
   };
-  fetchOptions.headers = new window.Headers();
+  fetchOptions.headers = new window.Headers(options.headers || {});
   fetchOptions.headers.set('Content-Type', 'application/json');
   try {
-    return await timeoutFetch(apiURL, fetchOptions, timeout);
+    const response = await timeoutFetch(apiURL, fetchOptions, timeout);
+    if (!response.ok) {
+      console.error('Fetch request failed with status:', response.status, response.statusText);
+    }
+    return response;
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
       console.log('Request is aborted');
+    } else {
+      console.error('Error during fetch request:', error);
     }
   }
   return undefined;
@@ -149,10 +169,12 @@ async function queryApi(
  */
 async function parseJsonResponse(apiResponse: Response): Promise<unknown> {
   const responseObj = await apiResponse.json();
+  console.log('API response object:', responseObj);
   // api may return errors as json without setting an error http status code
   if (responseObj?.error) {
     // TODO: Either fix this lint violation or explain why it's necessary to ignore.
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    console.error('Error in API response:', responseObj.error);
     throw new Error(`TokenService Error: ${responseObj.error}`);
   }
   return responseObj;
