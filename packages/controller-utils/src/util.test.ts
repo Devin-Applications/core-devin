@@ -271,46 +271,46 @@ describe('util', () => {
   });
 
   describe('toChecksumHexAddress', () => {
-    it('should return an 0x-prefixed checksum address untouched', () => {
+    it('returns an 0x-prefixed checksum address untouched', () => {
       const address = '0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0';
       expect(util.toChecksumHexAddress(address)).toBe(address);
     });
 
-    it('should prefix a non-0x-prefixed checksum address with 0x', () => {
+    it('prefixes a non-0x-prefixed checksum address with 0x', () => {
       expect(
         util.toChecksumHexAddress('4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0'),
       ).toBe('0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0');
     });
 
-    it('should convert a non-checksum address to a checksum address', () => {
+    it('converts a non-checksum address to a checksum address', () => {
       expect(
         util.toChecksumHexAddress('0x4e1ff7229bddaf0a73df183a88d9c3a04cc975e0'),
       ).toBe('0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0');
     });
 
-    it('should return "0x" if given an empty string', () => {
+    it('returns "0x" if given an empty string', () => {
       expect(util.toChecksumHexAddress('')).toBe('0x');
     });
 
-    it('should return the input untouched if it is undefined', () => {
+    it('returns the input untouched if it is undefined', () => {
       expect(util.toChecksumHexAddress(undefined)).toBeUndefined();
     });
 
-    it('should return the input untouched if it is null', () => {
+    it('returns the input untouched if it is null', () => {
       expect(util.toChecksumHexAddress(null)).toBeNull();
     });
   });
 
   describe('isValidHexAddress', () => {
-    it('should return true for valid address', () => {
+    it('returns true for valid address', () => {
       expect(util.isValidHexAddress(VALID)).toBe(true);
     });
 
-    it('should return false for invalid address', () => {
+    it('returns false for invalid address', () => {
       expect(util.isValidHexAddress('0x00')).toBe(false);
     });
 
-    it('should allow allowNonPrefixed to be false', () => {
+    it('allows allowNonPrefixed to be false', () => {
       expect(util.isValidHexAddress('0x00', { allowNonPrefixed: false })).toBe(
         false,
       );
@@ -339,13 +339,13 @@ describe('util', () => {
       nock(SOME_FAILING_API).get(/.+/u).reply(500).persist();
     });
 
-    it('should return successful fetch response', async () => {
+    it('returns successful fetch response', async () => {
       const res = await util.successfulFetch(SOME_API);
       const parsed = await res.json();
       expect(parsed).toStrictEqual({ foo: 'bar' });
     });
 
-    it('should throw error for an unsuccessful fetch', async () => {
+    it('throws error for an unsuccessful fetch', async () => {
       await expect(util.successfulFetch(SOME_FAILING_API)).rejects.toThrow(
         `Fetch failed with status '500' for request '${SOME_FAILING_API}'`,
       );
