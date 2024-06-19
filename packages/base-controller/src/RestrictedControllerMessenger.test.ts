@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { ControllerMessenger } from './ControllerMessenger';
 
 describe('RestrictedControllerMessenger', () => {
-  it('should allow registering and calling an action handler', () => {
+  it('allows registering and calling an action handler', () => {
     type CountAction = {
       type: 'CountController:count';
       handler: (increment: number) => void;
@@ -27,7 +27,7 @@ describe('RestrictedControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling multiple different action handlers', () => {
+  it('allows registering and calling multiple different action handlers', () => {
     type MessageAction =
       | { type: 'MessageController:concat'; handler: (message: string) => void }
       | {
@@ -62,7 +62,7 @@ describe('RestrictedControllerMessenger', () => {
     expect(message).toBe('hello, world');
   });
 
-  it('should allow registering and calling an action handler with no parameters', () => {
+  it('allows registering and calling an action handler with no parameters', () => {
     type IncrementAction = {
       type: 'CountController:increment';
       handler: () => void;
@@ -89,7 +89,7 @@ describe('RestrictedControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling an action handler with multiple parameters', () => {
+  it('allows registering and calling an action handler with multiple parameters', () => {
     type MessageAction = {
       type: 'MessageController:message';
       handler: (to: string, message: string) => void;
@@ -118,7 +118,7 @@ describe('RestrictedControllerMessenger', () => {
     expect(messages['0x123']).toBe('hello');
   });
 
-  it('should allow registering and calling an action handler with a return value', () => {
+  it('allows registering and calling an action handler with a return value', () => {
     type AddAction = {
       type: 'MathController:add';
       handler: (a: number, b: number) => number;
