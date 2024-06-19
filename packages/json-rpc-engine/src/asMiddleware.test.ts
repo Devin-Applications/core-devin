@@ -101,7 +101,7 @@ describe('asMiddleware', () => {
     });
   });
 
-  it('should not error even if end not called', async () => {
+  it('does not error even if end not called', async () => {
     const engine = new JsonRpcEngine();
     const subengine = new JsonRpcEngine();
 
