@@ -329,7 +329,7 @@ describe('SelectedNetworkController', () => {
       });
     });
     describe('when the useRequestQueue is true', () => {
-      it('should throw an error when passed "metamask" as domain arg', () => {
+      it('throws an error when passed "metamask" as domain arg', () => {
         const { controller } = setup({ useRequestQueuePreference: true });
         expect(() => {
           controller.setNetworkClientIdForDomain('metamask', 'mainnet');
@@ -657,7 +657,7 @@ describe('SelectedNetworkController', () => {
   });
 
   describe('When a permission is added or removed', () => {
-    it('should add new domain to domains list on permission add if #useRequestQueuePreference is true', async () => {
+    it('adds new domain to domains list on permission add if #useRequestQueuePreference is true', async () => {
       const { controller, messenger } = setup({
         useRequestQueuePreference: true,
       });
@@ -783,7 +783,7 @@ describe('SelectedNetworkController', () => {
 
   describe('Constructor checks for domains in permissions', () => {
     describe('when useRequestQueuePreference is true', () => {
-      it('should set networkClientId for domains not already in state', async () => {
+      it('sets networkClientId for domains not already in state', async () => {
         const { controller } = setup({
           state: {
             domains: {
