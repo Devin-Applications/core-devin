@@ -106,7 +106,7 @@ module.exports = {
   // projects: undefined
 
   // Use this configuration option to add custom reporters to Jest
-  // reporters: undefined,
+  reporters: ['default'],
 
   // "resetMocks" resets all mocks, including mocked modules, to jest.fn(),
   // between each test case.
@@ -136,7 +136,7 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: ['../../tests/setup.ts'],
+  setupFiles: ['./tests/setup.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: ['../../tests/setupAfterEnv/index.ts'],
