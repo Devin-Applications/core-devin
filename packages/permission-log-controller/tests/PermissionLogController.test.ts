@@ -94,7 +94,7 @@ describe('PermissionLogController', () => {
         tearDownClock();
       });
 
-      it('records activity for a successful restricted method request', () => {
+      it('records a successful restricted method request', () => {
         const controller = initController({
           restrictedMethods: new Set(['test_method']),
         });
@@ -120,7 +120,7 @@ describe('PermissionLogController', () => {
         ]);
       });
 
-      it('records activity for a failed restricted method request', () => {
+      it('records a failed restricted method request', () => {
         const controller = initController({
           restrictedMethods: new Set(['eth_accounts']),
         });
@@ -147,7 +147,7 @@ describe('PermissionLogController', () => {
         ]);
       });
 
-      it('records activity for a restricted method request with successful eth_requestAccounts', () => {
+      it('records a restricted method request with successful eth_requestAccounts', () => {
         const controller = initController({
           restrictedMethods: new Set([]),
         });
@@ -197,7 +197,7 @@ describe('PermissionLogController', () => {
         ]);
       });
 
-      it('ensures that "request" and "response" properties are not present in log entries', () => {
+      it('ensures "request" and "response" properties are not present in log entries', () => {
         const controller = initController({
           restrictedMethods: new Set([]),
         });
