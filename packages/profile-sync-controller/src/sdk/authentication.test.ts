@@ -21,7 +21,7 @@ const MOCK_SRP = '0x6265617665726275696c642e6f7267';
 const MOCK_ADDRESS = '0x68757d15a4d8d1421c17003512AFce15D3f3FaDa';
 
 describe('Identifier Pairing', () => {
-  it('should pair identifiers', async () => {
+  it('pairs identifiers', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SRP', MOCK_SRP);
     const { mockNonceUrl, mockPairIdentifiersUrl, mockSrpLoginUrl } =
       arrangeAuthAPIs();
@@ -43,7 +43,7 @@ describe('Identifier Pairing', () => {
     expect(mockPairIdentifiersUrl.isDone()).toBe(true);
   });
 
-  it('should handle pair identifiers API errors', async () => {
+  it('handles pair identifiers API errors', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SRP', MOCK_SRP);
     const { mockNonceUrl, mockPairIdentifiersUrl, mockSrpLoginUrl } =
       arrangeAuthAPIs({
@@ -74,7 +74,7 @@ describe('Identifier Pairing', () => {
     expect(mockPairIdentifiersUrl.isDone()).toBe(true);
   });
 
-  it('should handle sign message errors', async () => {
+  it('handles sign message errors', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { mockNonceUrl, mockPairIdentifiersUrl, mockSrpLoginUrl } =
       arrangeAuthAPIs();
@@ -101,7 +101,7 @@ describe('Identifier Pairing', () => {
     expect(mockPairIdentifiersUrl.isDone()).toBe(false);
   });
 
-  it('should handle nonce errors', async () => {
+  it('handles nonce errors', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SRP', MOCK_SRP);
 
     const { mockNonceUrl, mockPairIdentifiersUrl } = arrangeAuthAPIs({
@@ -146,7 +146,7 @@ describe('Authentication - constructor()', () => {
 });
 
 describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () => {
-  it('the SRP signIn success', async () => {
+  it('signs in successfully with SRP', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
 
     const { mockNonceUrl, mockSrpLoginUrl, mockOAuth2TokenUrl } =
@@ -166,7 +166,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
     expect(mockOAuth2TokenUrl.isDone()).toBe(true);
   });
 
-  it('the SRP signIn failed: nonce error', async () => {
+  it('fails SRP signIn due to nonce error', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
 
     const { mockNonceUrl, mockSrpLoginUrl, mockOAuth2TokenUrl } =
@@ -189,7 +189,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
     expect(mockOAuth2TokenUrl.isDone()).toBe(false);
   });
 
-  it('the SRP signIn failed: auth error', async () => {
+  it('fails SRP signIn due to auth error', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
 
     const { mockNonceUrl, mockSrpLoginUrl, mockOAuth2TokenUrl } =
@@ -215,7 +215,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
     expect(mockOAuth2TokenUrl.isDone()).toBe(false);
   });
 
-  it('the SRP signIn failed: oauth2 error', async () => {
+  it('fails SRP signIn due to oauth2 error', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
 
     const { mockNonceUrl, mockSrpLoginUrl, mockOAuth2TokenUrl } =
@@ -243,7 +243,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
     expect(mockOAuth2TokenUrl.isDone()).toBe(true);
   });
 
-  it('authenticates a new token if current token is out of date', async () => {
+  it('authenticates a new token if the current token is out of date', async () => {
     const { auth, mockGetLoginResponse, mockSetLoginResponse } = arrangeAuth(
       'SRP',
       MOCK_SRP,
@@ -266,7 +266,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
     expect(newlyStoredSession.token.obtainedAt > prevDate.getTime()).toBe(true);
   });
 
-  it('getAccessToken() uses stored access token', async () => {
+  it('uses stored access token in getAccessToken()', async () => {
     const { auth, mockGetLoginResponse, mockSetLoginResponse } = arrangeAuth(
       'SRP',
       MOCK_SRP,
@@ -283,7 +283,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
     expect(mockSetLoginResponse).not.toHaveBeenCalled();
   });
 
-  it('getUserProfile() uses stored profile', async () => {
+  it('uses stored profile in getUserProfile()', async () => {
     const { auth, mockGetLoginResponse, mockSetLoginResponse } = arrangeAuth(
       'SRP',
       MOCK_SRP,
@@ -302,7 +302,7 @@ describe('Authentication - SRP Flow - getAccessToken() & getUserProfile()', () =
 });
 
 describe('Authentication - SIWE Flow - getAccessToken(), getUserProfile(), signMessage()', () => {
-  it('the SiWE signIn success', async () => {
+  it('signs in successfully with SiWE', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SiWE', MOCK_ADDRESS);
 
     const { mockNonceUrl, mockSiweLoginUrl, mockOAuth2TokenUrl } =
@@ -329,7 +329,7 @@ describe('Authentication - SIWE Flow - getAccessToken(), getUserProfile(), signM
     expect(mockOAuth2TokenUrl.isDone()).toBe(true);
   });
 
-  it('the SIWE signIn failed: nonce error', async () => {
+  it('fails SiWE signIn due to nonce error', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SiWE', MOCK_ADDRESS);
 
     const { mockNonceUrl, mockSiweLoginUrl, mockOAuth2TokenUrl } =
@@ -359,7 +359,7 @@ describe('Authentication - SIWE Flow - getAccessToken(), getUserProfile(), signM
     expect(mockOAuth2TokenUrl.isDone()).toBe(false);
   });
 
-  it('the SIWE signIn failed: auth error', async () => {
+  it('fails SiWE signIn due to auth error', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SiWE', MOCK_ADDRESS);
 
     const { mockNonceUrl, mockSiweLoginUrl, mockOAuth2TokenUrl } =
@@ -392,7 +392,7 @@ describe('Authentication - SIWE Flow - getAccessToken(), getUserProfile(), signM
     expect(mockOAuth2TokenUrl.isDone()).toBe(false);
   });
 
-  it('the SIWE signIn failed: oauth2 error', async () => {
+  it('fails SiWE signIn due to oauth2 error', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SiWE', MOCK_ADDRESS);
 
     const { mockNonceUrl, mockSiweLoginUrl, mockOAuth2TokenUrl } =
@@ -427,7 +427,7 @@ describe('Authentication - SIWE Flow - getAccessToken(), getUserProfile(), signM
     expect(mockOAuth2TokenUrl.isDone()).toBe(true);
   });
 
-  it('errors when using SIWE flow without using any signers', async () => {
+  it('throws error when using SIWE flow without any signers', async () => {
     const { auth } = arrangeAuth('SiWE', MOCK_ADDRESS, { signing: undefined });
 
     // Token
@@ -442,7 +442,7 @@ describe('Authentication - SIWE Flow - getAccessToken(), getUserProfile(), signM
     );
   });
 
-  it('authenticates a new token if current token is out of date', async () => {
+  it('authenticates a new token if the current token is out of date', async () => {
     const {
       auth,
       mockGetLoginResponse,

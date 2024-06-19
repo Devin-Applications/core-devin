@@ -5,7 +5,7 @@ describe('encryption tests', () => {
   const DATA1 = 'Hello World';
   const DATA2 = JSON.stringify({ foo: 'bar' });
 
-  it('should encrypt and decrypt data', () => {
+  it('encrypts and decrypts data', () => {
     const actEncryptDecrypt = (data: string) => {
       const encryptedString = encryption.encryptString(data, PASSWORD);
       const decryptString = encryption.decryptString(encryptedString, PASSWORD);
@@ -16,13 +16,13 @@ describe('encryption tests', () => {
     expect(actEncryptDecrypt(DATA2)).toBe(DATA2);
   });
 
-  it('should decrypt some existing data', () => {
+  it('decrypts some existing data', () => {
     const encryptedData = `{"v":"1","t":"scrypt","d":"WNEp1QXUZsxCfW9b27uzZ18CtsMvKP6+cqLq8NLAItXeYcFcUjtKprfvedHxf5JN9Q7pe50qnA==","o":{"N":131072,"r":8,"p":1,"dkLen":16},"saltLen":16}`;
     const result = encryption.decryptString(encryptedData, PASSWORD);
     expect(result).toBe(DATA1);
   });
 
-  it('should sha-256 hash a value and should be deterministic', () => {
+  it('sha-256 hashes a value and is deterministic', () => {
     const DATA = 'Hello World';
     const EXPECTED_HASH =
       'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e';
