@@ -87,7 +87,7 @@ const state2: AnnouncementControllerState = {
 };
 
 describe('announcement controller', () => {
-  it('should add announcement to state', () => {
+  it('adds announcement to state', () => {
     const controller = new AnnouncementController({
       messenger: getRestrictedMessenger(),
       allAnnouncements,
@@ -108,7 +108,7 @@ describe('announcement controller', () => {
     );
   });
 
-  it('should add new announcement to state and a new announcement should be created with isShown as false', () => {
+  it('adds new announcement to state and creates a new announcement with isShown as false', () => {
     const controller = new AnnouncementController({
       messenger: getRestrictedMessenger(),
       state: state1,
@@ -140,7 +140,7 @@ describe('announcement controller', () => {
   });
 
   describe('update viewed announcements', () => {
-    it('should update isShown status', () => {
+    it('updates isShown status', () => {
       const controller = new AnnouncementController({
         messenger: getRestrictedMessenger(),
         state: state2,
@@ -152,7 +152,7 @@ describe('announcement controller', () => {
       expect(controller.state.announcements[3].isShown).toBe(false);
     });
 
-    it('should update isShown of more than one announcement', () => {
+    it('updates isShown of more than one announcement', () => {
       const controller = new AnnouncementController({
         messenger: getRestrictedMessenger(),
         state: state2,
