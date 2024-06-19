@@ -25,7 +25,7 @@ describe('User Storage - STORAGE_URL()', () => {
 });
 
 describe('User Storage', () => {
-  it('get/set key using SRP', async () => {
+  it('gets/sets key using SRP', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { userStorage } = arrangeUserStorage(auth);
 
@@ -44,7 +44,7 @@ describe('User Storage', () => {
     expect(response).toBe(data);
   });
 
-  it('get/set key using SiWE', async () => {
+  it('gets/sets key using SiWE', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SiWE', MOCK_ADDRESS);
     auth.prepare({
       address: MOCK_ADDRESS,
@@ -70,7 +70,7 @@ describe('User Storage', () => {
     expect(response).toBe(data);
   });
 
-  it('user storage: failed to set key', async () => {
+  it('fails to set key in user storage', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { userStorage } = arrangeUserStorage(auth);
 
@@ -88,7 +88,7 @@ describe('User Storage', () => {
     ).rejects.toThrow(UserStorageError);
   });
 
-  it('user storage: failed to get storage entry', async () => {
+  it('fails to get storage entry in user storage', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { userStorage } = arrangeUserStorage(auth);
 
@@ -122,7 +122,7 @@ describe('User Storage', () => {
     ).rejects.toThrow(NotFoundError);
   });
 
-  it('get/set fails when given empty feature or keys', async () => {
+  it('fails to get/set when given empty feature or keys', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { userStorage } = arrangeUserStorage(auth);
 
@@ -139,7 +139,7 @@ describe('User Storage', () => {
     await expect(userStorage.getItem('', '')).rejects.toThrow(ValidationError);
   });
 
-  it('get/sets using a newly generated storage key (not in storage)', async () => {
+  it('gets/sets using a newly generated storage key (not in storage)', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { userStorage, mockGetStorageKey } = arrangeUserStorage(auth);
     mockGetStorageKey.mockResolvedValue(null);
