@@ -64,7 +64,7 @@ describe('updateSwapsTransaction', () => {
     };
   });
 
-  it('should not update if swaps are disabled', async () => {
+  it('does not update if swaps are disabled', async () => {
     request.isSwapsDisabled = true;
     jest.spyOn(messenger, 'call');
     updateSwapsTransaction(transactionMeta, transactionType, swaps, request);
@@ -72,7 +72,7 @@ describe('updateSwapsTransaction', () => {
     expect(messenger.call).not.toHaveBeenCalled();
   });
 
-  it('should not update if transaction type is not swap, swapAndSend, swapApproval', async () => {
+  it('does not update if transaction type is not swap, swapAndSend, swapApproval', async () => {
     transactionType = TransactionType.deployContract;
     jest.spyOn(messenger, 'call');
     updateSwapsTransaction(transactionMeta, transactionType, swaps, request);
@@ -80,7 +80,7 @@ describe('updateSwapsTransaction', () => {
     expect(messenger.call).not.toHaveBeenCalled();
   });
 
-  it('should cancel transaction if simulation fails', async () => {
+  it('cancels transaction if simulation fails', async () => {
     transactionMeta.simulationFails = {
       reason: 'Simulation failed',
       // TODO: Replace `any` with type
@@ -92,7 +92,7 @@ describe('updateSwapsTransaction', () => {
     expect(request.cancelTransaction).toHaveBeenCalledWith(transactionMeta.id);
   });
 
-  it('should not update or call swap events if swaps meta is not defined', async () => {
+  it('does not update or call swap events if swaps meta is not defined', async () => {
     swaps.meta = undefined;
     jest.spyOn(messenger, 'call');
     updateSwapsTransaction(transactionMeta, transactionType, swaps, request);
@@ -100,7 +100,7 @@ describe('updateSwapsTransaction', () => {
     expect(messenger.call).not.toHaveBeenCalled();
   });
 
-  it('should update swap transaction and publish TransactionController:transactionNewSwap', async () => {
+  it('updates swap transaction and publishes TransactionController:transactionNewSwap', async () => {
     const sourceTokenSymbol = 'ETH';
     const destinationTokenSymbol = 'DAI';
     const type = TransactionType.swap;
@@ -149,7 +149,7 @@ describe('updateSwapsTransaction', () => {
     });
   });
 
-  it('should return the swap transaction updated with information', () => {
+  it('returns the swap transaction updated with information', () => {
     const sourceTokenSymbol = 'ETH';
     const destinationTokenSymbol = 'DAI';
     const type = TransactionType.swap;
@@ -194,7 +194,7 @@ describe('updateSwapsTransaction', () => {
     });
   });
 
-  it('should update swap approval transaction and publish TransactionController:transactionNewSwapApproval', async () => {
+  it('updates swap approval transaction and publishes TransactionController:transactionNewSwapApproval', async () => {
     const sourceTokenSymbol = 'ETH';
     const type = TransactionType.swapApproval;
 
@@ -221,7 +221,7 @@ describe('updateSwapsTransaction', () => {
     });
   });
 
-  it('should return the swap approval transaction updated with information', async () => {
+  it('returns the swap approval transaction updated with information', async () => {
     const sourceTokenSymbol = 'ETH';
     const type = TransactionType.swapApproval;
 
@@ -244,7 +244,7 @@ describe('updateSwapsTransaction', () => {
     });
   });
 
-  it('should update swap and send transaction and publish TransactionController:transactionNewSwapAndSend', async () => {
+  it('updates swap and send transaction and publishes TransactionController:transactionNewSwapAndSend', async () => {
     const sourceTokenSymbol = 'ETH';
     const destinationTokenSymbol = 'DAI';
     const type = TransactionType.swapAndSend;
@@ -312,7 +312,7 @@ describe('updateSwapsTransaction', () => {
     });
   });
 
-  it('should return the swap and send transaction updated with information', () => {
+  it('returns the swap and send transaction updated with information', () => {
     const sourceTokenSymbol = 'ETH';
     const destinationTokenSymbol = 'DAI';
     const type = TransactionType.swapAndSend;
