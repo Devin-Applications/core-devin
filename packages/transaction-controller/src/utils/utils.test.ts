@@ -82,7 +82,7 @@ describe('utils', () => {
   });
 
   describe('isEIP1559Transaction', () => {
-    it('should detect EIP1559 transaction', () => {
+    it('detects EIP1559 transaction', () => {
       const tx: TransactionParams = { from: '' };
       const eip1559tx: TransactionParams = {
         ...tx,
@@ -95,7 +95,7 @@ describe('utils', () => {
   });
 
   describe('validateGasValues', () => {
-    it('should throw when provided invalid gas values', () => {
+    it('throws when provided invalid gas values', () => {
       const gasValues: GasPriceValue = {
         [GAS_PRICE]: FAIL,
       };
@@ -105,7 +105,7 @@ describe('utils', () => {
       );
     });
 
-    it('should throw when any provided gas values are invalid', () => {
+    it('throws when any provided gas values are invalid', () => {
       const gasValues: FeeMarketEIP1559Values = {
         [MAX_PRIORITY_FEE_PER_GAS]: PASS,
         [MAX_FEE_PER_GAS]: FAIL,
@@ -116,7 +116,7 @@ describe('utils', () => {
       );
     });
 
-    it('should return true when provided valid gas values', () => {
+    it('returns true when provided valid gas values', () => {
       const gasValues: FeeMarketEIP1559Values = {
         [MAX_FEE_PER_GAS]: PASS,
         [MAX_PRIORITY_FEE_PER_GAS]: PASS,
@@ -126,7 +126,7 @@ describe('utils', () => {
   });
 
   describe('isFeeMarketEIP1559Values', () => {
-    it('should detect if isFeeMarketEIP1559Values', () => {
+    it('detects if isFeeMarketEIP1559Values', () => {
       const gasValues = {
         [MAX_PRIORITY_FEE_PER_GAS]: PASS,
         [MAX_FEE_PER_GAS]: FAIL,
@@ -137,7 +137,7 @@ describe('utils', () => {
   });
 
   describe('isGasPriceValue', () => {
-    it('should detect if isGasPriceValue', () => {
+    it('detects if isGasPriceValue', () => {
       const gasValues: GasPriceValue = {
         [GAS_PRICE]: PASS,
       };
@@ -147,13 +147,13 @@ describe('utils', () => {
   });
 
   describe('getIncreasedPriceHex', () => {
-    it('should get increased price from number as hex', () => {
+    it('gets increased price from number as hex', () => {
       expect(util.getIncreasedPriceHex(1358778842, 1.1)).toBe('0x5916a6d6');
     });
   });
 
   describe('getIncreasedPriceFromExisting', () => {
-    it('should get increased price from hex as hex', () => {
+    it('gets increased price from hex as hex', () => {
       expect(util.getIncreasedPriceFromExisting('0x50fd51da', 1.1)).toBe(
         '0x5916a6d6',
       );
@@ -161,7 +161,7 @@ describe('utils', () => {
   });
 
   describe('validateMinimumIncrease', () => {
-    it('should throw if increase does not meet minimum requirement', () => {
+    it('throws if increase does not meet minimum requirement', () => {
       expect(() =>
         util.validateMinimumIncrease('0x50fd51da', '0x5916a6d6'),
       ).toThrow(Error);
@@ -173,13 +173,13 @@ describe('utils', () => {
       );
     });
 
-    it('should not throw if increase meets minimum requirement', () => {
+    it('does not throw if increase meets minimum requirement', () => {
       expect(() =>
         util.validateMinimumIncrease('0x5916a6d6', '0x5916a6d6'),
       ).not.toThrow(Error);
     });
 
-    it('should not throw if increase exceeds minimum requirement', () => {
+    it('does not throw if increase exceeds minimum requirement', () => {
       expect(() =>
         util.validateMinimumIncrease('0x7162a5ca', '0x5916a6d6'),
       ).not.toThrow(Error);
