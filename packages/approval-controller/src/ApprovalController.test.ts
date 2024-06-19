@@ -1179,7 +1179,7 @@ describe('approval controller', () => {
   });
 
   describe('actions', () => {
-    it('addApprovalRequest: shouldShowRequest = true', async () => {
+    it('addApprovalRequest: shows request when true', async () => {
       const messenger = new ControllerMessenger<
         ApprovalControllerActions,
         ApprovalControllerEvents
