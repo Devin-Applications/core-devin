@@ -208,7 +208,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should not include token price object for token address when token price in not included the response data', async () => {
+    it('does not include token price object for token address when token price is not included in the response data', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -358,7 +358,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should not include token price object for token address when price is undefined for token response data', async () => {
+    it('does not include token price object for token address when price is undefined for token response data', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -469,7 +469,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should correctly handle null market data for a token address', async () => {
+    it('correctly handles null market data for a token address', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -782,7 +782,7 @@ describe('CodefiTokenPricesServiceV2', () => {
         clock.restore();
       });
 
-      it('does not call onDegraded when requests succeeds faster than threshold', async () => {
+      it('does not call onDegraded when requests succeed faster than threshold', async () => {
         const degradedThreshold = 1000;
         nock('https://price.api.cx.metamask.io')
           .get('/v2/chains/1/spot-prices')
