@@ -62,7 +62,7 @@ describe('QueuedRequestController', () => {
       await firstRequest;
     });
 
-    it('switches network if a request comes in for a different network client and shouldRequestSwitchNetwork returns true', async () => {
+    it('switches network if a request comes in for a different network client and requests network switch', async () => {
       const mockSetActiveNetwork = jest.fn();
       const { messenger } = buildControllerMessenger({
         networkControllerGetState: jest.fn().mockReturnValue({

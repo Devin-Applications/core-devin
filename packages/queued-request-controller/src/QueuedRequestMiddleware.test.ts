@@ -34,7 +34,7 @@ describe('createQueuedRequestMiddleware', () => {
     ).rejects.toThrow("Request object has an invalid origin of type 'number'");
   });
 
-  it('throws if not provided an networkClientId', async () => {
+  it('throws if not provided a networkClientId', async () => {
     const middleware = buildQueuedRequestMiddleware();
     const request = getRequestDefaults();
     // @ts-expect-error Intentionally invalid request
@@ -48,7 +48,7 @@ describe('createQueuedRequestMiddleware', () => {
     ).rejects.toThrow("Request object is lacking a 'networkClientId'");
   });
 
-  it('throws if provided an invalid networkClientId', async () => {
+  it('throws when provided an invalid networkClientId', async () => {
     const middleware = buildQueuedRequestMiddleware();
     const request = getRequestDefaults();
     // @ts-expect-error Intentionally invalid request
@@ -101,7 +101,7 @@ describe('createQueuedRequestMiddleware', () => {
     expect(mockEnqueueRequest).not.toHaveBeenCalled();
   });
 
-  it('enqueues the request if shouldEnqueueRest returns true', async () => {
+  it('enqueues the request when shouldEnqueueRest returns true', async () => {
     const mockEnqueueRequest = getMockEnqueueRequest();
     const middleware = buildQueuedRequestMiddleware({
       enqueueRequest: mockEnqueueRequest,
