@@ -29,14 +29,14 @@ function getRestrictedMessenger() {
 }
 
 describe('AddressBookController', () => {
-  it('should set default state', () => {
+  it('sets default state', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
     expect(controller.state).toStrictEqual({ addressBook: {} });
   });
 
-  it('should add a contact entry', () => {
+  it('adds a contact entry', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -58,7 +58,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should add a contact entry with chainId and memo', () => {
+  it('adds a contact entry with chainId and memo', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -86,7 +86,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should add a contact entry with address type contract accounts', () => {
+  it('adds a contact entry with address type contract accounts', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -114,7 +114,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should add a contact entry with address type non accounts', () => {
+  it('adds a contact entry with address type non accounts', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -142,7 +142,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should add multiple contact entries with different chainIds', () => {
+  it('adds multiple contact entries with different chainIds', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -186,7 +186,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should update a contact entry', () => {
+  it('updates a contact entry', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -210,7 +210,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should not add invalid contact entry', () => {
+  it('does not add invalid contact entry', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -219,7 +219,7 @@ describe('AddressBookController', () => {
     expect(controller.state).toStrictEqual({ addressBook: {} });
   });
 
-  it('should remove one contact entry', () => {
+  it('removes one contact entry', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -229,7 +229,7 @@ describe('AddressBookController', () => {
     expect(controller.state).toStrictEqual({ addressBook: {} });
   });
 
-  it('should remove only one contact entry', () => {
+  it('removes only one contact entry', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -254,7 +254,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should add two contact entries with the same chainId', () => {
+  it('adds two contact entries with the same chainId', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -286,7 +286,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should correctly mark ens entries', () => {
+  it('correctly marks ens entries', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -311,7 +311,7 @@ describe('AddressBookController', () => {
     });
   });
 
-  it('should clear all contact entries', () => {
+  it('clears all contact entries', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -322,7 +322,7 @@ describe('AddressBookController', () => {
     expect(controller.state).toStrictEqual({ addressBook: {} });
   });
 
-  it('should return true to indicate an address book entry has been added', () => {
+  it('returns true to indicate an address book entry has been added', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -331,7 +331,7 @@ describe('AddressBookController', () => {
     ).toBe(true);
   });
 
-  it('should return false to indicate an address book entry has NOT been added', () => {
+  it('returns false to indicate an address book entry has NOT been added', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -341,7 +341,7 @@ describe('AddressBookController', () => {
     ).toBe(false);
   });
 
-  it('should return true to indicate an address book entry has been deleted', () => {
+  it('returns true to indicate an address book entry has been deleted', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -352,7 +352,7 @@ describe('AddressBookController', () => {
     ).toBe(true);
   });
 
-  it('should return false to indicate an address book entry has NOT been deleted due to unsafe input', () => {
+  it('returns false to indicate an address book entry has NOT been deleted due to unsafe input', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -361,7 +361,7 @@ describe('AddressBookController', () => {
     expect(controller.delete(toHex(1), 'constructor')).toBe(false);
   });
 
-  it('should return false to indicate an address book entry has NOT been deleted', () => {
+  it('returns false to indicate an address book entry has NOT been deleted', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
@@ -369,7 +369,7 @@ describe('AddressBookController', () => {
     expect(controller.delete(toHex(1), '0x01')).toBe(false);
   });
 
-  it('should normalize addresses so adding and removing entries work across casings', () => {
+  it('normalizes addresses so adding and removing entries work across casings', () => {
     const controller = new AddressBookController({
       messenger: getRestrictedMessenger(),
     });
