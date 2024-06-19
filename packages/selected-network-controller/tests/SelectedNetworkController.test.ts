@@ -329,7 +329,7 @@ describe('SelectedNetworkController', () => {
       });
     });
     describe('when the useRequestQueue is true', () => {
-      it('should throw an error when passed "metamask" as domain arg', () => {
+      it('throws an error when passed "metamask" as domain arg', () => {
         const { controller } = setup({ useRequestQueuePreference: true });
         expect(() => {
           controller.setNetworkClientIdForDomain('metamask', 'mainnet');
@@ -657,7 +657,7 @@ describe('SelectedNetworkController', () => {
   });
 
   describe('When a permission is added or removed', () => {
-    it('should add new domain to domains list on permission add if #useRequestQueuePreference is true', async () => {
+    it('adds new domain to domains list on permission add if #useRequestQueuePreference is true', async () => {
       const { controller, messenger } = setup({
         useRequestQueuePreference: true,
       });
@@ -680,7 +680,7 @@ describe('SelectedNetworkController', () => {
       expect(domains['example.com']).toBeDefined();
     });
 
-    it('should not add new domain to domains list on permission add if #useRequestQueuePreference is false', async () => {
+    it('does not add new domain to domains list on permission add if #useRequestQueuePreference is false', async () => {
       const { controller, messenger } = setup({
         useRequestQueuePreference: false,
       });
@@ -704,7 +704,7 @@ describe('SelectedNetworkController', () => {
     });
 
     describe('on permission removal', () => {
-      it('should remove domain from domains list', async () => {
+      it('removes domain from domains list', async () => {
         const { controller, messenger } = setup({
           state: { domains: { 'example.com': 'foo' } },
         });
@@ -724,7 +724,7 @@ describe('SelectedNetworkController', () => {
         expect(domains['example.com']).toBeUndefined();
       });
 
-      it('should set the proxy to the globally selected network if the globally selected network client is initialized and a proxy exists for the domain', async () => {
+      it('sets the proxy to the globally selected network if the globally selected network client is initialized and a proxy exists for the domain', async () => {
         const { controller, messenger, mockProviderProxy } = setup({
           state: { domains: { 'example.com': 'foo' } },
         });
@@ -750,7 +750,7 @@ describe('SelectedNetworkController', () => {
         expect(domains['example.com']).toBeUndefined();
       });
 
-      it('should delete the proxy if the globally selected network client is not initialized but a proxy exists for the domain', async () => {
+      it('deletes the proxy if the globally selected network client is not initialized but a proxy exists for the domain', async () => {
         const {
           controller,
           messenger,
@@ -783,7 +783,7 @@ describe('SelectedNetworkController', () => {
 
   describe('Constructor checks for domains in permissions', () => {
     describe('when useRequestQueuePreference is true', () => {
-      it('should set networkClientId for domains not already in state', async () => {
+      it('sets networkClientId for domains not already in state', async () => {
         const { controller } = setup({
           state: {
             domains: {
@@ -800,7 +800,7 @@ describe('SelectedNetworkController', () => {
         });
       });
 
-      it('should not modify domains already in state', async () => {
+      it('does not modify domains already in state', async () => {
         const { controller } = setup({
           state: {
             domains: {
@@ -818,7 +818,7 @@ describe('SelectedNetworkController', () => {
     });
 
     describe('when useRequestQueuePreference is false', () => {
-      it('should not set networkClientId for new domains', async () => {
+      it('does not set networkClientId for new domains', async () => {
         const { controller } = setup({
           state: {
             domains: {
@@ -833,7 +833,7 @@ describe('SelectedNetworkController', () => {
         });
       });
 
-      it('should not modify domains already in state', async () => {
+      it('does not modify domains already in state', async () => {
         const { controller } = setup({
           state: {
             domains: {
