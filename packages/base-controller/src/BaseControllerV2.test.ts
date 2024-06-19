@@ -182,7 +182,7 @@ describe('BaseController', () => {
     sinon.restore();
   });
 
-  it('should set initial state', () => {
+  it('sets initial state', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: countControllerName,
@@ -193,7 +193,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 0 });
   });
 
-  it('should allow getting state via the getState action', () => {
+  it('gets state via the getState action', () => {
     const controllerMessenger = new ControllerMessenger<
       CountControllerAction,
       CountControllerEvent
@@ -210,7 +210,7 @@ describe('BaseController', () => {
     });
   });
 
-  it('should set initial schema', () => {
+  it('sets initial schema', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -221,7 +221,7 @@ describe('BaseController', () => {
     expect(controller.metadata).toStrictEqual(countControllerStateMetadata);
   });
 
-  it('should not allow reassigning the `state` property', () => {
+  it('prevents reassigning the `state` property', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -236,7 +236,7 @@ describe('BaseController', () => {
     );
   });
 
-  it('should not allow reassigning an object property that exists in state', () => {
+  it('prevents reassigning an object property that exists in state', () => {
     const controller = new MessagesController({
       messenger: getMessagesMessenger(),
       name: messagesControllerName,
@@ -259,7 +259,7 @@ describe('BaseController', () => {
     }).toThrow('Cannot add property X-Baz, object is not extensible');
   });
 
-  it('should not allow pushing a value onto an array property that exists in state', () => {
+  it('prevents pushing a value onto an array property that exists in state', () => {
     const controller = new MessagesController({
       messenger: getMessagesMessenger(),
       name: messagesControllerName,
@@ -286,7 +286,7 @@ describe('BaseController', () => {
     }).toThrow('Cannot add property 1, object is not extensible');
   });
 
-  it('should allow updating state by modifying draft', () => {
+  it('updates state by modifying draft', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -301,7 +301,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 1 });
   });
 
-  it('should allow updating state by return a value', () => {
+  it('updates state by returning a value', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -316,7 +316,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 1 });
   });
 
-  it('should return next state, patches and inverse patches after an update', () => {
+  it('returns next state, patches, and inverse patches after an update', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -339,7 +339,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should throw an error if update callback modifies draft and returns value', () => {
+  it('throws an error if update callback modifies draft and returns value', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -357,7 +357,7 @@ describe('BaseController', () => {
     );
   });
 
-  it('should allow for applying immer patches to state', () => {
+  it('applies immer patches to state', () => {
     const controller = new CountController({
       messenger: getCountMessenger(),
       name: 'CountController',
@@ -374,7 +374,7 @@ describe('BaseController', () => {
     expect(controller.state).toStrictEqual({ count: 0 });
   });
 
-  it('should inform subscribers of state changes as a result of applying patches', () => {
+  it('informs subscribers of state changes as a result of applying patches', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -406,7 +406,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should inform subscribers of state changes', () => {
+  it('informs subscribers of state changes', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -438,7 +438,7 @@ describe('BaseController', () => {
     ]);
   });
 
-  it('should notify a subscriber with a selector of state changes', () => {
+  it('notifies a subscriber with a selector of state changes', () => {
     const controllerMessenger = new ControllerMessenger<
       never,
       CountControllerEvent
@@ -617,11 +617,11 @@ describe('getAnonymizedState', () => {
     sinon.restore();
   });
 
-  it('should return empty state', () => {
+  it('returns empty state', () => {
     expect(getAnonymizedState({}, {})).toStrictEqual({});
   });
 
-  it('should return empty state when no properties are anonymized', () => {
+  it('returns empty state when no properties are anonymized', () => {
     const anonymizedState = getAnonymizedState(
       { count: 1 },
       { count: { anonymous: false, persist: false } },
@@ -629,7 +629,7 @@ describe('getAnonymizedState', () => {
     expect(anonymizedState).toStrictEqual({});
   });
 
-  it('should return state that is already anonymized', () => {
+  it('returns state that is already anonymized', () => {
     const anonymizedState = getAnonymizedState(
       {
         password: 'secret password',
@@ -662,7 +662,7 @@ describe('getAnonymizedState', () => {
     });
   });
 
-  it('should use anonymizing function to anonymize state', () => {
+  it('uses anonymizing function to anonymize state', () => {
     const anonymizeTransactionHash = (hash: string) => {
       return hash.split('').reverse().join('');
     };
@@ -682,7 +682,7 @@ describe('getAnonymizedState', () => {
     expect(anonymizedState).toStrictEqual({ transactionHash: '4321x0' });
   });
 
-  it('should allow returning a partial object from an anonymizing function', () => {
+  it('returns a partial object from an anonymizing function', () => {
     const anonymizeTxMeta = (txMeta: { hash: string; value: number }) => {
       return { value: txMeta.value };
     };
@@ -705,7 +705,7 @@ describe('getAnonymizedState', () => {
     expect(anonymizedState).toStrictEqual({ txMeta: { value: 10 } });
   });
 
-  it('should allow returning a nested partial object from an anonymizing function', () => {
+  it('returns a nested partial object from an anonymizing function', () => {
     const anonymizeTxMeta = (txMeta: {
       hash: string;
       value: number;
@@ -745,7 +745,7 @@ describe('getAnonymizedState', () => {
     });
   });
 
-  it('should allow transforming types in an anonymizing function', () => {
+  it('transforms types in an anonymizing function', () => {
     const anonymizedState = getAnonymizedState(
       {
         count: '1',
@@ -761,7 +761,7 @@ describe('getAnonymizedState', () => {
     expect(anonymizedState).toStrictEqual({ count: 1 });
   });
 
-  it('should suppress errors thrown when deriving state', () => {
+  it('suppresses errors thrown when deriving state', () => {
     const setTimeoutStub = sinon.stub(globalThis, 'setTimeout');
     const persistentState = getAnonymizedState(
       {
@@ -795,11 +795,11 @@ describe('getPersistentState', () => {
     sinon.restore();
   });
 
-  it('should return empty state', () => {
+  it('returns empty state', () => {
     expect(getPersistentState({}, {})).toStrictEqual({});
   });
 
-  it('should return empty state when no properties are persistent', () => {
+  it('returns empty state when no properties are persistent', () => {
     const persistentState = getPersistentState(
       { count: 1 },
       { count: { anonymous: false, persist: false } },
@@ -807,7 +807,7 @@ describe('getPersistentState', () => {
     expect(persistentState).toStrictEqual({});
   });
 
-  it('should return persistent state', () => {
+  it('returns persistent state', () => {
     const persistentState = getPersistentState(
       {
         password: 'secret password',
@@ -840,7 +840,7 @@ describe('getPersistentState', () => {
     });
   });
 
-  it('should use function to derive persistent state', () => {
+  it('uses function to derive persistent state', () => {
     const normalizeTransacitonHash = (hash: string) => {
       return hash.toLowerCase();
     };
@@ -860,7 +860,7 @@ describe('getPersistentState', () => {
     expect(persistentState).toStrictEqual({ transactionHash: '0x1234' });
   });
 
-  it('should allow returning a partial object from a persist function', () => {
+  it('returns a partial object from a persist function', () => {
     const getPersistentTxMeta = (txMeta: { hash: string; value: number }) => {
       return { value: txMeta.value };
     };
@@ -883,7 +883,7 @@ describe('getPersistentState', () => {
     expect(persistentState).toStrictEqual({ txMeta: { value: 10 } });
   });
 
-  it('should allow returning a nested partial object from a persist function', () => {
+  it('returns a nested partial object from a persist function', () => {
     const getPersistentTxMeta = (txMeta: {
       hash: string;
       value: number;
