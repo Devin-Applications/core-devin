@@ -7,7 +7,7 @@ import { TestGasFeeFlow } from './TestGasFeeFlow';
 
 describe('TestGasFeeFlow', () => {
   describe('matchesTransaction', () => {
-    it('should return true', () => {
+    it('returns true', () => {
       const testGasFeeFlow = new TestGasFeeFlow();
       const result = testGasFeeFlow.matchesTransaction({} as TransactionMeta);
       expect(result).toBe(true);
