@@ -519,7 +519,7 @@ describe('TokenListController', () => {
   jest.setTimeout(60000); // Increase timeout to 60 seconds for all tests
 
   beforeEach(() => {
-    nock(tokenService.TOKEN_END_POINT_API)
+    nock('https://token.api.cx.metamask.io:443')
       .get('/tokens/1')
       .query({
         occurrenceFloor: 3,
