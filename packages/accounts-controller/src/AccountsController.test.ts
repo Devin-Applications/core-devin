@@ -320,7 +320,7 @@ describe('AccountsController', () => {
   });
 
   describe('onSnapStateChange', () => {
-    it('be used enable an account if the Snap is enabled and not blocked', async () => {
+    it('updates Snap accounts if keyring defined', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -363,7 +363,7 @@ describe('AccountsController', () => {
       expect(updatedAccount.metadata.snap?.enabled).toBe(true);
     });
 
-    it('be used disable an account if the Snap is disabled', async () => {
+    it('disables an account if the Snap is disabled', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
@@ -405,7 +405,7 @@ describe('AccountsController', () => {
       expect(updatedAccount.metadata.snap?.enabled).toBe(false);
     });
 
-    it('be used disable an account if the Snap is blocked', async () => {
+    it('disables an account if the Snap is blocked', async () => {
       const messenger = buildMessenger();
       const mockSnapAccount = createExpectedInternalAccount({
         id: 'mock-id',
