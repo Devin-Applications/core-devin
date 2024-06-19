@@ -100,7 +100,7 @@ describe('util', () => {
   });
 
   describe('gweiDecToWEIBN', () => {
-    it('should convert a whole number to WEI', () => {
+    it('converts a whole number to WEI', () => {
       expect(util.gweiDecToWEIBN(1).toNumber()).toBe(1000000000);
       expect(util.gweiDecToWEIBN(123).toNumber()).toBe(123000000000);
       expect(util.gweiDecToWEIBN(101).toNumber()).toBe(101000000000);
@@ -108,7 +108,7 @@ describe('util', () => {
       expect(util.gweiDecToWEIBN(1000).toNumber()).toBe(1000000000000);
     });
 
-    it('should convert a number with a decimal part to WEI', () => {
+    it('converts a number with a decimal part to WEI', () => {
       expect(util.gweiDecToWEIBN(1.1).toNumber()).toBe(1100000000);
       expect(util.gweiDecToWEIBN(123.01).toNumber()).toBe(123010000000);
       expect(util.gweiDecToWEIBN(101.001).toNumber()).toBe(101001000000);
@@ -116,21 +116,21 @@ describe('util', () => {
       expect(util.gweiDecToWEIBN(1234.567).toNumber()).toBe(1234567000000);
     });
 
-    it('should convert a number < 1 to WEI', () => {
+    it('converts a number < 1 to WEI', () => {
       expect(util.gweiDecToWEIBN(0.1).toNumber()).toBe(100000000);
       expect(util.gweiDecToWEIBN(0.01).toNumber()).toBe(10000000);
       expect(util.gweiDecToWEIBN(0.001).toNumber()).toBe(1000000);
       expect(util.gweiDecToWEIBN(0.567).toNumber()).toBe(567000000);
     });
 
-    it('should round to whole WEI numbers', () => {
+    it('rounds to whole WEI numbers', () => {
       expect(util.gweiDecToWEIBN(0.1001).toNumber()).toBe(100100000);
       expect(util.gweiDecToWEIBN(0.0109).toNumber()).toBe(10900000);
       expect(util.gweiDecToWEIBN(0.0014).toNumber()).toBe(1400000);
       expect(util.gweiDecToWEIBN(0.5676).toNumber()).toBe(567600000);
     });
 
-    it('should handle inputs with more than 9 decimal places', () => {
+    it('handles inputs with more than 9 decimal places', () => {
       expect(util.gweiDecToWEIBN(1.0000000162).toNumber()).toBe(1000000016);
       expect(util.gweiDecToWEIBN(1.0000000165).toNumber()).toBe(1000000017);
       expect(util.gweiDecToWEIBN(1.0000000199).toNumber()).toBe(1000000020);
@@ -149,7 +149,7 @@ describe('util', () => {
       );
     });
 
-    it('should work if there are extraneous trailing decimal zeroes', () => {
+    it('works if there are extraneous trailing decimal zeroes', () => {
       expect(util.gweiDecToWEIBN('0.5000').toNumber()).toBe(500000000);
       expect(util.gweiDecToWEIBN('123.002300').toNumber()).toBe(123002300000);
       expect(util.gweiDecToWEIBN('123.002300000000').toNumber()).toBe(
@@ -158,20 +158,20 @@ describe('util', () => {
       expect(util.gweiDecToWEIBN('0.00000200000').toNumber()).toBe(2000);
     });
 
-    it('should work if there is no whole number specified', () => {
+    it('works if there is no whole number specified', () => {
       expect(util.gweiDecToWEIBN('.1').toNumber()).toBe(100000000);
       expect(util.gweiDecToWEIBN('.01').toNumber()).toBe(10000000);
       expect(util.gweiDecToWEIBN('.001').toNumber()).toBe(1000000);
       expect(util.gweiDecToWEIBN('.567').toNumber()).toBe(567000000);
     });
 
-    it('should handle NaN', () => {
+    it('handles NaN', () => {
       expect(util.gweiDecToWEIBN(NaN).toNumber()).toBe(0);
     });
   });
 
   describe('weiHexToGweiDec', () => {
-    it('should convert a whole number to WEI', () => {
+    it('converts a whole number to WEI', () => {
       const testData = [
         {
           input: '3b9aca00',
@@ -195,7 +195,7 @@ describe('util', () => {
       });
     });
 
-    it('should convert a number with a decimal part to WEI', () => {
+    it('converts a number with a decimal part to WEI', () => {
       const testData = [
         {
           input: '4190ab00',
@@ -220,7 +220,7 @@ describe('util', () => {
       });
     });
 
-    it('should convert a number < 1 to WEI', () => {
+    it('converts a number < 1 to WEI', () => {
       const testData = [
         {
           input: '5f5e100',
@@ -245,13 +245,13 @@ describe('util', () => {
       });
     });
 
-    it('should work with 0x prefixed values', () => {
+    it('works with 0x prefixed values', () => {
       expect(util.weiHexToGweiDec('0x5f48b0f7')).toBe('1.598599415');
     });
   });
 
   describe('safelyExecute', () => {
-    it('should swallow errors', async () => {
+    it('swallows errors', async () => {
       expect(
         await util.safelyExecute(() => {
           throw new Error('ahh');
@@ -261,7 +261,7 @@ describe('util', () => {
   });
 
   describe('safelyExecuteWithTimeout', () => {
-    it('should swallow errors', async () => {
+    it('swallows errors with timeout', async () => {
       expect(
         await util.safelyExecuteWithTimeout(() => {
           throw new Error('ahh');
@@ -269,14 +269,14 @@ describe('util', () => {
       ).toBeUndefined();
     });
 
-    it('should resolve', async () => {
+    it('resolves with timeout', async () => {
       const response = await util.safelyExecuteWithTimeout(() => {
         return new Promise((res) => setTimeout(() => res('response'), 200));
       });
       expect(response).toBe('response');
     });
 
-    it('should timeout', async () => {
+    it('times out', async () => {
       expect(
         await util.safelyExecuteWithTimeout(() => {
           return new Promise((res) => setTimeout(res, 800));
@@ -286,46 +286,46 @@ describe('util', () => {
   });
 
   describe('toChecksumHexAddress', () => {
-    it('should return an 0x-prefixed checksum address untouched', () => {
+    it('returns an 0x-prefixed checksum address untouched', () => {
       const address = '0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0';
       expect(util.toChecksumHexAddress(address)).toBe(address);
     });
 
-    it('should prefix a non-0x-prefixed checksum address with 0x', () => {
+    it('prefixes a non-0x-prefixed checksum address with 0x', () => {
       expect(
         util.toChecksumHexAddress('4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0'),
       ).toBe('0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0');
     });
 
-    it('should convert a non-checksum address to a checksum address', () => {
+    it('converts a non-checksum address to a checksum address', () => {
       expect(
         util.toChecksumHexAddress('0x4e1ff7229bddaf0a73df183a88d9c3a04cc975e0'),
       ).toBe('0x4e1fF7229BDdAf0A73DF183a88d9c3a04cc975e0');
     });
 
-    it('should return "0x" if given an empty string', () => {
+    it('returns "0x" if given an empty string', () => {
       expect(util.toChecksumHexAddress('')).toBe('0x');
     });
 
-    it('should return the input untouched if it is undefined', () => {
+    it('returns the input untouched if it is undefined', () => {
       expect(util.toChecksumHexAddress(undefined)).toBeUndefined();
     });
 
-    it('should return the input untouched if it is null', () => {
+    it('returns the input untouched if it is null', () => {
       expect(util.toChecksumHexAddress(null)).toBeNull();
     });
   });
 
   describe('isValidHexAddress', () => {
-    it('should return true for valid address', () => {
+    it('returns true for valid address', () => {
       expect(util.isValidHexAddress(VALID)).toBe(true);
     });
 
-    it('should return false for invalid address', () => {
+    it('returns false for invalid address', () => {
       expect(util.isValidHexAddress('0x00')).toBe(false);
     });
 
-    it('should allow allowNonPrefixed to be false', () => {
+    it('allows allowNonPrefixed to be false', () => {
       expect(util.isValidHexAddress('0x00', { allowNonPrefixed: false })).toBe(
         false,
       );
@@ -354,13 +354,13 @@ describe('util', () => {
       nock(SOME_FAILING_API).get(/.+/u).reply(500).persist();
     });
 
-    it('should return successful fetch response', async () => {
+    it('returns successful fetch response', async () => {
       const res = await util.successfulFetch(SOME_API);
       const parsed = await res.json();
       expect(parsed).toStrictEqual({ foo: 'bar' });
     });
 
-    it('should throw error for an unsuccessful fetch', async () => {
+    it('throws error for an unsuccessful fetch', async () => {
       await expect(util.successfulFetch(SOME_FAILING_API)).rejects.toThrow(
         `Fetch failed with status '500' for request '${SOME_FAILING_API}'`,
       );
@@ -372,13 +372,13 @@ describe('util', () => {
       nock(SOME_API).get(/.+/u).delay(300).reply(200, {}).persist();
     });
 
-    it('should fetch first if response is faster than timeout', async () => {
+    it('fetches first if response is faster than timeout', async () => {
       const res = await util.timeoutFetch(SOME_API);
       const parsed = await res.json();
       expect(parsed).toStrictEqual({});
     });
 
-    it('should fail fetch with timeout', async () => {
+    it('fails fetch with timeout', async () => {
       await expect(util.timeoutFetch(SOME_API, {}, 100)).rejects.toThrow(
         'timeout',
       );
@@ -386,7 +386,7 @@ describe('util', () => {
   });
 
   describe('normalizeEnsName', () => {
-    it('should normalize with valid 2LD', async () => {
+    it('normalizes with valid 2LD', async () => {
       let valid = util.normalizeEnsName('metamask.eth');
       expect(valid).toBe('metamask.eth');
       valid = util.normalizeEnsName('foobar1.eth');
@@ -397,12 +397,12 @@ describe('util', () => {
       expect(valid).toBe('1-foo-bar.eth');
     });
 
-    it('should normalize with valid 2LD and "test" TLD', async () => {
+    it('normalizes with valid 2LD and "test" TLD', async () => {
       const valid = util.normalizeEnsName('metamask.test');
       expect(valid).toBe('metamask.test');
     });
 
-    it('should normalize with valid 2LD and 3LD', async () => {
+    it('normalizes with valid 2LD and 3LD', async () => {
       let valid = util.normalizeEnsName('a.metamask.eth');
       expect(valid).toBe('a.metamask.eth');
       valid = util.normalizeEnsName('aa.metamask.eth');
@@ -415,7 +415,7 @@ describe('util', () => {
       expect(valid).toBe('1-2.metamask.eth');
     });
 
-    it('should return null with invalid 2LD', async () => {
+    it('returns null with invalid 2LD', async () => {
       let invalid = util.normalizeEnsName('me.eth');
       expect(invalid).toBeNull();
       invalid = util.normalizeEnsName('metamask-.eth');
@@ -428,7 +428,7 @@ describe('util', () => {
       expect(invalid).toBeNull();
     });
 
-    it('should return null with valid 2LD and invalid 3LD', async () => {
+    it('returns null with valid 2LD and invalid 3LD', async () => {
       let invalid = util.normalizeEnsName('-.metamask.eth');
       expect(invalid).toBeNull();
       invalid = util.normalizeEnsName('abc-.metamask.eth');
@@ -441,24 +441,24 @@ describe('util', () => {
       expect(invalid).toBeNull();
     });
 
-    it('should return null with invalid 2LD and valid 3LD', async () => {
+    it('returns null with invalid 2LD and valid 3LD', async () => {
       const invalid = util.normalizeEnsName('foo.barbaz.eth');
       expect(invalid).toBeNull();
     });
 
-    it('should return null with invalid TLD', async () => {
+    it('returns null with invalid TLD', async () => {
       const invalid = util.normalizeEnsName('a.metamask.com');
       expect(invalid).toBeNull();
     });
 
-    it('should return null with repeated periods', async () => {
+    it('returns null with repeated periods', async () => {
       let invalid = util.normalizeEnsName('foo..metamask.eth');
       expect(invalid).toBeNull();
       invalid = util.normalizeEnsName('foo.metamask..eth');
       expect(invalid).toBeNull();
     });
 
-    it('should return null with empty string', async () => {
+    it('returns null with empty string', async () => {
       const invalid = util.normalizeEnsName('');
       expect(invalid).toBeNull();
     });
@@ -466,7 +466,7 @@ describe('util', () => {
 
   describe('query', () => {
     describe('when the given method exists directly on the EthQuery', () => {
-      it('should call the method on the EthQuery and, if it is successful, return a promise that resolves to the result', async () => {
+      it('calls the method on the EthQuery and, if it is successful, returns a promise that resolves to the result', async () => {
         class MockEthQuery extends EthQuery {
           // TODO: Replace `any` with type
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -482,7 +482,7 @@ describe('util', () => {
         expect(result).toStrictEqual({ id: '0x1234' });
       });
 
-      it('should call the method on the EthQuery and, if it errors, return a promise that is rejected with the error', async () => {
+      it('calls the method on the EthQuery and, if it errors, returns a promise that is rejected with the error', async () => {
         class MockEthQuery extends EthQuery {
           // TODO: Replace `any` with type
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -499,7 +499,7 @@ describe('util', () => {
     });
 
     describe('when the given method does not exist directly on the EthQuery', () => {
-      it('should use sendAsync to call the RPC endpoint and, if it is successful, return a promise that resolves to the result', async () => {
+      it('uses sendAsync to call the RPC endpoint and, if it is successful, returns a promise that resolves to the result', async () => {
         class MockEthQuery extends EthQuery {
           // TODO: Replace `any` with type
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -520,7 +520,7 @@ describe('util', () => {
         expect(result).toStrictEqual({ id: '0x1234' });
       });
 
-      it('should use sendAsync to call the RPC endpoint and, if it errors, return a promise that is rejected with the error', async () => {
+      it('uses sendAsync to call the RPC endpoint and, if it errors, returns a promise that is rejected with the error', async () => {
         class MockEthQuery extends EthQuery {
           // TODO: Replace `any` with type
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -540,19 +540,19 @@ describe('util', () => {
   });
 
   describe('convertHexToDecimal', () => {
-    it('should convert hex price to decimal', () => {
+    it('converts hex price to decimal', () => {
       expect(util.convertHexToDecimal('0x50fd51da')).toBe(1358778842);
     });
 
-    it('should return zero when undefined', () => {
+    it('returns zero when undefined', () => {
       expect(util.convertHexToDecimal(undefined)).toBe(0);
     });
 
-    it('should return a decimal string as the same decimal number', () => {
+    it('returns a decimal string as the same decimal number', () => {
       expect(util.convertHexToDecimal('1611')).toBe(1611);
     });
 
-    it('should return 0 when passed an invalid hex string', () => {
+    it('returns 0 when passed an invalid hex string', () => {
       expect(util.convertHexToDecimal('0x12398u12')).toBe(0);
     });
   });
