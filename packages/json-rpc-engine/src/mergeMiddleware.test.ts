@@ -136,7 +136,7 @@ describe('mergeMiddleware', () => {
     });
   });
 
-  it('should not error even if end not called', async () => {
+  it('does not error even if end not called', async () => {
     const engine = new JsonRpcEngine();
 
     engine.push(mergeMiddleware([(_request, _response, next, _end) => next()]));
