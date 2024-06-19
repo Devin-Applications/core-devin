@@ -616,7 +616,7 @@ describe('SignatureController', () => {
       expect(typedMessageManagerMock.setMetadata).not.toHaveBeenCalled();
     });
 
-    it('should return false when an error occurs', () => {
+    it('returns false when an error occurs', () => {
       jest
         .spyOn(personalMessageManagerMock, 'setMetadata')
         .mockImplementation(() => {
@@ -655,7 +655,7 @@ describe('SignatureController', () => {
       ).not.toHaveBeenCalled();
     });
 
-    it('should return undefined when an error occurs', () => {
+    it('returns undefined when an error occurs', () => {
       jest
         .spyOn(personalMessageManagerMock, 'setMessageStatusSigned')
         .mockImplementation(() => {
@@ -706,7 +706,7 @@ describe('SignatureController', () => {
       ).not.toThrow();
     });
 
-    it('should throw an error when tryForEachMessageManager fails', () => {
+    it('throws an error when tryForEachMessageManager fails', () => {
       jest
         .spyOn(personalMessageManagerMock, 'rejectMessage')
         .mockImplementation(() => {
