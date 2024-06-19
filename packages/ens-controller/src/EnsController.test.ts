@@ -105,7 +105,7 @@ function getProvider() {
 }
 
 describe('EnsController', () => {
-  it('should set default state', () => {
+  it('sets default state', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -114,7 +114,7 @@ describe('EnsController', () => {
     expect(controller.state).toStrictEqual(defaultState);
   });
 
-  it('should return registry address for `.`', () => {
+  it('returns registry address for `.`', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -127,7 +127,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should not return registry address for unrecognized chains', () => {
+  it('does not return registry address for unrecognized chains', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -136,7 +136,7 @@ describe('EnsController', () => {
     expect(controller.get('0x666', '.')).toBeNull();
   });
 
-  it('should add a new ENS entry and return true', () => {
+  it('adds a new ENS entry and returns true', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -150,7 +150,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should clear ensResolutionsByAddress state propery when resetState is called', async () => {
+  it('clears ensResolutionsByAddress state property when resetState is called', async () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -171,7 +171,7 @@ describe('EnsController', () => {
     expect(controller.state.ensResolutionsByAddress).toStrictEqual({});
   });
 
-  it('should clear ensResolutionsByAddress state propery on networkDidChange', async () => {
+  it('clears ensResolutionsByAddress state property on networkDidChange', async () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const getNetworkClientById = buildMockGetNetworkClientById();
@@ -198,7 +198,7 @@ describe('EnsController', () => {
     expect(controller.state.ensResolutionsByAddress).toStrictEqual({});
   });
 
-  it('should add a new ENS entry with null address and return true', () => {
+  it('adds a new ENS entry with null address and returns true', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -212,7 +212,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should update an ENS entry and return true', () => {
+  it('updates an ENS entry and returns true', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -227,7 +227,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should update an ENS entry with null address and return true', () => {
+  it('updates an ENS entry with null address and returns true', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -242,7 +242,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should not update an ENS entry if the address is the same (valid address) and return false', () => {
+  it('does not update an ENS entry if the address is the same (valid address) and returns false', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
@@ -257,7 +257,7 @@ describe('EnsController', () => {
     });
   });
 
-  it('should not update an ENS entry if the address is the same (null) and return false', () => {
+  it('does not update an ENS entry if the address is the same (null) and returns false', () => {
     const rootMessenger = getRootMessenger();
     const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
     const controller = new EnsController({
