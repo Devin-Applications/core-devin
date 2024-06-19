@@ -1,9 +1,0 @@
-1 ./src/RatesController/RatesController.test.ts
-2 ./src/TokenListController.test.ts
-3 ./src/TokenDetectionController.test.ts
-4 ./src/TokensController.test.ts
-5 ./src/TokenRatesController.test.ts
-6 ./src/TokenBalancesController.test.ts
-7 ./src/token-prices-service/index.test.ts
-8 ./src/token-prices-service/codefi-v2.test.ts
-9 ./src/token-service.test.ts
