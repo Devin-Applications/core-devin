@@ -519,7 +519,24 @@ describe('TokenListController', () => {
   jest.setTimeout(60000); // Increase timeout to 60 seconds for all tests
 
   beforeEach(() => {
-    // No need to mock fetchTokenList
+    nock(tokenService.TOKEN_END_POINT_API)
+      .get('/tokens/1')
+      .query({
+        occurrenceFloor: 3,
+        includeNativeAssets: 'false',
+        includeDuplicateSymbolAssets: 'false',
+        includeTokenFees: 'false',
+        includeAssetType: 'false',
+        includeERC20Permit: 'false',
+        includeStorage: 'false',
+      })
+      .reply(200, sampleMainnetTokenList, {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+        'Accept-Encoding': 'gzip,deflate',
+      })
+      .persist();
   });
 
   afterEach(() => {
@@ -564,7 +581,13 @@ describe('TokenListController', () => {
         includeERC20Permit: 'false',
         includeStorage: 'false',
       })
-      .reply(200, sampleMainnetTokenList, { 'Content-Type': 'application/json' });
+      .reply(200, sampleMainnetTokenList, {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+        'Accept-Encoding': 'gzip,deflate',
+      })
+      .persist();
 
     const controllerMessenger = getControllerMessenger();
     const messenger = getRestrictedMessenger(controllerMessenger);
@@ -887,8 +910,22 @@ describe('TokenListController polling behavior', () => {
 
   it('update token list from api', async () => {
     nock(tokenService.TOKEN_END_POINT_API)
-      .get(getTokensPath(ChainId.mainnet))
-      .reply(200, sampleMainnetTokenList)
+      .get('/tokens/1')
+      .query({
+        occurrenceFloor: 3,
+        includeNativeAssets: 'false',
+        includeDuplicateSymbolAssets: 'false',
+        includeTokenFees: 'false',
+        includeAssetType: 'false',
+        includeERC20Permit: 'false',
+        includeStorage: 'false',
+      })
+      .reply(200, sampleMainnetTokenList, {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'User-Agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+        'Accept-Encoding': 'gzip,deflate',
+      })
       .persist();
 
     const controllerMessenger = getControllerMessenger();
@@ -1238,6 +1275,9 @@ describe('TokenListController cache management', () => {
         if (!tokenListChanged) {
           return;
         }
+
+        console.log('Token list changed:', controller.state.tokenList);
+        console.log('TokensChainsCache changed:', controller.state.tokensChainsCache);
 
         expect(controller.state.tokenList).toStrictEqual(
           sampleTwoChainState.tokenList,
