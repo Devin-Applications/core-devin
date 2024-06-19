@@ -208,7 +208,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should not include token price object for token address when token price in not included the response data', async () => {
+    it('not include token price object for token address when token price is not included in the response data', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -358,7 +358,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should not include token price object for token address when price is undefined for token response data', async () => {
+    it('not include token price object for token address when price is undefined for token response data', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -469,7 +469,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('should correctly handle null market data for a token address', async () => {
+    it('handle null market data for a token address', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -519,7 +519,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       });
     });
 
-    it('throws if the request fails consistently', async () => {
+    it('throw if the request fails consistently', async () => {
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
         .query({
@@ -540,7 +540,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       ).rejects.toThrow('Failed to fetch');
     });
 
-    it('throws if the initial request and all retries fail', async () => {
+    it('throw if the initial request and all retries fail', async () => {
       const retries = 3;
       nock('https://price.api.cx.metamask.io')
         .get('/v2/chains/1/spot-prices')
@@ -562,7 +562,7 @@ describe('CodefiTokenPricesServiceV2', () => {
       ).rejects.toThrow('Failed to fetch');
     });
 
-    it('succeeds if the last retry succeeds', async () => {
+    it('succeed if the last retry succeeds', async () => {
       const retries = 3;
       // Initial interceptor for failing requests
       nock('https://price.api.cx.metamask.io')
