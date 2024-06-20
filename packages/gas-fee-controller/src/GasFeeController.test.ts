@@ -306,7 +306,7 @@ describe('GasFeeController', () => {
       await setupGasFeeController();
     });
 
-    it('should set the name of the controller to GasFeeController', () => {
+    it('sets the name of the controller to GasFeeController', () => {
       expect(gasFeeController.name).toBe(name);
     });
   });
@@ -314,22 +314,19 @@ describe('GasFeeController', () => {
   describe('getGasFeeEstimatesAndStartPolling', () => {
     describe('if never called before', () => {
       describe('and called with undefined', () => {
-        const mockDetermineGasFeeCalculationsReturnValues: GasFeeState[] = [
-          buildMockGasFeeStateFeeMarket(),
-          buildMockGasFeeStateEthGasPrice(),
-        ];
-
         beforeEach(() => {
           mockedDetermineGasFeeCalculations.mockReset();
 
-          mockDetermineGasFeeCalculationsReturnValues.forEach((returnValue) => {
-            mockedDetermineGasFeeCalculations.mockImplementationOnce(() => {
-              return Promise.resolve(returnValue);
-            });
+          mockedDetermineGasFeeCalculations.mockImplementationOnce(() => {
+            return Promise.resolve(buildMockGasFeeStateFeeMarket());
+          });
+
+          mockedDetermineGasFeeCalculations.mockImplementationOnce(() => {
+            return Promise.resolve(buildMockGasFeeStateEthGasPrice());
           });
         });
 
-        it('should call determineGasFeeCalculations correctly', async () => {
+        it('calls determineGasFeeCalculations correctly for the first call', async () => {
           await setupGasFeeController({
             getIsEIP1559Compatible: jest.fn().mockResolvedValue(false),
             getCurrentNetworkLegacyGasAPICompatibility: jest
@@ -374,26 +371,70 @@ describe('GasFeeController', () => {
           });
         });
 
-        it('should update the state with a fetched set of estimates', async () => {
-          await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
-
-          expect(gasFeeController.state).toMatchObject(
-            mockDetermineGasFeeCalculationsReturnValues[0],
-          );
-        });
-
-        it('should continue updating the state with all estimate data (including new time estimates because of a subsequent call to determineGasFeeCalculations) on a set interval', async () => {
+        it('continues updating the state with all estimate data (including new time estimates because of a subsequent call to determineGasFeeCalculations) on a set interval', async () => {
           await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
           await clock.nextAsync();
 
           expect(gasFeeController.state).toMatchObject(
-            mockDetermineGasFeeCalculationsReturnValues[1],
+            mockedDetermineGasFeeCalculations({
+              isEIP1559Compatible: false,
+              isLegacyGasAPICompatible: true,
+              fetchGasEstimates,
+              fetchGasEstimatesUrl: `${GAS_API_BASE_URL}/networks/1337/suggestedGasFees`,
+              fetchLegacyGasPriceEstimates,
+              fetchLegacyGasPriceEstimatesUrl: `${GAS_API_BASE_URL}/networks/1337/gasPrices`,
+              fetchEthGasPriceEstimate,
+              calculateTimeEstimate,
+              clientId: '99999',
+              ethQuery: expect.any(EthQuery),
+              infuraAPIKey: expect.any(String),
+              nonRPCGasFeeApisDisabled: false,
+            }),
           );
+        });
+
+        it('calls determineGasFeeCalculations correctly', async () => {
+          await setupGasFeeController({
+            getIsEIP1559Compatible: jest.fn().mockResolvedValue(false),
+            getCurrentNetworkLegacyGasAPICompatibility: jest
+              .fn()
+              .mockReturnValue(true),
+            networkControllerState: {
+              networkConfigurations: {
+                'AAAA-BBBB-CCCC-DDDD': {
+                  id: 'AAAA-BBBB-CCCC-DDDD',
+                  chainId: toHex(1337),
+                  rpcUrl: 'http://some/url',
+                  ticker: 'TEST',
+                },
+              },
+              selectedNetworkClientId: 'AAAA-BBBB-CCCC-DDDD',
+            },
+            clientId: '99999',
+            initializeNetworkProvider: false,
+          });
+
+          await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
+
+          expect(mockedDetermineGasFeeCalculations).toHaveBeenCalledWith({
+            isEIP1559Compatible: false,
+            isLegacyGasAPICompatible: true,
+            fetchGasEstimates,
+            fetchGasEstimatesUrl: `${GAS_API_BASE_URL}/networks/1337/suggestedGasFees`,
+            fetchLegacyGasPriceEstimates,
+            fetchLegacyGasPriceEstimatesUrl: `${GAS_API_BASE_URL}/networks/1337/gasPrices`,
+            fetchEthGasPriceEstimate,
+            calculateTimeEstimate,
+            clientId: '99999',
+            ethQuery: expect.any(EthQuery),
+            infuraAPIKey: expect.any(String),
+            nonRPCGasFeeApisDisabled: false,
+          });
         });
       });
 
       describe('and called with a previously unseen token', () => {
-        it('should call determineGasFeeCalculations correctly', async () => {
+        it('calls determineGasFeeCalculations correctly for a previously unseen token', async () => {
           await setupGasFeeController({
             getIsEIP1559Compatible: jest.fn().mockResolvedValue(false),
             getCurrentNetworkLegacyGasAPICompatibility: jest
@@ -440,7 +481,7 @@ describe('GasFeeController', () => {
           });
         });
 
-        it('should make further calls to determineGasFeeCalculations on a set interval', async () => {
+        it('makes further calls to determineGasFeeCalculations on a set interval', async () => {
           const pollingInterval = 10000;
           await setupGasFeeController({ interval: pollingInterval });
 
@@ -451,11 +492,34 @@ describe('GasFeeController', () => {
 
           expect(mockedDetermineGasFeeCalculations).toHaveBeenCalledTimes(2);
         });
+
+        describe('if called twice with undefined', () => {
+          it('does not call determineGasFeeCalculations again', async () => {
+            await setupGasFeeController();
+
+            await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
+            await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
+
+            expect(mockedDetermineGasFeeCalculations).toHaveBeenCalledTimes(1);
+          });
+
+          it('does not make more than one call to determineGasFeeCalculations per set interval', async () => {
+            const pollingInterval = 10000;
+            await setupGasFeeController({ interval: pollingInterval });
+
+            await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
+            await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
+            await clock.tickAsync(pollingInterval);
+            await clock.tickAsync(pollingInterval);
+
+            expect(mockedDetermineGasFeeCalculations).toHaveBeenCalledTimes(3);
+          });
+        });
       });
     });
 
     describe('if called twice with undefined', () => {
-      it('should not call determineGasFeeCalculations again', async () => {
+      it('does not call determineGasFeeCalculations again', async () => {
         await setupGasFeeController();
 
         await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
@@ -464,7 +528,7 @@ describe('GasFeeController', () => {
         expect(mockedDetermineGasFeeCalculations).toHaveBeenCalledTimes(1);
       });
 
-      it('should not make more than one call to determineGasFeeCalculations per set interval', async () => {
+      it('does not make more than one call to determineGasFeeCalculations per set interval', async () => {
         const pollingInterval = 10000;
         await setupGasFeeController({ interval: pollingInterval });
 
@@ -478,7 +542,7 @@ describe('GasFeeController', () => {
     });
 
     describe('if called once with undefined and again with the same token', () => {
-      it('should call determineGasFeeCalculations again', async () => {
+      it('calls determineGasFeeCalculations again', async () => {
         await setupGasFeeController();
 
         const pollToken =
@@ -488,7 +552,7 @@ describe('GasFeeController', () => {
         expect(mockedDetermineGasFeeCalculations).toHaveBeenCalledTimes(2);
       });
 
-      it('should not make more than one call to determineGasFeeCalculations per set interval', async () => {
+      it('does not make more than one call to determineGasFeeCalculations per set interval', async () => {
         const pollingInterval = 10000;
         await setupGasFeeController({ interval: pollingInterval });
 
@@ -791,13 +855,24 @@ describe('GasFeeController', () => {
         });
       });
 
-      it('should update the state with a fetched set of estimates', async () => {
-        await setupGasFeeController(defaultConstructorOptions);
-
-        await gasFeeController.fetchGasFeeEstimates();
+      it('updates the state with a fetched set of estimates', async () => {
+        await gasFeeController.getGasFeeEstimatesAndStartPolling(undefined);
 
         expect(gasFeeController.state).toMatchObject(
-          mockDetermineGasFeeCalculations,
+          mockedDetermineGasFeeCalculations({
+            isEIP1559Compatible: false,
+            isLegacyGasAPICompatible: true,
+            fetchGasEstimates,
+            fetchGasEstimatesUrl: `${GAS_API_BASE_URL}/networks/1337/suggestedGasFees`,
+            fetchLegacyGasPriceEstimates,
+            fetchLegacyGasPriceEstimatesUrl: `${GAS_API_BASE_URL}/networks/1337/gasPrices`,
+            fetchEthGasPriceEstimate,
+            calculateTimeEstimate,
+            clientId: '99999',
+            ethQuery: expect.any(EthQuery),
+            infuraAPIKey: expect.any(String),
+            nonRPCGasFeeApisDisabled: false,
+          }),
         );
       });
 

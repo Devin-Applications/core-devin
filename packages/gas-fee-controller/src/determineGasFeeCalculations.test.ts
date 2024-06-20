@@ -140,7 +140,7 @@ describe('determineGasFeeCalculations', () => {
     });
 
     describe('assuming neither fetchGasEstimates nor calculateTimeEstimate throw errors', () => {
-      it('returns a combination of the fetched fee and time estimates', async () => {
+      it('combines the fetched fee and time estimates', async () => {
         const gasFeeEstimates = buildMockDataForFetchGasEstimates();
         mockedFetchGasEstimates.mockResolvedValue(gasFeeEstimates);
         const estimatedGasFeeTimeBounds =
@@ -159,7 +159,7 @@ describe('determineGasFeeCalculations', () => {
 
     describe('when nonRPCGasFeeApisDisabled is true', () => {
       describe('assuming fetchEthGasPriceEstimate does not throw an error', () => {
-        it('returns the fetched fee estimates and an empty set of time estimates', async () => {
+        it('fetches fee estimates and returns an empty set of time estimates', async () => {
           const gasFeeEstimates = buildMockDataForFetchEthGasPriceEstimate();
           mockedFetchEthGasPriceEstimate.mockResolvedValue(gasFeeEstimates);
 
@@ -179,7 +179,7 @@ describe('determineGasFeeCalculations', () => {
       });
 
       describe('when fetchEthGasPriceEstimate throws an error', () => {
-        it('throws an error that wraps that error', async () => {
+        it('wraps and throws the error', async () => {
           mockedFetchEthGasPriceEstimate.mockImplementation(() => {
             throw new Error('fetchEthGasPriceEstimate failed');
           });
@@ -204,7 +204,7 @@ describe('determineGasFeeCalculations', () => {
       });
 
       describe('assuming fetchEthGasPriceEstimate does not throw an error', () => {
-        it('returns the fetched fee estimates and an empty set of time estimates', async () => {
+        it('fetches fee estimates and returns an empty set of time estimates', async () => {
           const gasFeeEstimates = buildMockDataForFetchEthGasPriceEstimate();
           mockedFetchEthGasPriceEstimate.mockResolvedValue(gasFeeEstimates);
 
@@ -219,7 +219,7 @@ describe('determineGasFeeCalculations', () => {
       });
 
       describe('when fetchEthGasPriceEstimate throws an error', () => {
-        it('throws an error that wraps that error', async () => {
+        it('wraps and throws the error', async () => {
           mockedFetchEthGasPriceEstimate.mockImplementation(() => {
             throw new Error('fetchEthGasPriceEstimate failed');
           });
