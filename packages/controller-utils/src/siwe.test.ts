@@ -235,7 +235,7 @@ describe('siwe', () => {
     ];
     for (const { name, expected, cases } of checks) {
       for (const { domain, origin } of cases) {
-        it(`should return ${expected} for ${name} ${JSON.stringify({
+        it(`returns ${expected} for ${name} ${JSON.stringify({
           domain,
           origin,
         })}`, () => {
