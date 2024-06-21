@@ -2351,7 +2351,7 @@ describe('AccountsController', () => {
       expect(account).toStrictEqual(mockAccount);
     });
 
-    it("should return undefined if there isn't an account with the address", () => {
+    it("returns undefined if there isn't an account with the address", () => {
       const { accountsController } = setupAccountsController({
         initialState: {
           internalAccounts: {
