@@ -50,7 +50,7 @@ describe('TokenBalancesController', () => {
     jest.useRealTimers();
   });
 
-  it('sets default state', () => {
+  it('sets the default state', () => {
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
       jest.fn().mockReturnValue({ selectedAddress: '0x1234' }),
@@ -63,7 +63,7 @@ describe('TokenBalancesController', () => {
     expect(controller.state).toStrictEqual({ contractBalances: {} });
   });
 
-  it('polls and updates balances in the right interval', async () => {
+  it('polls and updates balances at the correct interval', async () => {
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
       jest.fn().mockReturnValue({ selectedAddress: '0x1234' }),
@@ -260,7 +260,7 @@ describe('TokenBalancesController', () => {
     });
   });
 
-  it('clears previous interval', async () => {
+  it('clears the previous interval', async () => {
     controllerMessenger.registerActionHandler(
       'PreferencesController:getState',
       jest.fn().mockReturnValue({ selectedAddress: '0x1234' }),

@@ -1372,7 +1372,7 @@ describe('TokenRatesController', () => {
           );
         });
 
-        describe('when the native currency is not supported', () => {
+        describe('when the native currency is unsupported', () => {
           it('returns the exchange rates using ETH as a fallback currency', async () => {
             nock('https://min-api.cryptocompare.com')
               .get('/data/price?fsym=ETH&tsyms=LOL')
@@ -1534,7 +1534,7 @@ describe('TokenRatesController', () => {
         });
       });
 
-      it('should stop polling', async () => {
+      it('stops polling', async () => {
         const interval = 100;
         const tokenPricesService = buildMockTokenPricesService();
         jest.spyOn(tokenPricesService, 'fetchTokenPrices');
