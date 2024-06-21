@@ -2195,7 +2195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/accounts-controller@^17.0.0, @metamask/accounts-controller@workspace:packages/accounts-controller":
+"@metamask/accounts-controller@^17.0.0, @metamask/accounts-controller@workspace:^, @metamask/accounts-controller@workspace:packages/accounts-controller":
   version: 0.0.0-use.local
   resolution: "@metamask/accounts-controller@workspace:packages/accounts-controller"
   dependencies:
@@ -2237,7 +2237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/address-book-controller@workspace:packages/address-book-controller":
+"@metamask/address-book-controller@workspace:^, @metamask/address-book-controller@workspace:packages/address-book-controller":
   version: 0.0.0-use.local
   resolution: "@metamask/address-book-controller@workspace:packages/address-book-controller"
   dependencies:
@@ -2255,7 +2255,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@metamask/announcement-controller@workspace:packages/announcement-controller":
+"@metamask/announcement-controller@workspace:^, @metamask/announcement-controller@workspace:packages/announcement-controller":
   version: 0.0.0-use.local
   resolution: "@metamask/announcement-controller@workspace:packages/announcement-controller"
   dependencies:
@@ -2271,7 +2271,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@metamask/approval-controller@^7.0.0, @metamask/approval-controller@workspace:packages/approval-controller":
+"@metamask/approval-controller@^7.0.0, @metamask/approval-controller@workspace:^, @metamask/approval-controller@workspace:packages/approval-controller":
   version: 0.0.0-use.local
   resolution: "@metamask/approval-controller@workspace:packages/approval-controller"
   dependencies:
@@ -2303,7 +2303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/assets-controllers@workspace:packages/assets-controllers":
+"@metamask/assets-controllers@workspace:^, @metamask/assets-controllers@workspace:packages/assets-controllers":
   version: 0.0.0-use.local
   resolution: "@metamask/assets-controllers@workspace:packages/assets-controllers"
   dependencies:
@@ -2389,7 +2389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/base-controller@^6.0.0, @metamask/base-controller@workspace:packages/base-controller":
+"@metamask/base-controller@^6.0.0, @metamask/base-controller@workspace:^, @metamask/base-controller@workspace:packages/base-controller":
   version: 0.0.0-use.local
   resolution: "@metamask/base-controller@workspace:packages/base-controller"
   dependencies:
@@ -2555,6 +2555,12 @@ __metadata:
     "@babel/plugin-transform-modules-commonjs": ^7.23.3
     "@babel/preset-typescript": ^7.23.3
     "@lavamoat/allow-scripts": ^3.0.4
+    "@metamask/accounts-controller": "workspace:^"
+    "@metamask/address-book-controller": "workspace:^"
+    "@metamask/announcement-controller": "workspace:^"
+    "@metamask/approval-controller": "workspace:^"
+    "@metamask/assets-controllers": "workspace:^"
+    "@metamask/base-controller": "workspace:^"
     "@metamask/create-release-branch": ^3.0.0
     "@metamask/eslint-config": ^12.2.0
     "@metamask/eslint-config-jest": ^12.1.0

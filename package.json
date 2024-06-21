@@ -100,5 +100,13 @@
       "simple-git-hooks": false,
       "tsup>esbuild": true
     }
+  },
+  "dependencies": {
+    "@metamask/accounts-controller": "workspace:^",
+    "@metamask/address-book-controller": "workspace:^",
+    "@metamask/announcement-controller": "workspace:^",
+    "@metamask/approval-controller": "workspace:^",
+    "@metamask/assets-controllers": "workspace:^",
+    "@metamask/base-controller": "workspace:^"
   }
 }
