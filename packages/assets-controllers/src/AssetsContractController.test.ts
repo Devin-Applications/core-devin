@@ -168,7 +168,7 @@ function mockNetworkWithDefaultChainId({
 export { setupAssetContractControllers, mockNetworkWithDefaultChainId };
 
 describe('AssetsContractController', () => {
-  it('should set default config', async () => {
+  it('sets default config', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     expect(assetsContract.config).toStrictEqual({
       chainId: SupportedTokenDetectionNetworks.mainnet,
@@ -178,7 +178,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should update the ipfsGateWay config value when this value is changed in the preferences controller', async () => {
+  it('updates the ipfsGateWay config value when this value is changed in the preferences controller', async () => {
     const { assetsContract, messenger, triggerPreferencesStateChange } =
       await setupAssetContractControllers();
     expect(assetsContract.config).toStrictEqual({
@@ -201,7 +201,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw when provider property is accessed', async () => {
+  it('throws when provider property is accessed', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     expect(() => console.log(assetsContract.provider)).toThrow(
       'Property only used for setting',
@@ -209,7 +209,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when getting ERC-20 token balance when missing provider', async () => {
+  it('throws missing provider error when getting ERC-20 token balance when missing provider', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     assetsContract.configure({ provider: undefined });
     await expect(
