@@ -94,7 +94,7 @@ describe('TokenRatesController', () => {
       clock.restore();
     });
 
-    it('should set default state', async () => {
+    it('sets default state', async () => {
       await withController(async ({ controller }) => {
         expect(controller.state).toStrictEqual({
           marketData: {},
@@ -102,7 +102,7 @@ describe('TokenRatesController', () => {
       });
     });
 
-    it('should not poll by default', async () => {
+    it('does not poll by default', async () => {
       const fetchSpy = jest.spyOn(globalThis, 'fetch');
       await withController(
         {
@@ -134,7 +134,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when legacy polling is active', () => {
-      it('should update exchange rates when any of the addresses in the "all tokens" collection change', async () => {
+      it('updates exchange rates when any of the addresses in the "all tokens" collection change', async () => {
         const tokenAddresses = ['0xE1', '0xE2'];
         await withController(
           {
@@ -180,7 +180,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should update exchange rates when any of the addresses in the "all detected tokens" collection change', async () => {
+      it('updates exchange rates when any of the addresses in the "all detected tokens" collection change', async () => {
         const tokenAddresses = ['0xE1', '0xE2'];
         await withController(
           {
@@ -225,7 +225,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if both the "all tokens" or "all detected tokens" are exactly the same', async () => {
+      it('does not update exchange rates if both the "all tokens" or "all detected tokens" are exactly the same', async () => {
         const tokensState = {
           allTokens: {
             [ChainId.mainnet]: {
@@ -262,7 +262,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if all of the tokens in "all tokens" just move to "all detected tokens"', async () => {
+      it('does not update exchange rates if all of the tokens in "all tokens" just move to "all detected tokens"', async () => {
         const tokens = {
           [ChainId.mainnet]: {
             [defaultSelectedAddress]: [
@@ -297,7 +297,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if a new token is added to "all detected tokens" but is already present in "all tokens"', async () => {
+      it('does not update exchange rates if a new token is added to "all detected tokens" but is already present in "all tokens"', async () => {
         const tokens = {
           [ChainId.mainnet]: {
             [defaultSelectedAddress]: [
@@ -333,7 +333,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if a new token is added to "all tokens" but is already present in "all detected tokens"', async () => {
+      it('does not update exchange rates if a new token is added to "all tokens" but is already present in "all detected tokens"', async () => {
         const tokens = {
           [ChainId.mainnet]: {
             [defaultSelectedAddress]: [
@@ -369,7 +369,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if none of the addresses in "all tokens" or "all detected tokens" change, even if other parts of the token change', async () => {
+      it('does not update exchange rates if none of the addresses in "all tokens" or "all detected tokens" change, even if other parts of the token change', async () => {
         await withController(
           {
             mockTokensControllerState: {
@@ -415,7 +415,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if none of the addresses in "all tokens" or "all detected tokens" change, when normalized to checksum addresses', async () => {
+      it('does not update exchange rates if none of the addresses in "all tokens" or "all detected tokens" change, when normalized to checksum addresses', async () => {
         await withController(
           {
             mockTokensControllerState: {
@@ -460,7 +460,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates if any of the addresses in "all tokens" or "all detected tokens" merely change order', async () => {
+      it('does not update exchange rates if any of the addresses in "all tokens" or "all detected tokens" merely change order', async () => {
         await withController(
           {
             mockTokensControllerState: {
@@ -519,7 +519,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when legacy polling is inactive', () => {
-      it('should not update exchange rates when any of the addresses in the "all tokens" collection change', async () => {
+      it('does not update exchange rates when any of the addresses in the "all tokens" collection change', async () => {
         const tokenAddresses = ['0xE1', '0xE2'];
         await withController(
           {
@@ -563,7 +563,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates when any of the addresses in the "all detected tokens" collection change', async () => {
+      it('does not update exchange rates when any of the addresses in the "all detected tokens" collection change', async () => {
         const tokenAddresses = ['0xE1', '0xE2'];
         await withController(
           {
@@ -621,7 +621,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when polling is active', () => {
-      it('should update exchange rates when ticker changes', async () => {
+      it('updates exchange rates when ticker changes', async () => {
         await withController(
           {
             options: {
@@ -649,7 +649,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should update exchange rates when chain ID changes', async () => {
+      it('updates exchange rates when chain ID changes', async () => {
         await withController(
           {
             options: {
@@ -677,7 +677,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should clear marketData in state when ticker changes', async () => {
+      it('clears marketData in state when ticker changes', async () => {
         await withController(
           {
             options: {
@@ -731,7 +731,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should clear marketData state when chain ID changes', async () => {
+      it('clears marketData state when chain ID changes', async () => {
         await withController(
           {
             options: {
@@ -785,7 +785,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates when network state changes without a ticker/chain id change', async () => {
+      it('does not update exchange rates when network state changes without a ticker/chain id change', async () => {
         await withController(
           {
             options: {
@@ -815,7 +815,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when polling is inactive', () => {
-      it('should not update exchange rates when ticker changes', async () => {
+      it('does not update exchange rates when ticker changes', async () => {
         await withController(
           {
             options: {
@@ -842,7 +842,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates when chain ID changes', async () => {
+      it('does not update exchange rates when chain ID changes', async () => {
         await withController(
           {
             options: {
@@ -869,7 +869,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should clear marketData state when ticker changes', async () => {
+      it('clears marketData state when ticker changes', async () => {
         await withController(
           {
             options: {
@@ -922,7 +922,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should clear marketData state when chain ID changes', async () => {
+      it('clears marketData state when chain ID changes', async () => {
         await withController(
           {
             options: {
@@ -989,7 +989,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when polling is active', () => {
-      it('should update exchange rates when selected address changes', async () => {
+      it('updates exchange rates when selected address changes', async () => {
         const alternateSelectedAddress =
           '0x0000000000000000000000000000000000000002';
         await withController(
@@ -1033,7 +1033,7 @@ describe('TokenRatesController', () => {
         );
       });
 
-      it('should not update exchange rates when preferences state changes without selected address changing', async () => {
+      it('does not update exchange rates when preferences state changes without selected address changing', async () => {
         await withController(
           {
             options: {
@@ -1078,7 +1078,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when polling is inactive', () => {
-      it('should not update exchange rates when selected address changes', async () => {
+      it('does not update exchange rates when selected address changes', async () => {
         const alternateSelectedAddress =
           '0x0000000000000000000000000000000000000002';
         await withController(
@@ -1135,7 +1135,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('start', () => {
-      it('should poll and update rate in the right interval', async () => {
+      it('polls and updates rate in the right interval', async () => {
         const interval = 100;
         const tokenPricesService = buildMockTokenPricesService();
         jest.spyOn(tokenPricesService, 'fetchTokenPrices');
@@ -1182,7 +1182,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('stop', () => {
-      it('should stop polling', async () => {
+      it('stops polling', async () => {
         const interval = 100;
         const tokenPricesService = buildMockTokenPricesService();
         jest.spyOn(tokenPricesService, 'fetchTokenPrices');
@@ -1237,7 +1237,7 @@ describe('TokenRatesController', () => {
       clock.restore();
     });
 
-    it('should poll on the right interval', async () => {
+    it('polls on the right interval', async () => {
       const interval = 100;
       const tokenPricesService = buildMockTokenPricesService();
       jest.spyOn(tokenPricesService, 'fetchTokenPrices');
