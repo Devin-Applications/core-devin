@@ -24,7 +24,7 @@ describe('ERC20Standard', () => {
     erc20Standard = new ERC20Standard(MAINNET_PROVIDER);
   });
 
-  it('should get correct token symbol for a given ERC20 contract address', async () => {
+  it('gets correct token symbol for a given ERC20 contract address', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -48,7 +48,7 @@ describe('ERC20Standard', () => {
     expect(maticSymbol).toBe('MATIC');
   });
 
-  it('should get correct token decimals for a given ERC20 contract address', async () => {
+  it('gets correct token decimals for a given ERC20 contract address', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -74,7 +74,7 @@ describe('ERC20Standard', () => {
     expect(maticDecimals.toString()).toBe('18');
   });
 
-  it('should support non-standard ERC20 symbols and decimals', async () => {
+  it('supports non-standard ERC20 symbols and decimals', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         method: 'eth_call',
@@ -118,7 +118,7 @@ describe('ERC20Standard', () => {
     expect(symbol).toBe('MKR');
   });
 
-  it('should fail on on empty responses', async () => {
+  it('fails on empty responses', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
