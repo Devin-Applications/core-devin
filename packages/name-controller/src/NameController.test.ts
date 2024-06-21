@@ -284,7 +284,7 @@ describe('NameController', () => {
       });
     });
 
-    it('can clear saved name', () => {
+    it('clears saved name', () => {
       const provider1 = createMockProvider(1);
 
       const controller = new NameController({
