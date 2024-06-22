@@ -329,7 +329,7 @@ describe('NftController', () => {
     sinon.restore();
   });
 
-  it('should set default state', () => {
+  it('sets default state', () => {
     const { nftController } = setupController();
 
     expect(nftController.state).toStrictEqual({
@@ -339,7 +339,7 @@ describe('NftController', () => {
     });
   });
 
-  it('should set api key', async () => {
+  it('sets api key', async () => {
     const { nftController } = setupController();
 
     nftController.setApiKey('testkey');
@@ -357,7 +357,7 @@ describe('NftController', () => {
       tokenId: ERC1155_NFT_ID,
     };
 
-    it('should error if passed no type', async function () {
+    it('errors if passed no type', async function () {
       const { nftController } = setupController();
       const type = undefined;
 
@@ -372,7 +372,7 @@ describe('NftController', () => {
       await expect(erc1155Result).rejects.toThrow('Asset type is required');
     });
 
-    it('should error if asset type is not supported', async function () {
+    it('errors if asset type is not supported', async function () {
       const { nftController } = setupController();
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -394,7 +394,7 @@ describe('NftController', () => {
       );
     });
 
-    it('should error if passed NFT does not match type passed', async function () {
+    it('errors if passed NFT does not match type passed', async function () {
       nock('https://testtokenuri.com')
         .get('/')
         .reply(
@@ -424,7 +424,7 @@ describe('NftController', () => {
       );
     });
 
-    it('should error if address is not defined', async function () {
+    it('errors if address is not defined', async function () {
       const { nftController } = setupController();
       const assetWithNoAddress = {
         address: undefined,
@@ -439,7 +439,7 @@ describe('NftController', () => {
       );
     });
 
-    it('should error if tokenId is not defined', async function () {
+    it('errors if tokenId is not defined', async function () {
       const { nftController } = setupController();
       const assetWithNoAddress = {
         address: ERC721_NFT_ADDRESS,
@@ -454,7 +454,7 @@ describe('NftController', () => {
       );
     });
 
-    it('should error if tokenId is not a valid stringified decimal number', async function () {
+    it('errors if tokenId is not a valid stringified decimal number', async function () {
       const { nftController } = setupController();
       const assetWithNumericTokenId = {
         address: ERC721_NFT_ADDRESS,
@@ -467,7 +467,7 @@ describe('NftController', () => {
       await expect(result).rejects.toThrow('Invalid tokenId');
     });
 
-    it('should error if address is invalid', async function () {
+    it('errors if address is invalid', async function () {
       const { nftController } = setupController();
       const assetWithInvalidAddress = {
         address: '0x123',
@@ -481,7 +481,7 @@ describe('NftController', () => {
       await expect(result).rejects.toThrow('Invalid address');
     });
 
-    it('should error if the user does not own the suggested ERC721 NFT', async function () {
+    it('errors if the user does not own the suggested ERC721 NFT', async function () {
       const { nftController, messenger } = setupController({
         options: {
           getERC721OwnerOf: jest.fn().mockImplementation(() => '0x12345abcefg'),
@@ -501,7 +501,7 @@ describe('NftController', () => {
       );
     });
 
-    it('should error if the call to isNftOwner fail', async function () {
+    it('errors if the call to isNftOwner fail', async function () {
       const { nftController } = setupController();
       jest.spyOn(nftController, 'isNftOwner').mockRejectedValue('Random error');
       try {
@@ -516,7 +516,7 @@ describe('NftController', () => {
       }
     });
 
-    it('should error if the user does not own the suggested ERC1155 NFT', async function () {
+    it('errors if the user does not own the suggested ERC1155 NFT', async function () {
       const { nftController, messenger } = setupController({
         options: {
           getERC1155BalanceOf: jest.fn().mockImplementation(() => new BN(0)),
@@ -532,7 +532,7 @@ describe('NftController', () => {
       expect(callActionSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('should handle ERC721 type and add pending request to ApprovalController with the OpenSea API disabled and IPFS gateway enabled', async function () {
+    it('handles ERC721 type and add pending request to ApprovalController with the OpenSea API disabled and IPFS gateway enabled', async function () {
       nock('https://testtokenuri.com')
         .get('/')
         .reply(

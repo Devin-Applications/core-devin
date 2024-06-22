@@ -24,7 +24,7 @@ const SOME_API = 'https://someapi.com';
 
 describe('assetsUtil', () => {
   describe('compareNftMetadata', () => {
-    it('should resolve true if any key is different', () => {
+    it('resolves true if any key is different', () => {
       const nftMetadata: NftMetadata = {
         name: 'name',
         image: 'image',
@@ -57,7 +57,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(true);
     });
 
-    it('should resolve true if only tokenURI is different', () => {
+    it('resolves true if only tokenURI is different', () => {
       const nftMetadata: NftMetadata = {
         description: null,
         favorite: false,
@@ -81,7 +81,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(true);
     });
 
-    it('should resolve true if any key is different as always as metadata is not undefined', () => {
+    it('resolves true if any key is different as always as metadata is not undefined', () => {
       const nftMetadata: NftMetadata = {
         name: 'name',
         image: 'image',
@@ -103,7 +103,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(false);
     });
 
-    it('should resolve false if no key is different', () => {
+    it('resolves false if no key is different', () => {
       const nftMetadata: NftMetadata = {
         name: 'name',
         image: 'image',
@@ -136,7 +136,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(false);
     });
 
-    it('should format aggregator names', () => {
+    it('formats aggregator names', () => {
       const formattedAggregatorNames = assetsUtil.formatAggregatorNames([
         'bancor',
         'aave',
@@ -146,7 +146,7 @@ describe('assetsUtil', () => {
       expect(formattedAggregatorNames).toStrictEqual(expectedValue);
     });
 
-    it('should format icon url with Codefi proxy correctly', () => {
+    it('formats icon url with Codefi proxy correctly', () => {
       const linkTokenAddress = '0x514910771af9ca656af840dff83e8264ecf986ca';
       const formattedIconUrl = assetsUtil.formatIconUrlWithProxy({
         chainId: ChainId.mainnet,
@@ -224,7 +224,7 @@ describe('assetsUtil', () => {
   });
 
   describe('removeIpfsProtocolPrefix', () => {
-    it('should return content identifier and path combined string from default ipfs url format', () => {
+    it('returns content identifier and path combined string from default ipfs url format', () => {
       expect(
         assetsUtil.removeIpfsProtocolPrefix(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V0}/test`,
@@ -232,7 +232,7 @@ describe('assetsUtil', () => {
       ).toBe(`${IPFS_CID_V0}/test`);
     });
 
-    it('should return content identifier string from default ipfs url format if no path preset', () => {
+    it('returns content identifier string from default ipfs url format if no path preset', () => {
       expect(
         assetsUtil.removeIpfsProtocolPrefix(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V0}`,
@@ -240,7 +240,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual(IPFS_CID_V0);
     });
 
-    it('should return content identifier string from alternate ipfs url format', () => {
+    it('returns content identifier string from alternate ipfs url format', () => {
       expect(
         assetsUtil.removeIpfsProtocolPrefix(
           `${ALTERNATIVE_IPFS_URL_FORMAT}${IPFS_CID_V0}`,
@@ -248,7 +248,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual(IPFS_CID_V0);
     });
 
-    it('should throw error if passed a non ipfs url', () => {
+    it('throws error if passed a non ipfs url', () => {
       expect(() => assetsUtil.removeIpfsProtocolPrefix(SOME_API)).toThrow(
         'this method should not be used with non ipfs urls',
       );
@@ -256,7 +256,7 @@ describe('assetsUtil', () => {
   });
 
   describe('getIpfsCIDv1AndPath', () => {
-    it('should return content identifier from default ipfs url format', () => {
+    it('returns content identifier from default ipfs url format', () => {
       expect(
         assetsUtil.getIpfsCIDv1AndPath(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V0}`,
@@ -264,7 +264,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual({ cid: IPFS_CID_V1, path: undefined });
     });
 
-    it('should return content identifier from alternative ipfs url format', () => {
+    it('returns content identifier from alternative ipfs url format', () => {
       expect(
         assetsUtil.getIpfsCIDv1AndPath(
           `${ALTERNATIVE_IPFS_URL_FORMAT}${IPFS_CID_V0}`,
@@ -272,7 +272,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual({ cid: IPFS_CID_V1, path: undefined });
     });
 
-    it('should return unchanged content identifier if already v1', () => {
+    it('returns unchanged content identifier if already v1', () => {
       expect(
         assetsUtil.getIpfsCIDv1AndPath(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V1}`,
@@ -280,7 +280,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual({ cid: IPFS_CID_V1, path: undefined });
     });
 
-    it('should return a path when url contains one', () => {
+    it('returns a path when url contains one', () => {
       expect(
         assetsUtil.getIpfsCIDv1AndPath(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V1}/test/test/test`,
@@ -290,7 +290,7 @@ describe('assetsUtil', () => {
   });
 
   describe('getFormattedIpfsUrl', () => {
-    it('should return a correctly formatted subdomained ipfs url when passed ipfsGateway without protocol prefix, no path and subdomainSupported argument set to true', () => {
+    it('returns a correctly formatted subdomained ipfs url when passed ipfsGateway without protocol prefix, no path and subdomainSupported argument set to true', () => {
       expect(
         assetsUtil.getFormattedIpfsUrl(
           IFPS_GATEWAY,
@@ -300,7 +300,7 @@ describe('assetsUtil', () => {
       ).toBe(`https://${IPFS_CID_V1}.ipfs.${IFPS_GATEWAY}`);
     });
 
-    it('should return a correctly formatted subdomained ipfs url when passed ipfsGateway with protocol prefix, a cidv0 and no path and subdomainSupported argument set to true', () => {
+    it('returns a correctly formatted subdomained ipfs url when passed ipfsGateway with protocol prefix, a cidv0 and no path and subdomainSupported argument set to true', () => {
       expect(
         assetsUtil.getFormattedIpfsUrl(
           `https://${IFPS_GATEWAY}`,
@@ -310,7 +310,7 @@ describe('assetsUtil', () => {
       ).toBe(`https://${IPFS_CID_V1}.ipfs.${IFPS_GATEWAY}`);
     });
 
-    it('should return a correctly formatted subdomained ipfs url when passed ipfsGateway with protocol prefix, a path at the end of the url, and subdomainSupported argument set to true', () => {
+    it('returns a correctly formatted subdomained ipfs url when passed ipfsGateway with protocol prefix, a path at the end of the url, and subdomainSupported argument set to true', () => {
       expect(
         assetsUtil.getFormattedIpfsUrl(
           `https://${IFPS_GATEWAY}`,
@@ -320,7 +320,7 @@ describe('assetsUtil', () => {
       ).toBe(`https://${IPFS_CID_V1}.ipfs.${IFPS_GATEWAY}/test`);
     });
 
-    it('should return a correctly formatted non-subdomained ipfs url when passed ipfsGateway with no "/ipfs/" appended, a path at the end of the url, and subdomainSupported argument set to false', () => {
+    it('returns a correctly formatted non-subdomained ipfs url when passed ipfsGateway with no "/ipfs/" appended, a path at the end of the url, and subdomainSupported argument set to false', () => {
       expect(
         assetsUtil.getFormattedIpfsUrl(
           `https://${IFPS_GATEWAY}`,
@@ -330,7 +330,7 @@ describe('assetsUtil', () => {
       ).toBe(`https://${IFPS_GATEWAY}/ipfs/${IPFS_CID_V1}/test`);
     });
 
-    it('should return a correctly formatted non-subdomained ipfs url when passed an ipfsGateway with "/ipfs/" appended, a path at the end of the url, subdomainSupported argument set to false', () => {
+    it('returns a correctly formatted non-subdomained ipfs url when passed an ipfsGateway with "/ipfs/" appended, a path at the end of the url, subdomainSupported argument set to false', () => {
       expect(
         assetsUtil.getFormattedIpfsUrl(
           `https://${IFPS_GATEWAY}/ipfs/`,
@@ -342,13 +342,13 @@ describe('assetsUtil', () => {
   });
 
   describe('addUrlProtocolPrefix', () => {
-    it('should return a URL with https:// prepended if input URL does not already have it', () => {
+    it('returns a URL with https:// prepended if input URL does not already have it', () => {
       expect(assetsUtil.addUrlProtocolPrefix(IFPS_GATEWAY)).toBe(
         `https://${IFPS_GATEWAY}`,
       );
     });
 
-    it('should return a URL as is if https:// is already prepended', () => {
+    it('returns a URL as is if https:// is already prepended', () => {
       expect(assetsUtil.addUrlProtocolPrefix(SOME_API)).toStrictEqual(SOME_API);
     });
   });
@@ -468,7 +468,7 @@ describe('assetsUtil', () => {
   });
 
   describe('fetchAndMapExchangeRates', () => {
-    it('should return empty object when chainId not supported', async () => {
+    it('returns empty object when chainId not supported', async () => {
       const testTokenAddress = '0x7BEF710a5759d197EC0Bf621c3Df802C2D60D848';
       const mockPriceService = createMockPriceService();
 
@@ -486,7 +486,7 @@ describe('assetsUtil', () => {
       expect(result).toStrictEqual({});
     });
 
-    it('should return empty object when nativeCurrency not supported', async () => {
+    it('returns empty object when nativeCurrency not supported', async () => {
       const testTokenAddress = '0x7BEF710a5759d197EC0Bf621c3Df802C2D60D848';
       const mockPriceService = createMockPriceService();
       jest
@@ -503,7 +503,7 @@ describe('assetsUtil', () => {
       expect(result).toStrictEqual({});
     });
 
-    it('should return successfully with a number of tokens less than the batch size', async () => {
+    it('returns successfully with a number of tokens less than the batch size', async () => {
       const testTokenAddress = '0x7BEF710a5759d197EC0Bf621c3Df802C2D60D848';
       const testNativeCurrency = 'ETH';
       const testChainId = '0x1';
@@ -546,7 +546,7 @@ describe('assetsUtil', () => {
       });
     });
 
-    it('should fetch successfully in batches', async () => {
+    it('fetches successfully in batches', async () => {
       const mockPriceService = createMockPriceService();
       const tokenAddresses = [...new Array(200).keys()]
         .map(buildAddress)
@@ -584,7 +584,7 @@ describe('assetsUtil', () => {
       }
     });
 
-    it('should sort token addresses when batching', async () => {
+    it('sorts token addresses when batching', async () => {
       const mockPriceService = createMockPriceService();
 
       // Mock addresses in descending order
