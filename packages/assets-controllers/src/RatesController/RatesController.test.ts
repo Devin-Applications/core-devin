@@ -175,8 +175,8 @@ describe('RatesController', () => {
       await ratesController.start();
 
       // since the polling has already started
-      // a second call to the start method should
-      // return immediately and no extra logic is executed
+      // a second call to the start method returns immediately
+      // and no extra logic is executed
       expect(publishActionSpy).not.toHaveBeenNthCalledWith(3);
     });
 
