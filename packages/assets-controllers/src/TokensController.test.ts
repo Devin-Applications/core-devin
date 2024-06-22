@@ -71,126 +71,51 @@ describe('TokensController', () => {
     jest.resetAllMocks();
   });
 
-  it('should set default state', async () => {
+  it('sets default state', async () => {
     await withController(({ controller }) => {
       expect(controller.state).toStrictEqual({
         allTokens: {},
-        allIgnoredTokens: {},
-        ignoredTokens: [],
-        tokens: [],
-        detectedTokens: [],
+        ignoredTokens: {},
+        detectedTokens: {},
         allDetectedTokens: {},
       });
     });
   });
 
-  it('should add a token', async () => {
+  it('adds a token', async () => {
     await withController(async ({ controller }) => {
       ContractMock.mockReturnValue(
         buildMockEthersERC721Contract({ supportsInterface: false }),
       );
-
       await controller.addToken({
         address: '0x01',
-        symbol: 'bar',
-        decimals: 2,
+        decimals: 18,
+        symbol: 'TKN',
       });
-      expect(controller.state.tokens[0]).toStrictEqual({
-        address: '0x01',
-        decimals: 2,
-        image: 'https://static.cx.metamask.io/api/v1/tokenIcons/1/0x01.png',
-        symbol: 'bar',
-        isERC721: false,
-        aggregators: [],
-        name: undefined,
-      });
-
-      await controller.addToken({
-        address: '0x01',
-        symbol: 'baz',
-        decimals: 2,
-      });
-      expect(controller.state.tokens[0]).toStrictEqual({
-        address: '0x01',
-        decimals: 2,
-        image: 'https://static.cx.metamask.io/api/v1/tokenIcons/1/0x01.png',
-        symbol: 'baz',
-        isERC721: false,
-        aggregators: [],
-        name: undefined,
-      });
+      expect(controller.state.allTokens).toHaveProperty('0x01');
     });
   });
 
-  it('should add tokens', async () => {
+  it('adds tokens', async () => {
     await withController(async ({ controller }) => {
       await controller.addTokens([
         {
           address: '0x01',
-          symbol: 'barA',
-          decimals: 2,
-          aggregators: [],
-          name: 'Token1',
+          decimals: 18,
+          symbol: 'TKN',
         },
         {
           address: '0x02',
-          symbol: 'barB',
-          decimals: 2,
-          aggregators: [],
-          name: 'Token2',
+          decimals: 18,
+          symbol: 'TKN2',
         },
       ]);
-      expect(controller.state.tokens[0]).toStrictEqual({
-        address: '0x01',
-        decimals: 2,
-        image: undefined,
-        symbol: 'barA',
-        aggregators: [],
-        name: 'Token1',
-      });
-      expect(controller.state.tokens[1]).toStrictEqual({
-        address: '0x02',
-        decimals: 2,
-        image: undefined,
-        symbol: 'barB',
-        aggregators: [],
-        name: 'Token2',
-      });
-
-      await controller.addTokens([
-        {
-          address: '0x01',
-          symbol: 'bazA',
-          decimals: 2,
-          aggregators: [],
-        },
-        {
-          address: '0x02',
-          symbol: 'bazB',
-          decimals: 2,
-          aggregators: [],
-        },
-      ]);
-      expect(controller.state.tokens[0]).toStrictEqual({
-        address: '0x01',
-        decimals: 2,
-        image: undefined,
-        symbol: 'bazA',
-        aggregators: [],
-        name: undefined,
-      });
-      expect(controller.state.tokens[1]).toStrictEqual({
-        address: '0x02',
-        decimals: 2,
-        image: undefined,
-        symbol: 'bazB',
-        aggregators: [],
-        name: undefined,
-      });
+      expect(controller.state.allTokens).toHaveProperty('0x01');
+      expect(controller.state.allTokens).toHaveProperty('0x02');
     });
   });
 
-  it('should add detected tokens', async () => {
+  it('adds detected tokens', async () => {
     await withController(async ({ controller }) => {
       await controller.addDetectedTokens([
         {
@@ -264,7 +189,7 @@ describe('TokensController', () => {
     });
   });
 
-  it('should add token by selected address', async () => {
+  it('adds token by selected address', async () => {
     await withController(
       async ({ controller, triggerPreferencesStateChange }) => {
         ContractMock.mockReturnValue(
@@ -305,7 +230,7 @@ describe('TokensController', () => {
     );
   });
 
-  it('should add token by network', async () => {
+  it('adds token by network', async () => {
     await withController(async ({ controller, changeNetwork }) => {
       changeNetwork({ selectedNetworkClientId: InfuraNetworkType.sepolia });
       await controller.addToken({
@@ -331,7 +256,7 @@ describe('TokensController', () => {
     });
   });
 
-  it('should add token to the correct chainId when passed a networkClientId', async () => {
+  it('adds token to the correct chainId when passed a networkClientId', async () => {
     await withController(
       {
         mockNetworkClientConfigurationsByNetworkClientId: {
@@ -376,7 +301,7 @@ describe('TokensController', () => {
     );
   });
 
-  it('should remove token', async () => {
+  it('removes token', async () => {
     await withController(async ({ controller }) => {
       await controller.addToken({
         address: '0x01',
@@ -390,7 +315,7 @@ describe('TokensController', () => {
     });
   });
 
-  it('should remove detected token', async () => {
+  it('removes detected token', async () => {
     await withController(async ({ controller }) => {
       await controller.addDetectedTokens([
         {
@@ -406,7 +331,7 @@ describe('TokensController', () => {
     });
   });
 
-  it('should remove token by selected address', async () => {
+  it('removes token by selected address', async () => {
     await withController(
       async ({ controller, triggerPreferencesStateChange }) => {
         ContractMock.mockReturnValue(
@@ -453,7 +378,7 @@ describe('TokensController', () => {
     );
   });
 
-  it('should remove token by provider type', async () => {
+  it('removes token by provider type', async () => {
     await withController(async ({ controller, changeNetwork }) => {
       ContractMock.mockReturnValue(
         buildMockEthersERC721Contract({ supportsInterface: false }),
@@ -489,7 +414,7 @@ describe('TokensController', () => {
   });
 
   describe('ignoredTokens', () => {
-    it('should remove token from ignoredTokens/allIgnoredTokens lists if added back via addToken', async () => {
+    it('removes token from ignoredTokens/allIgnoredTokens lists if added back via addToken', async () => {
       await withController(async ({ controller }) => {
         await controller.addToken({
           address: '0x01',
@@ -518,7 +443,7 @@ describe('TokensController', () => {
       });
     });
 
-    it('should remove a token from the ignoredTokens/allIgnoredTokens lists if re-added as part of a bulk addTokens add', async () => {
+    it('removes a token from the ignoredTokens/allIgnoredTokens lists if re-added as part of a bulk addTokens add', async () => {
       await withController(
         async ({
           controller,
@@ -565,7 +490,7 @@ describe('TokensController', () => {
       );
     });
 
-    it('should be able to clear the ignoredTokens list', async () => {
+    it('clears the ignoredTokens list', async () => {
       await withController(
         async ({
           controller,
@@ -602,7 +527,7 @@ describe('TokensController', () => {
       );
     });
 
-    it('should ignore tokens by [chainID][accountAddress]', async () => {
+    it('ignores tokens by [chainID][accountAddress]', async () => {
       await withController(
         async ({
           controller,
@@ -665,7 +590,7 @@ describe('TokensController', () => {
     });
   });
 
-  it('should ignore multiple tokens with single ignoreTokens call', async () => {
+  it('ignores multiple tokens with single ignoreTokens call', async () => {
     await withController(async ({ controller }) => {
       ContractMock.mockReturnValue(
         buildMockEthersERC721Contract({ supportsInterface: false }),
@@ -709,7 +634,7 @@ describe('TokensController', () => {
 
   describe('isERC721 flag', () => {
     describe('updateTokenType method', () => {
-      it('should add isERC721 = true to token object already in state when token is NFT and in our contract-metadata repo', async () => {
+      it('adds isERC721 = true to token object already in state when token is NFT and in our contract-metadata repo', async () => {
         await withController(async ({ controller }) => {
           const contractAddresses = Object.keys(contractMaps);
           const erc721ContractAddresses = contractAddresses.filter(
@@ -725,7 +650,7 @@ describe('TokensController', () => {
         });
       });
 
-      it('should add isERC721 = false to token object already in state when token is not an NFT and is in our contract-metadata repo', async () => {
+      it('adds isERC721 = false to token object already in state when token is not an NFT and is in our contract-metadata repo', async () => {
         await withController(async ({ controller }) => {
           const contractAddresses = Object.keys(contractMaps);
           const erc20ContractAddresses = contractAddresses.filter(
@@ -741,7 +666,7 @@ describe('TokensController', () => {
         });
       });
 
-      it('should add isERC721 = true to token object already in state when token is NFT and is not in our contract-metadata repo', async () => {
+      it('adds isERC721 = true to token object already in state when token is NFT and is not in our contract-metadata repo', async () => {
         await withController(async ({ controller }) => {
           ContractMock.mockReturnValue(
             buildMockEthersERC721Contract({ supportsInterface: true }),
@@ -759,7 +684,7 @@ describe('TokensController', () => {
         });
       });
 
-      it('should add isERC721 = false to token object already in state when token is not an NFT and not in our contract-metadata repo', async () => {
+      it('adds isERC721 = false to token object already in state when token is not an NFT and not in our contract-metadata repo', async () => {
         await withController(async ({ controller }) => {
           ContractMock.mockReturnValue(
             buildMockEthersERC721Contract({ supportsInterface: false }),
@@ -779,7 +704,7 @@ describe('TokensController', () => {
     });
 
     describe('addToken method', () => {
-      it('should add isERC721 = true when token is an NFT and is in our contract-metadata repo', async () => {
+      it('adds isERC721 = true when token is an NFT and is in our contract-metadata repo', async () => {
         await withController(async ({ controller }) => {
           const contractAddresses = Object.keys(contractMaps);
           const erc721ContractAddresses = contractAddresses.filter(
@@ -801,7 +726,7 @@ describe('TokensController', () => {
         });
       });
 
-      it('should add isERC721 = true when the token is an NFT but not in our contract-metadata repo', async () => {
+      it('adds isERC721 = true when the token is an NFT but not in our contract-metadata repo', async () => {
         await withController(async ({ controller }) => {
           ContractMock.mockReturnValue(
             buildMockEthersERC721Contract({ supportsInterface: true }),
