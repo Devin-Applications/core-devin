@@ -203,7 +203,7 @@ describe('TokenDetectionController', () => {
       clock.restore();
     });
 
-    it('should not poll and detect tokens on interval while keyring is locked', async () => {
+    it('does not poll and detect tokens on interval while keyring is locked', async () => {
       await withController(
         {
           isKeyringUnlocked: false,
@@ -221,7 +221,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should detect tokens but not restart polling if locked keyring is unlocked', async () => {
+    it('detects tokens but does not restart polling if locked keyring is unlocked', async () => {
       await withController(
         {
           isKeyringUnlocked: false,
@@ -239,7 +239,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should stop polling and detect tokens on interval if unlocked keyring is locked', async () => {
+    it('stops polling and detects tokens on interval if unlocked keyring is locked', async () => {
       await withController(
         {
           isKeyringUnlocked: true,
@@ -258,7 +258,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should poll and detect tokens on interval while on supported networks', async () => {
+    it('polls and detects tokens on interval while on supported networks', async () => {
       await withController(async ({ controller }) => {
         const mockTokens = sinon.stub(controller, 'detectTokens');
         controller.setIntervalLength(10);
@@ -271,7 +271,7 @@ describe('TokenDetectionController', () => {
       });
     });
 
-    it('should not autodetect while not on supported networks', async () => {
+    it('does not autodetect while not on supported networks', async () => {
       const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
         [sampleTokenA.address]: new BN(1),
       });
@@ -293,7 +293,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should detect tokens correctly on supported networks', async () => {
+    it('detects tokens correctly on supported networks', async () => {
       const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
         [sampleTokenA.address]: new BN(1),
       });
@@ -340,7 +340,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should detect tokens correctly on the Polygon network', async () => {
+    it('detects tokens correctly on the Polygon network', async () => {
       const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
         [sampleTokenA.address]: new BN(1),
       });
@@ -404,7 +404,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should update detectedTokens when new tokens are detected', async () => {
+    it('updates detectedTokens when new tokens are detected', async () => {
       const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
         [sampleTokenA.address]: new BN(1),
         [sampleTokenB.address]: new BN(1),
@@ -466,7 +466,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should not add ignoredTokens to the tokens list if detected with balance', async () => {
+    it('does not add ignoredTokens to the tokens list if detected with balance', async () => {
       const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
         [sampleTokenA.address]: new BN(1),
       });
@@ -517,7 +517,7 @@ describe('TokenDetectionController', () => {
       );
     });
 
-    it('should not detect tokens if there is no selectedAddress set', async () => {
+    it('does not detect tokens if there is no selectedAddress set', async () => {
       const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
         [sampleTokenA.address]: new BN(1),
       });
@@ -569,7 +569,7 @@ describe('TokenDetectionController', () => {
     });
 
     describe('when "disabled" is false', () => {
-      it('should detect new tokens after switching between accounts', async () => {
+      it('detects new tokens after switching between accounts', async () => {
         const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
           [sampleTokenA.address]: new BN(1),
         });
@@ -627,7 +627,7 @@ describe('TokenDetectionController', () => {
         );
       });
 
-      it('should not detect new tokens if the account is unchanged', async () => {
+      it('does not detect new tokens if the account is unchanged', async () => {
         const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
           [sampleTokenA.address]: new BN(1),
         });
@@ -678,7 +678,7 @@ describe('TokenDetectionController', () => {
       });
 
       describe('when keyring is locked', () => {
-        it('should not detect new tokens after switching between accounts', async () => {
+        it('does not detect new tokens after switching between accounts', async () => {
           const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
             [sampleTokenA.address]: new BN(1),
           });
@@ -735,7 +735,7 @@ describe('TokenDetectionController', () => {
     });
 
     describe('when "disabled" is true', () => {
-      it('should not detect new tokens after switching between accounts', async () => {
+      it('does not detect new tokens after switching between accounts', async () => {
         const mockGetBalancesInSingleCall = jest.fn().mockResolvedValue({
           [sampleTokenA.address]: new BN(1),
         });

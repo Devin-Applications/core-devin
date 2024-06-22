@@ -63,7 +63,7 @@ describe('AccountTrackerController', () => {
     mockedQuery.mockRestore();
   });
 
-  it('should set default state', async () => {
+  it('sets default state', async () => {
     await withController(
       {
         isMultiAccountBalancesEnabled: true,
@@ -79,7 +79,7 @@ describe('AccountTrackerController', () => {
     );
   });
 
-  it('should refresh when selectedAccount changes', async () => {
+  it('refreshes when selectedAccount changes', async () => {
     await withController(
       {
         isMultiAccountBalancesEnabled: true,
@@ -102,7 +102,7 @@ describe('AccountTrackerController', () => {
     });
 
     describe('without networkClientId', () => {
-      it('should sync addresses', async () => {
+      it('syncs addresses', async () => {
         const mockAddress1 = '0xbabe9bbeab5f83a755ac92c7a09b9ab3ff527f8c';
         const checksumAddress1 = toChecksumHexAddress(mockAddress1);
         const mockAddress2 = '0xeb9b5bd1db51ce4cb6c91dc5fb5d9beca9ff99f4';
@@ -159,7 +159,7 @@ describe('AccountTrackerController', () => {
         );
       });
 
-      it('should get real balance', async () => {
+      it('gets real balance', async () => {
         mockedQuery.mockReturnValueOnce(Promise.resolve('0x10'));
 
         await withController(
@@ -189,7 +189,7 @@ describe('AccountTrackerController', () => {
         );
       });
 
-      it('should update only selected address balance when multi-account is disabled', async () => {
+      it('updates only selected address balance when multi-account is disabled', async () => {
         mockedQuery
           .mockReturnValueOnce(Promise.resolve('0x10'))
           .mockReturnValueOnce(Promise.resolve('0x11'));
@@ -219,7 +219,7 @@ describe('AccountTrackerController', () => {
         );
       });
 
-      it('should update all address balances when multi-account is enabled', async () => {
+      it('updates all address balances when multi-account is enabled', async () => {
         mockedQuery
           .mockReturnValueOnce(Promise.resolve('0x11'))
           .mockReturnValueOnce(Promise.resolve('0x12'));
@@ -251,7 +251,7 @@ describe('AccountTrackerController', () => {
     });
 
     describe('with networkClientId', () => {
-      it('should sync addresses', async () => {
+      it('syncs addresses', async () => {
         const mockAddress1 = '0xbabe9bbeab5f83a755ac92c7a09b9ab3ff527f8c';
         const checksumAddress1 = toChecksumHexAddress(mockAddress1);
         const mockAddress2 = '0xeb9b5bd1db51ce4cb6c91dc5fb5d9beca9ff99f4';
@@ -318,7 +318,7 @@ describe('AccountTrackerController', () => {
         );
       });
 
-      it('should get real balance', async () => {
+      it('gets real balance', async () => {
         mockedQuery.mockReturnValueOnce(Promise.resolve('0x10'));
         const networkClientId = 'networkClientId1';
 
@@ -359,7 +359,7 @@ describe('AccountTrackerController', () => {
         );
       });
 
-      it('should update only selected address balance when multi-account is disabled', async () => {
+      it('updates only selected address balance when multi-account is disabled', async () => {
         mockedQuery
           .mockReturnValueOnce(Promise.resolve('0x10'))
           .mockReturnValueOnce(Promise.resolve('0x11'));
@@ -399,7 +399,7 @@ describe('AccountTrackerController', () => {
         );
       });
 
-      it('should update all address balances when multi-account is enabled', async () => {
+      it('updates all address balances when multi-account is enabled', async () => {
         mockedQuery
           .mockReturnValueOnce(Promise.resolve('0x11'))
           .mockReturnValueOnce(Promise.resolve('0x12'));
@@ -442,7 +442,7 @@ describe('AccountTrackerController', () => {
   });
 
   describe('syncBalanceWithAddresses', () => {
-    it('should sync balance with addresses', async () => {
+    it('syncs balance with addresses', async () => {
       await withController(
         {
           isMultiAccountBalancesEnabled: true,
@@ -464,7 +464,7 @@ describe('AccountTrackerController', () => {
     });
   });
 
-  it('should call refresh every interval on legacy polling', async () => {
+  it('calls refresh every interval on legacy polling', async () => {
     const pollSpy = jest.spyOn(AccountTrackerController.prototype, 'poll');
     await withController(
       {
@@ -489,7 +489,7 @@ describe('AccountTrackerController', () => {
     );
   });
 
-  it('should call refresh every interval for each networkClientId being polled', async () => {
+  it('calls refresh every interval for each networkClientId being polled', async () => {
     jest.spyOn(AccountTrackerController.prototype, 'poll').mockResolvedValue();
     const networkClientId1 = 'networkClientId1';
     const networkClientId2 = 'networkClientId2';

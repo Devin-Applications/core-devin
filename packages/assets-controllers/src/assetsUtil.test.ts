@@ -24,7 +24,7 @@ const SOME_API = 'https://someapi.com';
 
 describe('assetsUtil', () => {
   describe('compareNftMetadata', () => {
-    it('should resolve true if any key is different', () => {
+    it('resolves true if any key is different', () => {
       const nftMetadata: NftMetadata = {
         name: 'name',
         image: 'image',
@@ -57,7 +57,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(true);
     });
 
-    it('should resolve true if only tokenURI is different', () => {
+    it('resolves true if only tokenURI is different', () => {
       const nftMetadata: NftMetadata = {
         description: null,
         favorite: false,
@@ -81,7 +81,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(true);
     });
 
-    it('should resolve true if any key is different as always as metadata is not undefined', () => {
+    it('resolves true if any key is different as long as metadata is not undefined', () => {
       const nftMetadata: NftMetadata = {
         name: 'name',
         image: 'image',
@@ -103,7 +103,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(false);
     });
 
-    it('should resolve false if no key is different', () => {
+    it('resolves false if no key is different', () => {
       const nftMetadata: NftMetadata = {
         name: 'name',
         image: 'image',
@@ -136,7 +136,7 @@ describe('assetsUtil', () => {
       expect(different).toBe(false);
     });
 
-    it('should format aggregator names', () => {
+    it('formats aggregator names', () => {
       const formattedAggregatorNames = assetsUtil.formatAggregatorNames([
         'bancor',
         'aave',
@@ -146,7 +146,7 @@ describe('assetsUtil', () => {
       expect(formattedAggregatorNames).toStrictEqual(expectedValue);
     });
 
-    it('should format icon url with Codefi proxy correctly', () => {
+    it('formats icon url with Codefi proxy correctly', () => {
       const linkTokenAddress = '0x514910771af9ca656af840dff83e8264ecf986ca';
       const formattedIconUrl = assetsUtil.formatIconUrlWithProxy({
         chainId: ChainId.mainnet,
@@ -224,7 +224,7 @@ describe('assetsUtil', () => {
   });
 
   describe('removeIpfsProtocolPrefix', () => {
-    it('should return content identifier and path combined string from default ipfs url format', () => {
+    it('returns content identifier and path combined string from default ipfs url format', () => {
       expect(
         assetsUtil.removeIpfsProtocolPrefix(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V0}/test`,
@@ -232,7 +232,7 @@ describe('assetsUtil', () => {
       ).toBe(`${IPFS_CID_V0}/test`);
     });
 
-    it('should return content identifier string from default ipfs url format if no path preset', () => {
+    it('returns content identifier string from default ipfs url format if no path preset', () => {
       expect(
         assetsUtil.removeIpfsProtocolPrefix(
           `${DEFAULT_IPFS_URL_FORMAT}${IPFS_CID_V0}`,
@@ -240,7 +240,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual(IPFS_CID_V0);
     });
 
-    it('should return content identifier string from alternate ipfs url format', () => {
+    it('returns content identifier string from alternate ipfs url format', () => {
       expect(
         assetsUtil.removeIpfsProtocolPrefix(
           `${ALTERNATIVE_IPFS_URL_FORMAT}${IPFS_CID_V0}`,
@@ -248,7 +248,7 @@ describe('assetsUtil', () => {
       ).toStrictEqual(IPFS_CID_V0);
     });
 
-    it('should throw error if passed a non ipfs url', () => {
+    it('throws error if passed a non ipfs url', () => {
       expect(() => assetsUtil.removeIpfsProtocolPrefix(SOME_API)).toThrow(
         'this method should not be used with non ipfs urls',
       );

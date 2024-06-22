@@ -489,7 +489,7 @@ describe('watchNft', function () {
 });
 
   describe('addNft', () => {
-    it('should add NFT and NFT contract', async () => {
+    it('adds NFT and NFT contract', async () => {
       const { nftController } = setupController({
         options: {
           chainId: ChainId.mainnet,
@@ -541,7 +541,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should call onNftAdded callback correctly when NFT is manually added', async () => {
+    it('calls onNftAdded callback correctly when NFT is manually added', async () => {
       const mockOnNftAdded = jest.fn();
       const { nftController } = setupController({
         options: {
@@ -567,7 +567,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should call onNftAdded callback correctly when NFT is added via detection', async () => {
+    it('calls onNftAdded callback correctly when NFT is added via detection', async () => {
       const mockOnNftAdded = jest.fn();
       const { nftController } = setupController({
         options: {
@@ -596,7 +596,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add NFT by selected address', async () => {
+    it('adds NFT by selected address', async () => {
       const tokenURI = 'https://url/';
       const mockGetERC721TokenURI = jest.fn().mockResolvedValue(tokenURI);
       const mockGetERC1155TokenURI = jest.fn().mockRejectedValue('');
@@ -659,7 +659,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should update NFT if image is different', async () => {
+    it('updates NFT if image is different', async () => {
       const { nftController } = setupController({
         options: {},
         defaultSelectedAccount: OWNER_ACCOUNT,
@@ -712,7 +712,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should not duplicate NFT nor NFT contract if already added', async () => {
+    it('does not duplicate NFT nor NFT contract if already added', async () => {
       const { nftController } = setupController({
         options: {},
         defaultSelectedAccount: OWNER_ACCOUNT,
@@ -749,7 +749,7 @@ describe('watchNft', function () {
       ).toHaveLength(1);
     });
 
-    it('should add NFT and get information from NFT-API', async () => {
+    it('adds NFT and gets information from NFT-API', async () => {
       const { nftController } = setupController({
         options: {
           getERC721TokenURI: jest
@@ -780,7 +780,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add NFT erc721 and aggregate NFT data from both contract and NFT-API', async () => {
+    it('adds NFT erc721 and aggregates NFT data from both contract and NFT-API', async () => {
       const { nftController } = setupController({
         options: {
           getERC721AssetName: jest.fn().mockResolvedValue('KudosToken'),
@@ -847,7 +847,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add NFT erc1155 and get NFT information from contract when NFT API call fail', async () => {
+    it('adds NFT erc1155 and gets NFT information from contract when NFT API call fails', async () => {
       const { nftController } = setupController({
         options: {
           getERC721TokenURI: jest
@@ -895,7 +895,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add NFT erc721 and get NFT information only from contract', async () => {
+    it('adds NFT erc721 and gets NFT information only from contract', async () => {
       const { nftController } = setupController({
         options: {
           getERC721AssetName: jest.fn().mockResolvedValue('KudosToken'),
@@ -954,7 +954,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add NFT by provider type', async () => {
+    it('adds NFT by provider type', async () => {
       const tokenURI = 'https://url/';
       const mockGetERC721TokenURI = jest.fn().mockResolvedValue(tokenURI);
       const { nftController, changeNetwork } = setupController({
@@ -997,7 +997,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add an nft and nftContract to state when all contract information is falsy and the source is left empty (defaults to "custom")', async () => {
+    it('adds an nft and nftContract to state when all contract information is falsy and the source is "dapp"', async () => {
       const tokenURI = 'https://url/';
       const mockOnNftAdded = jest.fn();
       const mockGetERC721AssetSymbol = jest.fn().mockResolvedValue('');
@@ -1059,7 +1059,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add an nft and nftContract to state when all contract information is falsy and the source is "dapp"', async () => {
+    it('adds an nft and nftContract to state when all contract information is falsy and the source is "dapp"', async () => {
       const tokenURI = 'https://url/';
       const mockOnNftAdded = jest.fn();
       const mockGetERC721AssetSymbol = jest.fn().mockResolvedValue('');
@@ -1123,7 +1123,7 @@ describe('watchNft', function () {
       });
     });
 
-    it('should add an nft and nftContract when there is valid contract information and source is "detected"', async () => {
+    it('adds an nft and nftContract when there is valid contract information and source is "detected"', async () => {
       const mockOnNftAdded = jest.fn();
       const { nftController } = setupController({
         options: {
@@ -1263,7 +1263,7 @@ describe('watchNft', function () {
       expect(mockOnNftAdded).not.toHaveBeenCalled();
     });
 
-    it('should not add duplicate NFTs to the ignoredNfts list', async () => {
+    it('does not add duplicate NFTs to the ignoredNfts list', async () => {
       const { nftController } = setupController({
         options: {},
         defaultSelectedAccount: OWNER_ACCOUNT,
