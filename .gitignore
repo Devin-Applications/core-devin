@@ -32,3 +32,6 @@ scripts/coverage
 
 # typescript
 packages/*/*.tsbuildinfo
+
+# Ignore test_ts_files.txt
+test_ts_files.txt
