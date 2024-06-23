@@ -94,7 +94,7 @@ describe('TokenRatesController', () => {
       clock.restore();
     });
 
-    it('should set default state', async () => {
+    it('sets default state', async () => {
       await withController(async ({ controller }) => {
         expect(controller.state).toStrictEqual({
           marketData: {},
@@ -102,7 +102,7 @@ describe('TokenRatesController', () => {
       });
     });
 
-    it('should not poll by default', async () => {
+    it('does not poll by default', async () => {
       const fetchSpy = jest.spyOn(globalThis, 'fetch');
       await withController(
         {
@@ -134,7 +134,7 @@ describe('TokenRatesController', () => {
     });
 
     describe('when legacy polling is active', () => {
-      it('should update exchange rates when any of the addresses in the "all tokens" collection change', async () => {
+      it('updates exchange rates when any of the addresses in the "all tokens" collection change', async () => {
         const tokenAddresses = ['0xE1', '0xE2'];
         await withController(
           {

@@ -27,7 +27,7 @@ describe('ERC721Standard', () => {
     erc721Standard = new ERC721Standard(MAINNET_PROVIDER);
   });
 
-  it('should determine if contract supports interface correctly', async () => {
+  it('determines if contract supports interface correctly', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         method: 'eth_call',
@@ -77,7 +77,7 @@ describe('ERC721Standard', () => {
     expect(GODSSupportsEnumerable).toBe(true);
   });
 
-  it('should get correct details excluding tokenURI for a given contract (that supports the ERC721 metadata interface) without a tokenID provided', async () => {
+  it('gets correct details excluding tokenURI for a given contract (that supports the ERC721 metadata interface) without a tokenID provided', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -147,7 +147,7 @@ describe('ERC721Standard', () => {
     expect(details).toMatchObject(expectedResult);
   });
 
-  it('should get correct details including tokenURI and image for a given contract (that supports the ERC721 metadata interface) with a tokenID provided when the tokenURI content is not hosted on IPFS', async () => {
+  it('gets correct details including tokenURI and image for a given contract (that supports the ERC721 metadata interface) with a tokenID provided when the tokenURI content is not hosted on IPFS', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -266,7 +266,7 @@ describe('ERC721Standard', () => {
     expect(details).toMatchObject(expectedResult);
   });
 
-  it('should get correct details including tokenURI and image for a given contract (that supports the ERC721 metadata interface) with a tokenID provided when the tokenURI content is hosted on IPFS', async () => {
+  it('gets correct details including tokenURI and image for a given contract (that supports the ERC721 metadata interface) with a tokenID provided when the tokenURI content is hosted on IPFS', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -390,7 +390,7 @@ describe('ERC721Standard', () => {
     expect(details).toMatchObject(expectedResult);
   });
 
-  it('should return an object with all fields undefined except standard for a given contract (that does not support the ERC721 metadata interface) with or without a tokenID provided', async () => {
+  it('returns an object with all fields undefined except standard for a given contract (that does not support the ERC721 metadata interface) with or without a tokenID provided', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -442,7 +442,7 @@ describe('ERC721Standard', () => {
     expect(details).toMatchObject(expectedResult);
   });
 
-  it('should reject when passed a contract that does not support ERC721 Interface ID to getDetails method', async () => {
+  it('rejects when passed a contract that does not support ERC721 Interface ID to getDetails method', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -469,7 +469,7 @@ describe('ERC721Standard', () => {
     await expect(result).rejects.toThrow("This isn't a valid ERC721 contract");
   });
 
-  it('should return an object with any or all of name, tokenURI or symbol for a given contract that supports these methods even if it does not support the metadata interface', async () => {
+  it('returns an object with any or all of name, tokenURI or symbol for a given contract that supports these methods even if it does not support the metadata interface', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',

@@ -78,7 +78,7 @@ describe('CurrencyRateController', () => {
     jest.restoreAllMocks();
   });
 
-  it('should set default state', () => {
+  it('sets default state', () => {
     const messenger = getRestrictedMessenger();
     const controller = new CurrencyRateController({ messenger });
 
@@ -96,7 +96,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should initialize with initial state', () => {
+  it('initializes with initial state', () => {
     const messenger = getRestrictedMessenger();
     const existingState = { currentCurrency: 'rep' };
     const controller = new CurrencyRateController({
@@ -118,7 +118,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should not poll before being started', async () => {
+  it('does not poll before being started', async () => {
     const fetchExchangeRateStub = jest.fn();
     const messenger = getRestrictedMessenger();
     const controller = new CurrencyRateController({
@@ -134,7 +134,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should poll and update state in the right interval', async () => {
+  it('polls and updates state at the correct interval', async () => {
     jest
       .spyOn(global.Date, 'now')
       .mockReturnValueOnce(10000)
@@ -184,7 +184,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should not poll after being stopped', async () => {
+  it('does not poll after being stopped', async () => {
     const fetchExchangeRateStub = jest.fn();
     const messenger = getRestrictedMessenger();
     const controller = new CurrencyRateController({
@@ -209,7 +209,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should poll correctly after being started, stopped, and started again', async () => {
+  it('polls correctly after being started, stopped, and started again', async () => {
     const fetchExchangeRateStub = jest.fn();
 
     const messenger = getRestrictedMessenger();
@@ -236,7 +236,7 @@ describe('CurrencyRateController', () => {
     expect(fetchExchangeRateStub).toHaveBeenCalledTimes(3);
   });
 
-  it('should update exchange rate', async () => {
+  it('updates exchange rate', async () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => getStubbedDate());
     const fetchExchangeRateStub = jest
       .fn()
@@ -269,7 +269,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should use the exchange rate for ETH when native currency is testnet ETH', async () => {
+  it('uses the exchange rate for ETH when native currency is testnet ETH', async () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => getStubbedDate());
     const fetchExchangeRateStub = jest
       .fn()
@@ -317,7 +317,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should update current currency then clear and refetch rates', async () => {
+  it('updates current currency then clears and refetches rates', async () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => getStubbedDate());
     const fetchExchangeRateStub = jest
       .fn()
@@ -377,7 +377,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should add usd rate to state when includeUsdRate is configured true', async () => {
+  it('adds usd rate to state when includeUsdRate is configured true', async () => {
     const fetchExchangeRateStub = jest.fn().mockResolvedValue({});
     const messenger = getRestrictedMessenger();
     const controller = new CurrencyRateController({
@@ -396,7 +396,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should default to fetching exchange rate from crypto-compare', async () => {
+  it('defaults to fetching exchange rate from crypto-compare', async () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => getStubbedDate());
     const cryptoCompareHost = 'https://min-api.cryptocompare.com';
     nock(cryptoCompareHost)
@@ -425,7 +425,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should throw unexpected errors', async () => {
+  it('throws unexpected errors', async () => {
     const cryptoCompareHost = 'https://min-api.cryptocompare.com';
     nock(cryptoCompareHost)
       .get('/data/price?fsym=ETH&tsyms=XYZ')
@@ -448,7 +448,7 @@ describe('CurrencyRateController', () => {
     controller.destroy();
   });
 
-  it('should catch expected errors', async () => {
+  it('catches expected errors', async () => {
     const cryptoCompareHost = 'https://min-api.cryptocompare.com';
     nock(cryptoCompareHost)
       .get('/data/price?fsym=ETH&tsyms=XYZ')
