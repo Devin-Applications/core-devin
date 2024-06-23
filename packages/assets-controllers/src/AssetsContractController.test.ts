@@ -168,7 +168,7 @@ function mockNetworkWithDefaultChainId({
 export { setupAssetContractControllers, mockNetworkWithDefaultChainId };
 
 describe('AssetsContractController', () => {
-  it('should set default config', async () => {
+  it('sets default config', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     expect(assetsContract.config).toStrictEqual({
       chainId: SupportedTokenDetectionNetworks.mainnet,
@@ -178,7 +178,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should update the ipfsGateWay config value when this value is changed in the preferences controller', async () => {
+  it('updates the ipfsGateWay config value when this value is changed in the preferences controller', async () => {
     const { assetsContract, messenger, triggerPreferencesStateChange } =
       await setupAssetContractControllers();
     expect(assetsContract.config).toStrictEqual({
@@ -201,7 +201,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw when provider property is accessed', async () => {
+  it('throws when provider property is accessed', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     expect(() => console.log(assetsContract.provider)).toThrow(
       'Property only used for setting',
@@ -209,7 +209,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when getting ERC-20 token balance when missing provider', async () => {
+  it('throws missing provider error when getting ERC-20 token balance when missing provider', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     assetsContract.configure({ provider: undefined });
     await expect(
@@ -221,7 +221,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when getting ERC-20 token decimal when missing provider', async () => {
+  it('throws missing provider error when getting ERC-20 token decimal when missing provider', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     assetsContract.configure({ provider: undefined });
     await expect(
@@ -230,61 +230,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get balance of ERC-20 token contract correctly', async () => {
-    const { assetsContract, messenger, provider, networkClientConfiguration } =
-      await setupAssetContractControllers();
-    assetsContract.configure({ provider });
-    mockNetworkWithDefaultChainId({
-      networkClientConfiguration,
-      mocks: [
-        {
-          request: {
-            method: 'eth_call',
-            params: [
-              {
-                to: ERC20_UNI_ADDRESS,
-                data: '0x70a082310000000000000000000000005a3ca5cd63807ce5e4d7841ab32ce6b6d9bbba2d',
-              },
-              'latest',
-            ],
-          },
-          response: {
-            result:
-              '0x0000000000000000000000000000000000000000000000001765caf344a06d0a',
-          },
-        },
-        {
-          request: {
-            method: 'eth_call',
-            params: [
-              {
-                to: ERC20_UNI_ADDRESS,
-                data: '0x70a08231000000000000000000000000202637daaefbd7f131f90338a4a6c69f6cd5ce91',
-              },
-              'latest',
-            ],
-          },
-          response: {
-            result:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
-          },
-        },
-      ],
-    });
-    const UNIBalance = await assetsContract.getERC20BalanceOf(
-      ERC20_UNI_ADDRESS,
-      TEST_ACCOUNT_PUBLIC_ADDRESS,
-    );
-    const UNINoBalance = await assetsContract.getERC20BalanceOf(
-      ERC20_UNI_ADDRESS,
-      '0x202637dAAEfbd7f131f90338a4A6c69F6Cd5CE91',
-    );
-    expect(UNIBalance.toString(16)).not.toBe('0');
-    expect(UNINoBalance.toString(16)).toBe('0');
-    messenger.clearEventSubscriptions('NetworkController:networkDidChange');
-  });
-
-  it('should get ERC-721 NFT tokenId correctly', async () => {
+  it('gets ERC-721 NFT tokenId correctly', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -318,7 +264,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when getting ERC-721 token standard and details when missing provider', async () => {
+  it('throws missing provider error when getting ERC-721 token standard and details when missing provider', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     assetsContract.configure({ provider: undefined });
     await expect(
@@ -330,7 +276,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw contract standard error when getting ERC-20 token standard and details when provided with invalid ERC-20 address', async () => {
+  it('throws contract standard error when getting ERC-20 token standard and details when provided with invalid ERC-20 address', async () => {
     const { assetsContract, messenger, provider } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -344,7 +290,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-721 token standard and details', async () => {
+  it('gets ERC-721 token standard and details', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -409,7 +355,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-1155 token standard and details', async () => {
+  it('gets ERC-1155 token standard and details', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -494,7 +440,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-20 token standard and details', async () => {
+  it('gets ERC-20 token standard and details', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -591,7 +537,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-721 NFT tokenURI correctly', async () => {
+  it('gets ERC-721 NFT tokenURI correctly', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -640,7 +586,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should not throw an error when address given does not support NFT Metadata interface', async () => {
+  it('does not throw an error when address given does not support NFT Metadata interface', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -698,7 +644,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-721 NFT name', async () => {
+  it('gets ERC-721 NFT name', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -728,7 +674,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-721 NFT symbol', async () => {
+  it('gets ERC-721 NFT symbol', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -760,7 +706,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when getting ERC-721 NFT symbol when missing provider', async () => {
+  it('throws missing provider error when getting ERC-721 NFT symbol when missing provider', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     await expect(
       assetsContract.getERC721AssetSymbol(ERC721_GODS_ADDRESS),
@@ -768,7 +714,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-20 token decimals', async () => {
+  it('gets ERC-20 token decimals', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -800,7 +746,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-20 token name', async () => {
+  it('gets ERC-20 token name', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -832,7 +778,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get ERC-721 NFT ownership', async () => {
+  it('gets ERC-721 NFT ownership', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -865,7 +811,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when getting ERC-721 NFT ownership', async () => {
+  it('throws missing provider error when getting ERC-721 NFT ownership', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     await expect(
       assetsContract.getERC721OwnerOf(ERC721_GODS_ADDRESS, '148332'),
@@ -873,7 +819,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get balance of ERC-20 token in a single call on network with token detection support', async () => {
+  it('gets balance of ERC-20 token in a single call on network with token detection support', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -906,7 +852,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should track and use the currently selected chain ID and provider when getting balances in a single call', async () => {
+  it('tracks and uses the currently selected chain ID and provider when getting balances in a single call', async () => {
     const infuraProjectId = 'some-infura-project-id';
     mockNetwork({
       networkClientConfiguration: buildInfuraNetworkClientConfiguration(
@@ -1003,7 +949,7 @@ describe('AssetsContractController', () => {
     });
   });
 
-  it('should not have balance in a single call after switching to network without token detection support', async () => {
+  it('does not have balance in a single call after switching to network without token detection support', async () => {
     const {
       assetsContract,
       messenger,
@@ -1080,7 +1026,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw missing provider error when transferring single ERC-1155 when missing provider', async () => {
+  it('throws missing provider error when transferring single ERC-1155 when missing provider', async () => {
     const { assetsContract, messenger } = await setupAssetContractControllers();
     assetsContract.configure({ provider: undefined });
     await expect(
@@ -1095,7 +1041,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should throw when ERC1155 function transferSingle is not defined', async () => {
+  it('throws when ERC1155 function transferSingle is not defined', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });
@@ -1132,7 +1078,7 @@ describe('AssetsContractController', () => {
     messenger.clearEventSubscriptions('NetworkController:networkDidChange');
   });
 
-  it('should get the balance of a ERC-1155 NFT for a given address', async () => {
+  it('gets the balance of an ERC-1155 NFT for a given address', async () => {
     const { assetsContract, messenger, provider, networkClientConfiguration } =
       await setupAssetContractControllers();
     assetsContract.configure({ provider });

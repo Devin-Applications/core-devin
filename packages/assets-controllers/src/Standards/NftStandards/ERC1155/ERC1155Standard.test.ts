@@ -22,7 +22,7 @@ describe('ERC1155Standard', () => {
     erc1155Standard = new ERC1155Standard(MAINNET_PROVIDER);
   });
 
-  it('should determine if contract supports URI metadata interface correctly', async () => {
+  it('determines if contract supports URI metadata interface correctly', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035', {
         jsonrpc: '2.0',
@@ -49,7 +49,7 @@ describe('ERC1155Standard', () => {
     expect(contractSupportsUri).toBe(true);
   });
 
-  it('should determine if contract supports token receiver interface correctly', async () => {
+  it('determines if contract supports token receiver interface correctly', async () => {
     nock('https://mainnet.infura.io:443', { encodedQueryParams: true })
       .post('/v3/341eacb578dd44a1a049cbc5f6fd4035')
       .reply(200, {

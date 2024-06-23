@@ -298,7 +298,7 @@ describe('NftDetectionController', () => {
     sinon.restore();
   });
 
-  it('should call detect NFTs on mainnet', async () => {
+  it('calls detect NFTs on mainnet', async () => {
     const mockGetSelectedAccount = jest
       .fn()
       .mockReturnValue(defaultSelectedAccount);
@@ -330,7 +330,7 @@ describe('NftDetectionController', () => {
     );
   });
 
-  it('should call detect NFTs by networkClientId on mainnet', async () => {
+  it('calls detect NFTs by networkClientId on mainnet', async () => {
     await withController(async ({ controller }) => {
       const spy = jest
         .spyOn(controller, 'detectNfts')
@@ -355,7 +355,7 @@ describe('NftDetectionController', () => {
     });
   });
 
-  it('should detect mainnet truthy', async () => {
+  it('detects mainnet truthy', async () => {
     await withController(
       {
         mockNetworkState: {
@@ -371,7 +371,7 @@ describe('NftDetectionController', () => {
     );
   });
 
-  it('should detect mainnet falsy', async () => {
+  it('detects mainnet falsy', async () => {
     await withController(
       {
         mockNetworkState: {
@@ -387,7 +387,7 @@ describe('NftDetectionController', () => {
     );
   });
 
-  it('should return when detectNfts is called on a not supported network for detection', async () => {
+  it('returns when detectNfts is called on a not supported network for detection', async () => {
     const selectedAddress = '0x1';
     const selectedAccount = createMockInternalAccount({
       address: selectedAddress,
@@ -429,7 +429,7 @@ describe('NftDetectionController', () => {
     );
   });
 
-  it('should detect and add NFTs correctly when blockaid result is not included in response', async () => {
+  it('detects and adds NFTs correctly when blockaid result is not included in response', async () => {
     const mockAddNft = jest.fn();
     const selectedAddress = '0x1';
     const selectedAccount = createMockInternalAccount({
