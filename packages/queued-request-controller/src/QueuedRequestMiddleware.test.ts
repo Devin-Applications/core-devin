@@ -101,7 +101,7 @@ describe('createQueuedRequestMiddleware', () => {
     expect(mockEnqueueRequest).not.toHaveBeenCalled();
   });
 
-  it('enqueues the request if shouldEnqueueRest returns true', async () => {
+  it('enqueues the request when EnqueueRest returns true', async () => {
     const mockEnqueueRequest = getMockEnqueueRequest();
     const middleware = buildQueuedRequestMiddleware({
       enqueueRequest: mockEnqueueRequest,
