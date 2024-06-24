@@ -5,7 +5,7 @@ import {
 } from './get-notification-data';
 
 describe('getNotificationData - formatAmount() tests', () => {
-  it('should format large numbers', () => {
+  it('formats large numbers', () => {
     expect(formatAmount(1000)).toBe('1K');
     expect(formatAmount(1500)).toBe('1.5K');
     expect(formatAmount(1000000)).toBe('1M');
@@ -14,7 +14,7 @@ describe('getNotificationData - formatAmount() tests', () => {
     expect(formatAmount(1234567)).toBe('1.23M');
   });
 
-  it('should format smaller numbers (<1000) with custom decimal place', () => {
+  it('formats smaller numbers (<1000) with custom decimal place', () => {
     const formatOptions = { decimalPlaces: 18 };
     expect(formatAmount(100.0012, formatOptions)).toBe('100.0012');
     expect(formatAmount(100.001200001, formatOptions)).toBe('100.001200001');
@@ -22,7 +22,7 @@ describe('getNotificationData - formatAmount() tests', () => {
     expect(formatAmount(1e-19, formatOptions)).toBe('0'); // number is smaller than decimals given, hence 0
   });
 
-  it('should format small numbers (<1000) up to 4 decimals otherwise uses ellipses', () => {
+  it('formats small numbers (<1000) up to 4 decimals otherwise uses ellipses', () => {
     const formatOptions = { shouldEllipse: true };
     expect(formatAmount(100.1, formatOptions)).toBe('100.1');
     expect(formatAmount(100.01, formatOptions)).toBe('100.01');
@@ -32,7 +32,7 @@ describe('getNotificationData - formatAmount() tests', () => {
     expect(formatAmount(0.00001, formatOptions)).toBe('0.0000...'); // since number is has >4 decimals, it will be truncated
   });
 
-  it('should format small numbers (<1000) to custom decimal places and ellipse', () => {
+  it('formats small numbers (<1000) to custom decimal places and ellipse', () => {
     const formatOptions = { decimalPlaces: 2, shouldEllipse: true };
     expect(formatAmount(100.1, formatOptions)).toBe('100.1');
     expect(formatAmount(100.01, formatOptions)).toBe('100.01');
@@ -44,7 +44,7 @@ describe('getNotificationData - formatAmount() tests', () => {
 });
 
 describe('getNotificationData - getAmount() tests', () => {
-  it('should get formatted amount for larger numbers', () => {
+  it('gets formatted amount for larger numbers', () => {
     expect(getAmount('1', '2')).toBe('0.01');
     expect(getAmount('10', '2')).toBe('0.1');
     expect(getAmount('100', '2')).toBe('1');
@@ -53,7 +53,7 @@ describe('getNotificationData - getAmount() tests', () => {
     expect(getAmount('100000', '2')).toBe('1K');
     expect(getAmount('1000000', '2')).toBe('10K');
   });
-  it('should get formatted amount for small/decimal numbers', () => {
+  it('gets formatted amount for small/decimal numbers', () => {
     const formatOptions = { shouldEllipse: true };
     expect(getAmount('100000', '5', formatOptions)).toBe('1');
     expect(getAmount('100001', '5', formatOptions)).toBe('1.0000...');
@@ -66,7 +66,7 @@ describe('getNotificationData - getAmount() tests', () => {
 });
 
 describe('getNotificationData - getLeadingZeroCount() tests', () => {
-  it('should handle all test cases', () => {
+  it('handles all test cases', () => {
     expect(getLeadingZeroCount(0)).toBe(0);
     expect(getLeadingZeroCount(-1)).toBe(0);
     expect(getLeadingZeroCount(1e-1)).toBe(0);

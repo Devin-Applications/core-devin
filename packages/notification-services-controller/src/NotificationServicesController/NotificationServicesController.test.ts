@@ -532,7 +532,7 @@ describe('metamask-notifications - markMetamaskNotificationsAsRead()', () => {
     expect(controller.state.metamaskNotificationsReadList).toHaveLength(1);
   });
 
-  it('should at least mark feature announcements locally if external updates fail', async () => {
+  it('marks feature announcements locally if external updates fail', async () => {
     const { messenger } = arrangeMocks({ onChainMarkAsReadFails: true });
     const controller = new NotificationServicesController({
       messenger,
