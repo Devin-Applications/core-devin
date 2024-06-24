@@ -1179,7 +1179,7 @@ describe('approval controller', () => {
   });
 
   describe('actions', () => {
-    it('addApprovalRequest: shouldShowRequest = true', async () => {
+    it('addApprovalRequest: shows request when true', async () => {
       const messenger = new ControllerMessenger<
         ApprovalControllerActions,
         ApprovalControllerEvents
@@ -1205,7 +1205,7 @@ describe('approval controller', () => {
       expect(approvalController.has({ id: 'foo' })).toBe(true);
     });
 
-    it('addApprovalRequest: shouldShowRequest = false', async () => {
+    it('addApprovalRequest: does not show request when false', async () => {
       const messenger = new ControllerMessenger<
         ApprovalControllerActions,
         ApprovalControllerEvents
