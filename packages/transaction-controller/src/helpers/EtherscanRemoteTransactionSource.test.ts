@@ -64,7 +64,7 @@ describe('EtherscanRemoteTransactionSource', () => {
   });
 
   describe('isSupportedNetwork', () => {
-    it('returns true if chain ID is in constant', () => {
+    it('returns true if chain ID in constant', () => {
       expect(
         new EtherscanRemoteTransactionSource().isSupportedNetwork(
           CHAIN_IDS.MAINNET,
@@ -72,7 +72,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       ).toBe(true);
     });
 
-    it('returns false if chain ID is not in constant', () => {
+    it('returns false if chain ID not in constant', () => {
       expect(
         new EtherscanRemoteTransactionSource().isSupportedNetwork(
           '0x1324567891234',
@@ -88,7 +88,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       ).toStrictEqual(['normal']);
     });
 
-    it('returns token on token request', async () => {
+    it('returns token if token request', async () => {
       const remoteSource = new EtherscanRemoteTransactionSource();
       // TODO: Replace `any` with type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -97,7 +97,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       expect(remoteSource.getLastBlockVariations()).toStrictEqual(['token']);
     });
 
-    it('returns normal if token requests are disabled', async () => {
+    it('always returns normal if token requests disabled', async () => {
       const remoteSource = new EtherscanRemoteTransactionSource({
         includeTokenTransfers: false,
       });
@@ -111,7 +111,7 @@ describe('EtherscanRemoteTransactionSource', () => {
   });
 
   describe('fetchTransactions', () => {
-    it('returns normalized transactions from Etherscan', async () => {
+    it('returns normalized transactions fetched from Etherscan', async () => {
       fetchEtherscanTransactionsMock.mockResolvedValueOnce(
         ETHERSCAN_TRANSACTION_RESPONSE_MOCK,
       );
@@ -129,7 +129,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       ]);
     });
 
-    it('returns normalized token transactions from Etherscan', async () => {
+    it('returns normalized token transactions fetched from Etherscan', async () => {
       fetchEtherscanTokenTransactionsMock.mockResolvedValueOnce(
         ETHERSCAN_TOKEN_TRANSACTION_RESPONSE_MOCK,
       );
@@ -212,7 +212,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       expect(fetchEtherscanTokenTransactionsMock).toHaveBeenCalledTimes(2);
     });
 
-    it('returns no normalized token transactions when flag is disabled', async () => {
+    it('returns no normalized token transactions if flag disabled', async () => {
       fetchEtherscanTokenTransactionsMock.mockResolvedValueOnce(
         ETHERSCAN_TOKEN_TRANSACTION_RESPONSE_MOCK,
       );
@@ -247,7 +247,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       ['no transactions found', ETHERSCAN_TRANSACTION_RESPONSE_EMPTY_MOCK],
       ['error', ETHERSCAN_TRANSACTION_RESPONSE_ERROR_MOCK],
     ])(
-      'returns an empty array if %s in normal transaction request',
+      'returns empty array if %s in normal transaction request',
       async (_, response) => {
         fetchEtherscanTransactionsMock.mockResolvedValueOnce(response);
 
@@ -269,7 +269,7 @@ describe('EtherscanRemoteTransactionSource', () => {
       ],
       ['error', ETHERSCAN_TOKEN_TRANSACTION_RESPONSE_ERROR_MOCK],
     ])(
-      'returns an empty array if %s in token transaction request',
+      'returns empty array if %s in token transaction request',
       async (_, response) => {
         fetchEtherscanTokenTransactionsMock.mockResolvedValueOnce(response);
 
