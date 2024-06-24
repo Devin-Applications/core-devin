@@ -21,7 +21,7 @@ const MOCK_SRP = '0x6265617665726275696c642e6f7267';
 const MOCK_ADDRESS = '0x68757d15a4d8d1421c17003512AFce15D3f3FaDa';
 
 describe('Identifier Pairing', () => {
-  it('should pair identifiers', async () => {
+  it('pairs identifiers', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SRP', MOCK_SRP);
     const { mockNonceUrl, mockPairIdentifiersUrl, mockSrpLoginUrl } =
       arrangeAuthAPIs();
@@ -43,7 +43,7 @@ describe('Identifier Pairing', () => {
     expect(mockPairIdentifiersUrl.isDone()).toBe(true);
   });
 
-  it('should handle pair identifiers API errors', async () => {
+  it('handles pair identifiers API errors', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SRP', MOCK_SRP);
     const { mockNonceUrl, mockPairIdentifiersUrl, mockSrpLoginUrl } =
       arrangeAuthAPIs({
@@ -74,7 +74,7 @@ describe('Identifier Pairing', () => {
     expect(mockPairIdentifiersUrl.isDone()).toBe(true);
   });
 
-  it('should handle sign message errors', async () => {
+  it('handles sign message errors', async () => {
     const { auth } = arrangeAuth('SRP', MOCK_SRP);
     const { mockNonceUrl, mockPairIdentifiersUrl, mockSrpLoginUrl } =
       arrangeAuthAPIs();
@@ -101,7 +101,7 @@ describe('Identifier Pairing', () => {
     expect(mockPairIdentifiersUrl.isDone()).toBe(false);
   });
 
-  it('should handle nonce errors', async () => {
+  it('handles nonce errors', async () => {
     const { auth, mockSignMessage } = arrangeAuth('SRP', MOCK_SRP);
 
     const { mockNonceUrl, mockPairIdentifiersUrl } = arrangeAuthAPIs({

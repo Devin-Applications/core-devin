@@ -23,7 +23,7 @@ describe('encryption tests', () => {
     expect(result).toBe(DATA1);
   });
 
-  it('sha-256 hash a value and should be deterministic', () => {
+  it('sha-256 hashes a value and is deterministic', () => {
     const DATA = 'Hello World';
     const EXPECTED_HASH =
       'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e';
