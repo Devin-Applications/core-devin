@@ -34,7 +34,7 @@ describe('NotificationServicesPushController Services', () => {
 
     const utils = services;
 
-    it('should return reg token links', async () => {
+    it('returns reg token links', async () => {
       jest
         .spyOn(services, 'getPushNotificationLinks')
         .mockResolvedValue(MOCK_RESPONSE);
@@ -46,7 +46,7 @@ describe('NotificationServicesPushController Services', () => {
       expect(res?.registration_tokens).toBeDefined();
     });
 
-    it('should return null if api call fails', async () => {
+    it('returns null if api call fails', async () => {
       jest.spyOn(services, 'getPushNotificationLinks').mockResolvedValue(null);
 
       const res = await utils.getPushNotificationLinks(MOCK_JWT);
@@ -59,7 +59,7 @@ describe('NotificationServicesPushController Services', () => {
       jest.clearAllMocks();
     });
 
-    it('should return true if links are updated', async () => {
+    it('returns true if links are updated', async () => {
       jest.spyOn(services, 'updateLinksAPI').mockResolvedValue(true);
 
       const res = await services.updateLinksAPI(MOCK_JWT, MOCK_TRIGGERS, [
@@ -69,7 +69,7 @@ describe('NotificationServicesPushController Services', () => {
       expect(res).toBe(true);
     });
 
-    it('should return false if links are not updated', async () => {
+    it('returns false if links are not updated', async () => {
       jest.spyOn(services, 'updateLinksAPI').mockResolvedValue(false);
 
       const res = await services.updateLinksAPI(MOCK_JWT, MOCK_TRIGGERS, [
@@ -97,7 +97,7 @@ describe('NotificationServicesPushController Services', () => {
       jest.clearAllMocks();
     });
 
-    it('should append registration token when enabling push', async () => {
+    it('appends registration token when enabling push', async () => {
       jest
         .spyOn(services, 'activatePushNotifications')
         .mockResolvedValue(MOCK_NEW_REG_TOKEN);
@@ -106,7 +106,7 @@ describe('NotificationServicesPushController Services', () => {
       expect(res).toBe(MOCK_NEW_REG_TOKEN);
     });
 
-    it('should fail if unable to get existing notification links', async () => {
+    it('fails if unable to get existing notification links', async () => {
       jest
         .spyOn(services, 'getPushNotificationLinks')
         .mockResolvedValueOnce(null);
@@ -114,13 +114,13 @@ describe('NotificationServicesPushController Services', () => {
       expect(res).toBeNull();
     });
 
-    it('should fail if unable to create new reg token', async () => {
+    it('fails if unable to create new reg token', async () => {
       activateParams.createRegToken.mockResolvedValueOnce(null);
       const res = await services.activatePushNotifications(activateParams);
       expect(res).toBeNull();
     });
 
-    it('should fail if unable to update links', async () => {
+    it('fails if unable to update links', async () => {
       jest.spyOn(services, 'updateLinksAPI').mockResolvedValueOnce(false);
       const res = await services.activatePushNotifications(activateParams);
       expect(res).toBeNull();
@@ -136,7 +136,7 @@ describe('NotificationServicesPushController Services', () => {
       env: {} as PushNotificationEnv,
     };
 
-    it('should fail if unable to get existing notification links', async () => {
+    it('fails if unable to get existing notification links', async () => {
       jest
         .spyOn(services, 'getPushNotificationLinks')
         .mockResolvedValueOnce(null);
@@ -146,7 +146,7 @@ describe('NotificationServicesPushController Services', () => {
       expect(res).toBe(false);
     });
 
-    it('should fail if unable to update links', async () => {
+    it('fails if unable to update links', async () => {
       jest
         .spyOn(services, 'getPushNotificationLinks')
         .mockResolvedValue(MOCK_RESPONSE);
@@ -157,7 +157,7 @@ describe('NotificationServicesPushController Services', () => {
       expect(res).toBe(false);
     });
 
-    it('should fail if unable to delete reg token', async () => {
+    it('fails if unable to delete reg token', async () => {
       jest
         .spyOn(services, 'getPushNotificationLinks')
         .mockResolvedValueOnce(MOCK_RESPONSE);
@@ -188,7 +188,7 @@ describe('NotificationServicesPushController Services', () => {
       jest.restoreAllMocks();
     });
 
-    it('should update triggers for push notifications', async () => {
+    it('updates triggers for push notifications', async () => {
       jest.spyOn(services, 'updateTriggerPushNotifications').mockResolvedValue({
         isTriggersLinkedToPushNotifications: true,
         fcmToken: 'fcm-token',
@@ -202,7 +202,7 @@ describe('NotificationServicesPushController Services', () => {
       });
     });
 
-    it('should fail if unable to update triggers', async () => {
+    it('fails if unable to update triggers', async () => {
       jest.spyOn(services, 'updateTriggerPushNotifications').mockResolvedValue({
         isTriggersLinkedToPushNotifications: false,
         fcmToken: undefined,

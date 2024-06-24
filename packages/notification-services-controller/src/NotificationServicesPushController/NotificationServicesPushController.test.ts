@@ -20,7 +20,7 @@ describe('NotificationServicesPushController', () => {
       jest.clearAllMocks();
     });
 
-    it('should update the state with the fcmToken', async () => {
+    it('updates the state with the fcmToken', async () => {
       const { controller, messenger } = arrangeMockMessenger();
       mockAuthBearerTokenCall(messenger);
       jest
@@ -38,7 +38,7 @@ describe('NotificationServicesPushController', () => {
       expect(services.listenToPushNotifications).toHaveBeenCalled();
     });
 
-    it('should fail if a jwt token is not provided', async () => {
+    it('fails if a jwt token is not provided', async () => {
       const { controller, messenger } = arrangeMockMessenger();
       mockAuthBearerTokenCall(messenger).mockResolvedValue(
         null as unknown as string,
@@ -54,14 +54,14 @@ describe('NotificationServicesPushController', () => {
       jest.clearAllMocks();
     });
 
-    it('should update the state removing the fcmToken', async () => {
+    it('updates the state removing the fcmToken', async () => {
       const { controller, messenger } = arrangeMockMessenger();
       mockAuthBearerTokenCall(messenger);
       await controller.disablePushNotifications(MOCK_TRIGGERS);
       expect(controller.state.fcmToken).toBe('');
     });
 
-    it('should fail if a jwt token is not provided', async () => {
+    it('fails if a jwt token is not provided', async () => {
       const { controller, messenger } = arrangeMockMessenger();
       mockAuthBearerTokenCall(messenger).mockResolvedValue(
         null as unknown as string,
@@ -77,7 +77,7 @@ describe('NotificationServicesPushController', () => {
       jest.clearAllMocks();
     });
 
-    it('should call updateTriggerPushNotifications with the correct parameters', async () => {
+    it('calls updateTriggerPushNotifications with the correct parameters', async () => {
       const { controller, messenger } = arrangeMockMessenger();
       mockAuthBearerTokenCall(messenger);
       const spy = jest

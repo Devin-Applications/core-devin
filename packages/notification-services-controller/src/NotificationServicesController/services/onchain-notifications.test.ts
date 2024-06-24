@@ -44,7 +44,7 @@ describe('On Chain Notifications - createOnChainTriggers()', () => {
     };
   };
 
-  it('should create new triggers', async () => {
+  it('creates new triggers', async () => {
     const mocks = arrangeMocks();
 
     // The initial trigger to create should not be enabled
@@ -75,7 +75,7 @@ describe('On Chain Notifications - createOnChainTriggers()', () => {
     expect(mocks.mockEndpoint.isDone()).toBe(false);
   });
 
-  it('should throw error if endpoint fails', async () => {
+  it('throws error if endpoint fails', async () => {
     const mockUserStorage = createMockUserStorageWithTriggers([
       { id: MOCK_TRIGGER_ID, k: TRIGGER_TYPES.ETH_SENT, e: false },
     ]);
@@ -129,7 +129,7 @@ describe('On Chain Notifications - deleteOnChainTriggers()', () => {
     };
   };
 
-  it('should delete a trigger from API and in user storage', async () => {
+  it('deletes a trigger from API and in user storage', async () => {
     const { mockUserStorage, triggerId1, triggerId2 } = arrangeUserStorage();
     const mockEndpoint = mockBatchDeleteTriggers();
 
@@ -156,7 +156,7 @@ describe('On Chain Notifications - deleteOnChainTriggers()', () => {
     ).toBeUndefined();
   });
 
-  it('should delete all triggers and account in user storage', async () => {
+  it('deletes all triggers and account in user storage', async () => {
     const { mockUserStorage, triggerId1, triggerId2 } = arrangeUserStorage();
     const mockEndpoint = mockBatchDeleteTriggers();
 
@@ -173,7 +173,7 @@ describe('On Chain Notifications - deleteOnChainTriggers()', () => {
     expect(mockUserStorage[MOCK_USER_STORAGE_ACCOUNT]).toBeUndefined();
   });
 
-  it('should throw error if endpoint fails to delete', async () => {
+  it('throws error if endpoint fails to delete', async () => {
     const { mockUserStorage, triggerId1, triggerId2 } = arrangeUserStorage();
     const mockBadEndpoint = mockBatchDeleteTriggers({
       status: 500,
@@ -199,7 +199,7 @@ describe('On Chain Notifications - deleteOnChainTriggers()', () => {
 });
 
 describe('On Chain Notifications - getOnChainNotifications()', () => {
-  it('should return a list of notifications', async () => {
+  it('returns a list of notifications', async () => {
     const mockEndpoint = mockListNotifications();
     const mockUserStorage = createMockUserStorageWithTriggers([
       'trigger_1',
@@ -215,7 +215,7 @@ describe('On Chain Notifications - getOnChainNotifications()', () => {
     expect(result.length > 0).toBe(true);
   });
 
-  it('should return an empty list if not triggers found in user storage', async () => {
+  it('returns an empty list if no triggers found in user storage', async () => {
     const mockEndpoint = mockListNotifications();
     const mockUserStorage = createMockUserStorageWithTriggers([]); // no triggers
 
@@ -228,7 +228,7 @@ describe('On Chain Notifications - getOnChainNotifications()', () => {
     expect(result.length === 0).toBe(true);
   });
 
-  it('should return an empty list of notifications if endpoint fails to fetch triggers', async () => {
+  it('returns an empty list of notifications if endpoint fails to fetch triggers', async () => {
     const mockEndpoint = mockListNotifications({
       status: 500,
       body: { error: 'mock api failure' },
@@ -249,7 +249,7 @@ describe('On Chain Notifications - getOnChainNotifications()', () => {
 });
 
 describe('On Chain Notifications - markNotificationsAsRead()', () => {
-  it('should successfully call endpoint to mark notifications as read', async () => {
+  it('calls endpoint to mark notifications as read', async () => {
     const mockEndpoint = mockMarkNotificationsAsRead();
     await OnChainNotifications.markNotificationsAsRead(MOCK_BEARER_TOKEN, [
       'notification_1',
@@ -259,7 +259,7 @@ describe('On Chain Notifications - markNotificationsAsRead()', () => {
     expect(mockEndpoint.isDone()).toBe(true);
   });
 
-  it('should throw error if fails to call endpoint to mark notifications as read', async () => {
+  it('throws error if fails to call endpoint to mark notifications as read', async () => {
     const mockBadEndpoint = mockMarkNotificationsAsRead({
       status: 500,
       body: { error: 'mock api failure' },

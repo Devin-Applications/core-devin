@@ -20,7 +20,7 @@ describe('Feature Announcement Notifications', () => {
     jest.clearAllMocks();
   });
 
-  it('should return an empty array if fetch fails', async () => {
+  it('returns an empty array if fetch fails', async () => {
     const mockEndpoint = mockFetchFeatureAnnouncementNotifications({
       status: 500,
     });
@@ -32,7 +32,7 @@ describe('Feature Announcement Notifications', () => {
     expect(notifications).toStrictEqual([]);
   });
 
-  it('should return an empty array if data is not available', async () => {
+  it('returns an empty array if data is not available', async () => {
     const mockEndpoint = mockFetchFeatureAnnouncementNotifications({
       status: 200,
       body: { items: [] },
@@ -45,7 +45,7 @@ describe('Feature Announcement Notifications', () => {
     expect(notifications).toStrictEqual([]);
   });
 
-  it('should fetch entries from Contentful and return formatted notifications', async () => {
+  it('fetches entries from Contentful and returns formatted notifications', async () => {
     const mockEndpoint = mockFetchFeatureAnnouncementNotifications({
       status: 200,
       body: createMockFeatureAnnouncementAPIResult(),
