@@ -260,13 +260,13 @@ describe('TransactionController Integration', () => {
   });
 
   describe('constructor', () => {
-    it('should create a new instance of TransactionController', async () => {
+    it('creates a new instance of TransactionController', async () => {
       const { transactionController } = await setupController();
       expect(transactionController).toBeDefined();
       transactionController.destroy();
     });
 
-    it('should submit all approved transactions in state', async () => {
+    it('submits all approved transactions in state', async () => {
       mockNetwork({
         networkClientConfiguration: buildInfuraNetworkClientConfiguration(
           InfuraNetworkType.goerli,
@@ -386,7 +386,7 @@ describe('TransactionController Integration', () => {
 
   describe('multichain transaction lifecycle', () => {
     describe('when a transaction is added with a networkClientId that does not match the globally selected network', () => {
-      it('should add a new unapproved transaction', async () => {
+      it('adds a new unapproved transaction', async () => {
         mockNetwork({
           networkClientConfiguration: buildInfuraNetworkClientConfiguration(
             InfuraNetworkType.goerli,
@@ -414,7 +414,7 @@ describe('TransactionController Integration', () => {
         transactionController.destroy();
       });
 
-      it('should be able to get to submitted state', async () => {
+      it('gets to submitted state', async () => {
         mockNetwork({
           networkClientConfiguration: buildInfuraNetworkClientConfiguration(
             InfuraNetworkType.goerli,
@@ -456,7 +456,7 @@ describe('TransactionController Integration', () => {
         transactionController.destroy();
       });
 
-      it('should be able to get to confirmed state', async () => {
+      it('gets to confirmed state', async () => {
         mockNetwork({
           networkClientConfiguration: buildInfuraNetworkClientConfiguration(
             InfuraNetworkType.goerli,
@@ -504,7 +504,7 @@ describe('TransactionController Integration', () => {
         transactionController.destroy();
       });
 
-      it('should be able to send and confirm transactions on different chains', async () => {
+      it('sends and confirms transactions on different chains', async () => {
         mockNetwork({
           networkClientConfiguration: buildInfuraNetworkClientConfiguration(
             InfuraNetworkType.goerli,

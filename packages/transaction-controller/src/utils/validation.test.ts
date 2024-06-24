@@ -9,7 +9,7 @@ describe('validation', () => {
   });
 
   describe('validateTxParams', () => {
-    it('should throw if no from address', () => {
+    it('throws if no from address', () => {
       // TODO: Replace `any` with type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect(() => validateTxParams({} as any)).toThrow(
@@ -19,7 +19,7 @@ describe('validation', () => {
       );
     });
 
-    it('should throw if non-string from address', () => {
+    it('throws if non-string from address', () => {
       // TODO: Replace `any` with type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect(() => validateTxParams({ from: 1337 } as any)).toThrow(
@@ -27,7 +27,7 @@ describe('validation', () => {
       );
     });
 
-    it('should throw if invalid from address', () => {
+    it('throws if invalid from address', () => {
       // TODO: Replace `any` with type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect(() => validateTxParams({ from: '1337' } as any)).toThrow(
@@ -35,7 +35,7 @@ describe('validation', () => {
       );
     });
 
-    it('should throw if no data', () => {
+    it('throws if no data', () => {
       expect(() =>
         validateTxParams({
           from: '0x3244e191f1b4903970224322180f1fbbc415696b',
@@ -54,7 +54,7 @@ describe('validation', () => {
       ).toThrow(rpcErrors.invalidParams('Invalid "to" address.'));
     });
 
-    it('should delete data', () => {
+    it('deletes data', () => {
       const transaction = {
         data: 'foo',
         from: '0x3244e191f1b4903970224322180f1fbbc415696b',
@@ -64,7 +64,7 @@ describe('validation', () => {
       expect(transaction.to).toBeUndefined();
     });
 
-    it('should throw if invalid to address', () => {
+    it('throws if invalid to address', () => {
       expect(() =>
         validateTxParams({
           from: '0x3244e191f1b4903970224322180f1fbbc415696b',
@@ -75,7 +75,7 @@ describe('validation', () => {
       ).toThrow(rpcErrors.invalidParams('Invalid "to" address.'));
     });
 
-    it('should throw if value is invalid', () => {
+    it('throws if value is invalid', () => {
       expect(() =>
         validateTxParams({
           from: '0x3244e191f1b4903970224322180f1fbbc415696b',
@@ -158,7 +158,7 @@ describe('validation', () => {
       ).not.toThrow();
     });
 
-    it('throws if params specifies an EIP-1559 transaction but the current network does not support EIP-1559', () => {
+    it('throws if params specify an EIP-1559 transaction but the current network does not support EIP-1559', () => {
       expect(() =>
         validateTxParams(
           {

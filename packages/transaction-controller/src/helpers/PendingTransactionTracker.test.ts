@@ -1069,7 +1069,7 @@ describe('PendingTransactionTracker', () => {
       } as TransactionMeta;
     });
 
-    it('should update transaction status to confirmed if receipt status is success', async () => {
+    it('updates transaction status to confirmed if receipt status is success', async () => {
       queryMock.mockResolvedValueOnce(RECEIPT_MOCK);
       queryMock.mockResolvedValueOnce(BLOCK_MOCK);
       options.getTransactions.mockReturnValue([]);
@@ -1092,7 +1092,7 @@ describe('PendingTransactionTracker', () => {
       );
     });
 
-    it('should fail transaction if receipt status is failure', async () => {
+    it('fails transaction if receipt status is failure', async () => {
       const receiptMock = { ...RECEIPT_MOCK, status: '0x0' };
       queryMock.mockResolvedValueOnce(receiptMock);
       options.getTransactions.mockReturnValue([]);

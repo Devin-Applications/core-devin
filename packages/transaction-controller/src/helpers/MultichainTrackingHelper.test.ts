@@ -698,7 +698,7 @@ describe('MultichainTrackingHelper', () => {
       // nothing to exepect as this spec will pass if all locks are acquired
     });
 
-    it('should block on attempts to get the lock for the same chainId and key combination', async () => {
+    it('blocks on attempts to get the lock for the same chainId and key combination', async () => {
       const clock = useFakeTimers();
       const { helper } = newMultichainTrackingHelper();
 
