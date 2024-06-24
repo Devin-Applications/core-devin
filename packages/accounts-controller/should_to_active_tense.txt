@@ -1,0 +1,8 @@
+it("should return undefined if there isn't an account with the address", () => {
+COMPLETED
+it("enables an account if the Snap is enabled and not blocked", () => {
+COMPLETED
+it("disables an account if the Snap is disabled", () => {
+COMPLETED
+it("disables an account if the Snap is blocked", () => {
+COMPLETED

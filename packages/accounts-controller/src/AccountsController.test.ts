@@ -320,133 +320,90 @@ describe('AccountsController', () => {
   });
 
   describe('onSnapStateChange', () => {
-    it('be used enable an account if the Snap is enabled and not blocked', async () => {
-      const messenger = buildMessenger();
-      const mockSnapAccount = createExpectedInternalAccount({
-        id: 'mock-id',
-        name: 'Snap Account 1',
-        address: '0x0',
-        keyringType: KeyringTypes.snap,
-        snapId: 'mock-snap',
-        snapEnabled: false,
-      });
-      const mockSnapChangeState = {
-        snaps: {
-          'mock-snap': {
-            enabled: true,
-            id: 'mock-snap',
-            blocked: false,
-            status: SnapStatus.Running,
-          },
-        },
-        // TODO: Replace `any` with type
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any as SnapControllerState;
-      const { accountsController } = setupAccountsController({
-        initialState: {
-          internalAccounts: {
-            accounts: {
-              [mockSnapAccount.id]: mockSnapAccount,
+      it('enables an account if the Snap is enabled and not blocked', async () => {
+        const messenger = buildMessenger();
+        const mockSnapAccount = createExpectedInternalAccount({
+          id: 'mock-id',
+          name: 'Snap Account 1',
+          address: '0x0',
+          keyringType: KeyringTypes.snap,
+          snapId: 'mock-snap',
+          snapEnabled: false,
+        });
+        const mockSnapChangeState = {
+          snaps: {
+            'mock-snap': {
+              enabled: true,
+              id: 'mock-snap',
+              blocked: false,
+              status: SnapStatus.Running,
             },
-            selectedAccount: mockSnapAccount.id,
           },
-        },
-        messenger,
-      });
-
-      messenger.publish('SnapController:stateChange', mockSnapChangeState, []);
-
-      const updatedAccount = accountsController.getAccountExpect(
-        mockSnapAccount.id,
-      );
-
-      expect(updatedAccount.metadata.snap?.enabled).toBe(true);
-    });
-
-    it('be used disable an account if the Snap is disabled', async () => {
-      const messenger = buildMessenger();
-      const mockSnapAccount = createExpectedInternalAccount({
-        id: 'mock-id',
-        name: 'Snap Account 1',
-        address: '0x0',
-        keyringType: KeyringTypes.snap,
-        snapId: 'mock-snap',
-      });
-      const mockSnapChangeState = {
-        snaps: {
-          'mock-snap': {
-            enabled: false,
-            id: 'mock-snap',
-            blocked: false,
-            status: SnapStatus.Running,
-          },
-        },
-        // TODO: Replace `any` with type
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any as SnapControllerState;
-      const { accountsController } = setupAccountsController({
-        initialState: {
-          internalAccounts: {
-            accounts: {
-              [mockSnapAccount.id]: mockSnapAccount,
+          // TODO: Replace `any` with type
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any as SnapControllerState;
+        const { accountsController } = setupAccountsController({
+          initialState: {
+            internalAccounts: {
+              accounts: {
+                [mockSnapAccount.id]: mockSnapAccount,
+              },
+              selectedAccount: mockSnapAccount.id,
             },
-            selectedAccount: mockSnapAccount.id,
           },
-        },
-        messenger,
+          messenger,
+        });
+
+        messenger.publish('SnapController:stateChange', mockSnapChangeState, []);
+
+        const updatedAccount = accountsController.getAccountExpect(
+          mockSnapAccount.id,
+        );
+
+        expect(updatedAccount.metadata.snap?.enabled).toBe(true);
       });
 
-      messenger.publish('SnapController:stateChange', mockSnapChangeState, []);
-
-      const updatedAccount = accountsController.getAccountExpect(
-        mockSnapAccount.id,
-      );
-
-      expect(updatedAccount.metadata.snap?.enabled).toBe(false);
-    });
-
-    it('be used disable an account if the Snap is blocked', async () => {
-      const messenger = buildMessenger();
-      const mockSnapAccount = createExpectedInternalAccount({
-        id: 'mock-id',
-        name: 'Snap Account 1',
-        address: '0x0',
-        keyringType: KeyringTypes.snap,
-        snapId: 'mock-snap',
-      });
-      const mockSnapChangeState = {
-        snaps: {
-          'mock-snap': {
-            enabled: true,
-            id: 'mock-snap',
-            blocked: true,
-            status: SnapStatus.Running,
-          },
-        },
-        // TODO: Replace `any` with type
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any as SnapControllerState;
-      const { accountsController } = setupAccountsController({
-        initialState: {
-          internalAccounts: {
-            accounts: {
-              [mockSnapAccount.id]: mockSnapAccount,
+      it('disables an account if the Snap is disabled', async () => {
+        const messenger = buildMessenger();
+        const mockSnapAccount = createExpectedInternalAccount({
+          id: 'mock-id',
+          name: 'Snap Account 1',
+          address: '0x0',
+          keyringType: KeyringTypes.snap,
+        });
+        const mockSnapChangeState = {
+          snaps: {
+            'mock-snap': {
+              enabled: false,
+              id: 'mock-snap',
+              blocked: false,
+              status: SnapStatus.Running,
             },
-            selectedAccount: mockSnapAccount.id,
           },
-        },
-        messenger,
+          // TODO: Replace `any` with type
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any as SnapControllerState;
+        const { accountsController } = setupAccountsController({
+          initialState: {
+            internalAccounts: {
+              accounts: {
+                [mockSnapAccount.id]: mockSnapAccount,
+              },
+              selectedAccount: mockSnapAccount.id,
+            },
+          },
+          messenger,
+        });
+
+        messenger.publish('SnapController:stateChange', mockSnapChangeState, []);
+
+        const updatedAccount = accountsController.getAccountExpect(
+          mockSnapAccount.id,
+        );
+
+        expect(updatedAccount.metadata.snap?.enabled).toBe(false);
       });
-
-      messenger.publish('SnapController:stateChange', mockSnapChangeState, []);
-
-      const updatedAccount = accountsController.getAccountExpect(
-        mockSnapAccount.id,
-      );
-
-      expect(updatedAccount.metadata.snap?.enabled).toBe(false);
     });
-  });
 
   describe('onKeyringStateChange', () => {
     afterEach(() => {
