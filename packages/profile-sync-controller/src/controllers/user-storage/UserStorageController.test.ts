@@ -209,7 +209,7 @@ describe('user-storage/user-storage-controller - getStorageKey() tests', () => {
     };
   };
 
-  it('should return a storage key', async () => {
+  it('returns a storage key', async () => {
     const { messengerMocks } = arrangeMocks();
     const controller = new UserStorageController({
       messenger: messengerMocks.messenger,
@@ -242,7 +242,7 @@ describe('user-storage/user-storage-controller - disableProfileSyncing() tests',
     };
   };
 
-  it('should disable user storage / profile syncing when called', async () => {
+  it('disables user storage / profile syncing when called', async () => {
     const { messengerMocks } = arrangeMocks();
     const controller = new UserStorageController({
       messenger: messengerMocks.messenger,
@@ -262,7 +262,7 @@ describe('user-storage/user-storage-controller - enableProfileSyncing() tests', 
     };
   };
 
-  it('should enable user storage / profile syncing', async () => {
+  it('enables user storage / profile syncing', async () => {
     const { messengerMocks } = arrangeMocks();
     messengerMocks.mockAuthIsSignedIn.mockReturnValue(false); // mock that auth is not enabled
 
