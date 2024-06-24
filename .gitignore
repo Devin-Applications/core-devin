@@ -32,3 +32,6 @@ scripts/coverage
 
 # typescript
 packages/*/*.tsbuildinfo
+
+# custom
+test_ts_files.txt
