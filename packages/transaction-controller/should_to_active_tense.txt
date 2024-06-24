@@ -1,0 +1,138 @@
+it('should detect EIP1559 transaction', () => {
+COMPLETED
+it('should throw when provided invalid gas values', () => {
+COMPLETED
+it('should throw when any provided gas values are invalid', () => {
+COMPLETED
+it('should return true when provided valid gas values', () => {
+COMPLETED
+it('should detect if isFeeMarketEIP1559Values', () => {
+COMPLETED
+it('should detect if isGasPriceValue', () => {
+COMPLETED
+it('should get increased price from number as hex', () => {
+COMPLETED
+it('should get increased price from hex as hex', () => {
+COMPLETED
+it('should throw if increase does not meet minimum requirement', () => {
+COMPLETED
+it('should not throw if increase meets minimum requirement', () => {
+COMPLETED
+it('should not throw if increase exceeds minimum requirement', () => {
+COMPLETED
+it('should throw if no from address', () => {
+COMPLETED
+it('should throw if non-string from address', () => {
+COMPLETED
+it('should throw if invalid from address', () => {
+COMPLETED
+it('should throw if no data', () => {
+COMPLETED
+it('should delete data', () => {
+COMPLETED
+it('should throw if invalid to address', () => {
+COMPLETED
+it('should throw if value is invalid', () => {
+COMPLETED
+it('throws if transactionMeta or txParams is missing', () => {
+COMPLETED
+it('throws if transaction status is not confirmed', () => {
+COMPLETED
+it('throws if external transaction nonce is in pending txs', () => {
+COMPLETED
+it('throws if external transaction nonce is in confirmed txs', () => {
+COMPLETED
+it('does not throw if all validations pass', () => {
+COMPLETED
+it('should update transaction status to confirmed if receipt status is success', async () => {
+COMPLETED
+it('should fail transaction if receipt status is failure', async () => {
+COMPLETED
+it('should not change transaction status if receipt status is neither success nor failure', async () => {
+COMPLETED
+it('blocks on attempts to get the lock for the same chainId and key combination', async () => {
+COMPLETED
+it('should create a new instance of TransactionController', async () => {
+COMPLETED
+it('should submit all approved transactions in state', async () => {
+COMPLETED
+it('should add a new unapproved transaction', async () => {
+COMPLETED
+it('should be able to get to submitted state', async () => {
+COMPLETED
+it('should be able to get to confirmed state', async () => {
+COMPLETED
+it('should be able to send and confirm transactions on different chains', async () => {
+COMPLETED
+it('should be able to cancel a transaction', async () => {
+COMPLETED
+it('should be able to confirm a cancelled transaction and drop the original transaction', async () => {
+COMPLETED
+it('should be able to get to speedup state and drop the original transaction', async () => {
+COMPLETED
+it('should add each transaction with consecutive nonces', async () => {
+COMPLETED
+it('should add each transaction with consecutive nonces', async () => {
+COMPLETED
+it('should start tracking when a new network is added', async () => {
+COMPLETED
+it('should stop tracking when a network is removed', async () => {
+COMPLETED
+it('should not allow transaction to be added with a networkClientId when feature flag is disabled', async () => {
+COMPLETED
+it('should not call getNetworkClientRegistry on networkController:stateChange when feature flag is disabled', async () => {
+COMPLETED
+it('should call getNetworkClientRegistry on networkController:stateChange when feature flag is enabled', async () => {
+COMPLETED
+it('should call getNetworkClientRegistry on construction when feature flag is enabled', async () => {
+COMPLETED
+it('should start the global incoming transaction helper when no networkClientIds provided', async () => {
+COMPLETED
+it('should not poll for new incoming transactions for the given networkClientId', async () => {
+COMPLETED
+it('should stop the global incoming transaction helper when no networkClientIds provided', async () => {
+COMPLETED
+it('should not poll for incoming transactions on any network client', async () => {
+COMPLETED
+it('should get the nonce lock from the nonceTracker for the given networkClientId', async () => {
+COMPLETED
+it('should get the nonce lock from the globally selected nonceTracker if no networkClientId is provided', async () => {
+COMPLETED
+it('should avoid creating cancel transaction if actionId already exist', async () => {
+COMPLETED
+it('should throw error if transaction already confirmed', async () => {
+COMPLETED
+it('should throw error if publish transaction fails', async () => {
+COMPLETED
+it('should avoid creating speedup transaction if actionId already exist', async () => {
+COMPLETED
+it('should throw error if transaction already confirmed', async () => {
+COMPLETED
+it('should throw error if publish transaction fails', async () => {
+COMPLETED
+it('should throw error if transactionMetaId is not defined', async () => {
+COMPLETED
+it('should throw error if securityAlertResponse is not defined', async () => {
+COMPLETED
+it('should throw error if transaction with given id does not exist', async () => {
+COMPLETED
+it('returns true if chain ID is in constant', () => {
+COMPLETED
+it('returns false if chain ID is not in constant', () => {
+COMPLETED
+it('returns token on token request', async () => {
+COMPLETED
+it('returns normal if token requests are disabled', async () => {
+COMPLETED
+it('returns normalized transactions from Etherscan', async () => {
+COMPLETED
+it('returns normalized token transactions from Etherscan', async () => {
+COMPLETED
+it('alternates between normal and token transactions', async () => {
+COMPLETED
+it('returns no normalized token transactions when flag is disabled', async () => {
+COMPLETED
+it('returns an empty array if %s in normal transaction request', async () => {
+COMPLETED
+it('returns an empty array if %s in token transaction request', async () => {
+COMPLETED

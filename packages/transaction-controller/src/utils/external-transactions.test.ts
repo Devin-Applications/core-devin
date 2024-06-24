@@ -13,7 +13,7 @@ describe('validateConfirmedExternalTransaction', () => {
     return meta;
   };
 
-  it('should throw if transactionMeta or txParams is missing', () => {
+  it('throws if transactionMeta or txParams is missing', () => {
     expect(() =>
       validateConfirmedExternalTransaction(undefined, [], []),
     ).toThrow(
@@ -31,19 +31,19 @@ describe('validateConfirmedExternalTransaction', () => {
     );
   });
 
-  it('should throw if transaction status is not confirmed', () => {
+  it('throws if transaction status is not confirmed', () => {
     const transactionMeta = mockTransactionMeta(
       TransactionStatus.submitted,
       '123',
     );
     expect(() => validateConfirmedExternalTransaction(transactionMeta)).toThrow(
       rpcErrors.invalidParams(
-        'External transaction status should be "confirmed"',
+        'External transaction status must be "confirmed"',
       ),
     );
   });
 
-  it('should throw if external transaction nonce is in pending txs', () => {
+  it('throws if external transaction nonce is in pending txs', () => {
     const externalTxNonce = '123';
     const transactionMeta = mockTransactionMeta(
       TransactionStatus.confirmed,
@@ -57,12 +57,12 @@ describe('validateConfirmedExternalTransaction', () => {
       validateConfirmedExternalTransaction(transactionMeta, [], pendingTxs),
     ).toThrow(
       rpcErrors.invalidParams(
-        'External transaction nonce should not be in pending txs',
+        'External transaction nonce must not be in pending txs',
       ),
     );
   });
 
-  it('should throw if external transaction nonce is in confirmed txs', () => {
+  it('throws if external transaction nonce is in confirmed txs', () => {
     const externalTxNonce = '123';
     const transactionMeta = mockTransactionMeta(
       TransactionStatus.confirmed,
@@ -76,12 +76,12 @@ describe('validateConfirmedExternalTransaction', () => {
       validateConfirmedExternalTransaction(transactionMeta, confirmedTxs, []),
     ).toThrow(
       rpcErrors.invalidParams(
-        'External transaction nonce should not be in confirmed txs',
+        'External transaction nonce must not be in confirmed txs',
       ),
     );
   });
 
-  it('should not throw if all validations pass', () => {
+  it('does not throw if all validations pass', () => {
     const externalTxNonce = '123';
     const transactionMeta = mockTransactionMeta(
       TransactionStatus.confirmed,
