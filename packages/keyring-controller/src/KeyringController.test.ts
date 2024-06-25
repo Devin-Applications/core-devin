@@ -97,6 +97,7 @@ describe('KeyringController', () => {
       await withController(
         { keyringBuilders: [mockSimpleKeyringBuilder] },
         async ({ controller }) => {
+          console.log('Vault before unlock:', controller.state.vault);
           await controller.addNewKeyring(KeyringTypes.simple);
 
           expect(mockSimpleKeyringBuilder).toHaveBeenCalledTimes(1);
@@ -3440,6 +3441,7 @@ describe('KeyringController', () => {
         await withController(
           { keyringBuilders: [keyringBuilderFactory(MockKeyring)] },
           async ({ controller, initialState }) => {
+            console.log('Vault before unlock:', controller.state.vault);
             await expect(
               controller.addNewKeyring(MockKeyring.type),
             ).rejects.toThrow('You will never be able to persist me!');

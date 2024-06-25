@@ -665,7 +665,7 @@ export class KeyringController extends BaseController<
     )(this.state, callback);
 
     this.messagingSystem.publish(
-      `${this.name}:stateChange`,
+      'KeyringController:stateChange',
       nextState,
       patches,
     );
