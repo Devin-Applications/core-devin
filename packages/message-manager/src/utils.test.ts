@@ -15,7 +15,7 @@ describe('utils', () => {
   });
 
   describe('validateSignMessageData', () => {
-    it('should throw if no from address', () => {
+    it('throws if no from address', () => {
       expect(() =>
         util.validateSignMessageData({
           data: '0x879a05',
@@ -25,7 +25,7 @@ describe('utils', () => {
       ).toThrow(`Invalid "from" address: undefined must be a valid string.`);
     });
 
-    it('should throw if invalid from address', () => {
+    it('throws if invalid from address', () => {
       const from = '01';
       expect(() =>
         util.validateSignMessageData({
@@ -37,7 +37,7 @@ describe('utils', () => {
       ).toThrow(`Invalid "from" address: ${from} must be a valid string.`);
     });
 
-    it('should throw if invalid type from address', () => {
+    it('throws if from address type is invalid', () => {
       const from = 123;
       expect(() =>
         util.validateSignMessageData({
@@ -49,7 +49,7 @@ describe('utils', () => {
       ).toThrow(`Invalid "from" address: ${from} must be a valid string.`);
     });
 
-    it('should throw if no data', () => {
+    it('throws if no data', () => {
       expect(() =>
         util.validateSignMessageData({
           data: '0x879a05',
@@ -59,63 +59,63 @@ describe('utils', () => {
       ).toThrow(`Invalid "from" address: undefined must be a valid string.`);
     });
 
-    it('should throw if invalid tyoe data', () => {
-      expect(() =>
-        util.validateSignMessageData({
-          data: 123,
-          from: '0x3244e191f1b4903970224322180f1fbbc415696b',
-          // TODO: Replace `any` with type
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any),
-      ).toThrow('Invalid message "data": 123 must be a valid string.');
-    });
+  it('throws if data type is invalid', () => {
+    expect(() =>
+      util.validateSignMessageData({
+        data: 123,
+        from: '0x3244e191f1b4903970224322180f1fbbc415696b',
+        // TODO: Replace `any` with type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any),
+    ).toThrow('Invalid message "data": 123 must be a valid string.');
+  });
+});
+
+describe('validateTypedMessageDataV1', () => {
+  it('throws if no from address legacy', () => {
+    expect(() =>
+      util.validateTypedSignMessageDataV1({
+        data: [],
+        // TODO: Replace `any` with type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any),
+    ).toThrow(`Invalid "from" address: undefined must be a valid string.`);
   });
 
-  describe('validateTypedMessageDataV1', () => {
-    it('should throw if no from address legacy', () => {
-      expect(() =>
-        util.validateTypedSignMessageDataV1({
-          data: [],
-          // TODO: Replace `any` with type
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any),
-      ).toThrow(`Invalid "from" address: undefined must be a valid string.`);
-    });
+  it('throws if invalid from address', () => {
+    const from = '3244e191f1b4903970224322180f1';
+    expect(() =>
+      util.validateTypedSignMessageDataV1({
+        data: [],
+        from,
+        // TODO: Replace `any` with type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any),
+    ).toThrow(`Invalid "from" address: ${from} must be a valid string.`);
+  });
 
-    it('should throw if invalid from address', () => {
-      const from = '3244e191f1b4903970224322180f1';
-      expect(() =>
-        util.validateTypedSignMessageDataV1({
-          data: [],
-          from,
-          // TODO: Replace `any` with type
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any),
-      ).toThrow(`Invalid "from" address: ${from} must be a valid string.`);
-    });
+  it('throws if from address type is invalid', () => {
+    const from = 123;
+    expect(() =>
+      util.validateTypedSignMessageDataV1({
+        data: [],
+        from,
+        // TODO: Replace `any` with type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any),
+    ).toThrow(`Invalid "from" address: ${from} must be a valid string.`);
+  });
 
-    it('should throw if invalid type from address', () => {
-      const from = 123;
-      expect(() =>
-        util.validateTypedSignMessageDataV1({
-          data: [],
-          from,
-          // TODO: Replace `any` with type
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any),
-      ).toThrow(`Invalid "from" address: ${from} must be a valid string.`);
-    });
-
-    it('should throw if incorrect data', () => {
-      expect(() =>
-        util.validateTypedSignMessageDataV1({
-          data: '0x879a05',
-          from: '0x3244e191f1b4903970224322180f1fbbc415696b',
-          // TODO: Replace `any` with type
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any),
-      ).toThrow('Invalid message "data":');
-    });
+  it('throws if data is incorrect', () => {
+    expect(() =>
+      util.validateTypedSignMessageDataV1({
+        data: '0x879a05',
+        from: '0x3244e191f1b4903970224322180f1fbbc415696b',
+        // TODO: Replace `any` with type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any),
+    ).toThrow('Invalid message "data":');
+  });
 
     it('should throw if no data', () => {
       expect(() =>
