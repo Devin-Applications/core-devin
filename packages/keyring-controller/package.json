@@ -66,6 +66,7 @@
     "deepmerge": "^4.2.2",
     "jest": "^27.5.1",
     "jest-environment-node": "^27.5.1",
+    "jest-silent-reporter": "^0.6.0",
     "sinon": "^9.2.4",
     "ts-jest": "^27.1.4",
     "typedoc": "^0.24.8",
