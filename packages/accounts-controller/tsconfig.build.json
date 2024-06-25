@@ -12,5 +12,14 @@
     },
     { "path": "../keyring-controller/tsconfig.build.json" }
   ],
-  "include": ["../../types", "./src"]
+  "include": [
+    "../../types",
+    "./src",
+    "../base-controller/src",
+    "../keyring-controller/src",
+    "../base-controller/src/index.ts",
+    "../keyring-controller/src/index.ts",
+    "../base-controller/src/**/*.ts",
+    "../keyring-controller/src/**/*.ts"
+  ]
 }
