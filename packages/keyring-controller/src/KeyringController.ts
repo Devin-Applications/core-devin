@@ -42,8 +42,7 @@ import {
 import { Mutex } from 'async-mutex';
 import type { MutexInterface } from 'async-mutex';
 import Wallet, { thirdparty as importers } from 'ethereumjs-wallet';
-import type { Patch } from 'immer';
-import { produceWithPatches, Draft } from 'immer';
+import { produceWithPatches, type Patch, type Draft } from 'immer';
 
 import { KeyringControllerError } from './constants';
 
@@ -650,7 +649,9 @@ export class KeyringController extends BaseController<
   }
 
   protected update(
-    callback: (state: Draft<KeyringControllerState>) => void | KeyringControllerState,
+    callback: (
+      state: Draft<KeyringControllerState>,
+    ) => void | KeyringControllerState,
   ): {
     nextState: KeyringControllerState;
     patches: Patch[];
