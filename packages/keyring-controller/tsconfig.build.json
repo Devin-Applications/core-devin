@@ -15,9 +15,6 @@
   ],
   "include": [
     "../../types",
-    "./src",
-    "./src/KeyringController.ts",
-    "./src/constants.ts",
-    "./src/index.ts"
+    "./src/**/*.ts"
   ]
 }
