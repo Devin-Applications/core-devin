@@ -3571,7 +3571,7 @@ function buildKeyringBuilderWithSpy(
     ) as unknown as jest.MockedFunction<{ (): EthKeyring<Json>; type: string }>;
 
   (keyringBuilderWithSpy as unknown as { (): EthKeyring<Json>; type: string })
-    .type = KeyringConstructor.type as string;
+  .type = KeyringConstructor.type as string;
 
   return keyringBuilderWithSpy;
 }
