@@ -14,6 +14,10 @@
     "../../types",
     "./src",
     "./src/**/*.ts",
-    "./src/BaseControllerV1.ts"
+    "./src/BaseControllerV1.ts",
+    "./src/BaseControllerV2.ts",
+    "./src/ControllerMessenger.ts",
+    "./src/RestrictedControllerMessenger.ts",
+    "./src/index.ts"
   ]
 }
