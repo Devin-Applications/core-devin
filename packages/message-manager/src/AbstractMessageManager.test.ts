@@ -51,7 +51,7 @@ const messageIdMock = 'message-id-mocked';
 const fromMock = '0xc38bf1ad06ef69f0c04e29dbeb4152b4175f0a8d';
 
 describe('AbstractTestManager', () => {
-  it('should set default state', () => {
+  it('sets default state', () => {
     const controller = new AbstractTestManager();
     expect(controller.state).toStrictEqual({
       unapprovedMessages: {},
@@ -59,12 +59,12 @@ describe('AbstractTestManager', () => {
     });
   });
 
-  it('should set default config', () => {
+  it('sets default config', () => {
     const controller = new AbstractTestManager();
     expect(controller.config).toStrictEqual({});
   });
 
-  it('should add a valid message', async () => {
+  it('adds a valid message', async () => {
     const controller = new AbstractTestManager();
     await controller.addMessage({
       id: messageId,
@@ -88,7 +88,7 @@ describe('AbstractTestManager', () => {
     expect(message.type).toBe(messageType);
   });
 
-  it('should get all messages', async () => {
+  it('retrieves all messages', async () => {
     const controller = new AbstractTestManager();
     const message = {
       id: messageId,
@@ -153,7 +153,7 @@ describe('AbstractTestManager', () => {
     expect(message.securityProviderResponse).toBe(securityProviderResponseMock);
   });
 
-  it('should reject a message', async () => {
+  it('rejects a message', async () => {
     const controller = new AbstractTestManager();
     await controller.addMessage({
       id: messageId,
@@ -173,7 +173,7 @@ describe('AbstractTestManager', () => {
     expect(message.status).toBe('rejected');
   });
 
-  it('should sign a message', async () => {
+  it('signs a message', async () => {
     const controller = new AbstractTestManager();
     await controller.addMessage({
       id: messageId,
@@ -219,7 +219,7 @@ describe('AbstractTestManager', () => {
     expect(message.status).toBe('test-status');
   });
 
-  it('should set a status to inProgress', async () => {
+  it('sets a status to inProgress', async () => {
     const controller = new AbstractTestManager(
       undefined,
       undefined,
@@ -244,7 +244,7 @@ describe('AbstractTestManager', () => {
     expect(message.status).toBe('inProgress');
   });
 
-  it('should get correct unapproved messages', async () => {
+  it('gets correct unapproved messages', async () => {
     const firstMessageData = [
       {
         name: 'Message',
@@ -293,7 +293,7 @@ describe('AbstractTestManager', () => {
     });
   });
 
-  it('should approve typed message', async () => {
+  it('approves typed message', async () => {
     const controller = new AbstractTestManager();
     const firstMessage = { from: '0xfoO', data: typedMessage };
     const version = 'V1';
@@ -318,7 +318,7 @@ describe('AbstractTestManager', () => {
   });
 
   describe('setMessageStatus', () => {
-    it('should set the given message status', async () => {
+    it('sets the given message status', async () => {
       const controller = new AbstractTestManager();
       await controller.addMessage({
         id: messageId,
@@ -335,7 +335,7 @@ describe('AbstractTestManager', () => {
       expect(messageAfter?.status).toBe('newstatus');
     });
 
-    it('should throw an error if message is not found', () => {
+    it('throws an error if message is not found', () => {
       const controller = new AbstractTestManager();
 
       expect(() => controller.setMessageStatus(messageId, 'newstatus')).toThrow(
@@ -370,7 +370,7 @@ describe('AbstractTestManager', () => {
   });
 
   describe('setMetadata', () => {
-    it('should set the given message metadata', async () => {
+    it('sets the given message metadata', async () => {
       const controller = new AbstractTestManager();
       await controller.addMessage({
         id: messageId,
@@ -388,7 +388,7 @@ describe('AbstractTestManager', () => {
       expect(messageAfter?.metadata).toStrictEqual({ foo: 'bar' });
     });
 
-    it('should throw an error if message is not found', () => {
+    it('throws an error if message is not found', () => {
       const controller = new AbstractTestManager();
 
       expect(() => controller.setMetadata(messageId, { foo: 'bar' })).toThrow(
