@@ -664,7 +664,6 @@ export class KeyringController extends BaseController<
       ) => [KeyringControllerState, Patch[], Patch[]]
     )(this.state, callback);
 
-    this.state = nextState;
     this.messagingSystem.publish(
       `${this.name}:stateChange`,
       nextState,

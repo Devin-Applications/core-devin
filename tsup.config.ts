@@ -44,7 +44,7 @@ const config: Options = {
   dts: true,
 
   // Specify the TypeScript configuration file to use.
-  tsconfig: 'packages/base-controller/tsconfig.build.json',
+  tsconfig: './packages/base-controller/tsconfig.build.json',
 };
 
 export default config;
