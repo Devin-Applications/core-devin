@@ -61,18 +61,18 @@ describe('TypedMessageManager', () => {
     );
   });
 
-  it('should set default state', () => {
+  it('sets default state', () => {
     expect(controller.state).toStrictEqual({
       unapprovedMessages: {},
       unapprovedMessagesCount: 0,
     });
   });
 
-  it('should set default config', () => {
+  it('sets default config', () => {
     expect(controller.config).toStrictEqual({});
   });
 
-  it('should add a valid message', async () => {
+  it('adds a valid message', async () => {
     const messageId = '1';
     const from = '0x0123';
     const messageTime = Date.now();
@@ -101,7 +101,7 @@ describe('TypedMessageManager', () => {
     expect(message.type).toBe(messageType);
   });
 
-  it('should throw when adding a valid unapproved message when getCurrentChainId is undefined', async () => {
+  it('throws when adding a valid unapproved message when getCurrentChainId is undefined', async () => {
     controller = new TypedMessageManager();
     const version = 'V3';
     const messageData = JSON.stringify(typedMessageV3V4);
@@ -116,7 +116,7 @@ describe('TypedMessageManager', () => {
     ).rejects.toThrow('Current chainId cannot be null or undefined.');
   });
 
-  it('should add a valid unapproved message', async () => {
+  it('adds a valid unapproved message', async () => {
     const messageStatus = 'unapproved';
     const messageType = 'eth_signTypedData';
     const version = 'version';
@@ -150,7 +150,7 @@ describe('TypedMessageManager', () => {
     expect(message.securityAlertResponse?.reason).toBe('reason');
   });
 
-  it('should add a valid V3 unapproved message as a JSON-parseable string', async () => {
+  it('adds a valid V3 unapproved message as a JSON-parseable string', async () => {
     getCurrentChainIdStub.mockImplementation(() => 1);
     const messageStatus = 'unapproved';
     const messageType = 'eth_signTypedData';
@@ -178,7 +178,7 @@ describe('TypedMessageManager', () => {
     expect(message.type).toBe(messageType);
   });
 
-  it('should add a valid V3 unapproved message as an object', async () => {
+  it('adds a valid V3 unapproved message as an object', async () => {
     getCurrentChainIdStub.mockImplementation(() => 1);
     const messageStatus = 'unapproved';
     const messageType = 'eth_signTypedData';
@@ -206,7 +206,7 @@ describe('TypedMessageManager', () => {
     expect(message.type).toBe(messageType);
   });
 
-  it('should throw when adding invalid legacy typed message', async () => {
+  it('throws when adding invalid legacy typed message', async () => {
     const from = '0xc38bf1ad06ef69f0c04e29dbeb4152b4175f0a8d';
     const messageData = '0x879';
     const version = 'V1';
@@ -222,7 +222,7 @@ describe('TypedMessageManager', () => {
     ).rejects.toThrow('Invalid message "data":');
   });
 
-  it('should throw when adding invalid typed message', async () => {
+  it('throws when adding invalid typed message', async () => {
     const mockGetChainId = jest.fn();
     const from = '0xc38bf1ad06ef69f0c04e29dbeb4152b4175f0a8d';
     const messageData = typedMessage;
@@ -258,7 +258,7 @@ describe('TypedMessageManager', () => {
     expect(mockGetChainId).toHaveBeenCalled();
   });
 
-  it('should get correct unapproved messages', async () => {
+  it('gets correct unapproved messages', async () => {
     const firstMessageData = [
       {
         name: 'Message',
@@ -306,7 +306,7 @@ describe('TypedMessageManager', () => {
     });
   });
 
-  it('should approve typed message', async () => {
+  it('approves typed message', async () => {
     const messageData = typedMessage;
     const firstMessage = { from: fromMock, data: messageData };
     const version = 'V1';
@@ -330,7 +330,7 @@ describe('TypedMessageManager', () => {
     expect(message.status).toBe('approved');
   });
 
-  it('should set message status signed', async () => {
+  it('sets message status signed', async () => {
     const messageData = typedMessage;
     const firstMessage = { from: fromMock, data: messageData };
     const version = 'V1';
@@ -349,7 +349,7 @@ describe('TypedMessageManager', () => {
     expect(message.status).toBe('signed');
   });
 
-  it('should reject message', async () => {
+  it('rejects message', async () => {
     const messageData = typedMessage;
     const firstMessage = { from: fromMock, data: messageData };
     const version = 'V1';
@@ -366,7 +366,7 @@ describe('TypedMessageManager', () => {
     expect(message.status).toBe('rejected');
   });
 
-  it('should set message status errored', async () => {
+  it('sets message status errored', async () => {
     const messageData = typedMessage;
     const firstMessage = { from: fromMock, data: messageData };
     const version = 'V1';
