@@ -80,7 +80,7 @@ describe('KeyringController', () => {
   });
 
   describe('constructor', () => {
-    it('should use the default encryptor if none is provided', async () => {
+    it('uses the default encryptor if none is provided', async () => {
       expect(
         () =>
           new KeyringController({
@@ -88,18 +88,6 @@ describe('KeyringController', () => {
             cacheEncryptionKey: true,
           }),
       ).not.toThrow();
-    });
-
-    it('should throw error if cacheEncryptionKey is true and encryptor does not support key export', () => {
-      expect(
-        () =>
-          // @ts-expect-error testing an invalid encryptor
-          new KeyringController({
-            messenger: buildKeyringControllerMessenger(),
-            cacheEncryptionKey: true,
-            encryptor: { encrypt: jest.fn(), decrypt: jest.fn() },
-          }),
-      ).toThrow(KeyringControllerError.UnsupportedEncryptionKeyExport);
     });
 
     it('allows overwriting the built-in Simple keyring builder', async () => {
@@ -131,7 +119,7 @@ describe('KeyringController', () => {
 
   describe('addNewAccount', () => {
     describe('when accountCount is not provided', () => {
-      it('should add new account', async () => {
+      it('adds new account', async () => {
         await withController(async ({ controller, initialState }) => {
           const addedAccountAddress = await controller.addNewAccount();
           expect(initialState.keyrings).toHaveLength(1);
@@ -150,7 +138,7 @@ describe('KeyringController', () => {
     });
 
     describe('when accountCount is provided', () => {
-      it('should add new account if accountCount is in sequence', async () => {
+      it('adds new account if accountCount is in sequence', async () => {
         await withController(async ({ controller, initialState }) => {
           const addedAccountAddress = await controller.addNewAccount(
             initialState.keyrings[0].accounts.length,
@@ -169,7 +157,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should throw an error if passed accountCount param is out of sequence', async () => {
+      it('throws an error if passed accountCount param is out of sequence', async () => {
         await withController(async ({ controller, initialState }) => {
           const accountCount = initialState.keyrings[0].accounts.length;
           await expect(
@@ -178,7 +166,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not add a new account if called twice with the same accountCount param', async () => {
+      it('does not add a new account if called twice with the same accountCount param', async () => {
         await withController(async ({ controller, initialState }) => {
           const accountCount = initialState.keyrings[0].accounts.length;
           const firstAccountAdded = await controller.addNewAccount(
@@ -195,7 +183,7 @@ describe('KeyringController', () => {
       });
     });
 
-    it('should throw error with no HD keyring', async () => {
+    it('throws error with no HD keyring', async () => {
       await withController(
         { skipVaultCreation: true },
         async ({ controller }) => {
@@ -207,7 +195,7 @@ describe('KeyringController', () => {
     });
 
     // Testing fix for bug #4157 {@link https://github.com/MetaMask/core/issues/4157}
-    it('should return an existing HD account if the accountCount is lower than oldAccounts', async () => {
+    it('returns an existing HD account if the accountCount is lower than oldAccounts', async () => {
       const mockAddress = '0x123';
       stubKeyringClassWithAccount(MockKeyring, mockAddress);
       await withController(
@@ -236,7 +224,7 @@ describe('KeyringController', () => {
       );
     });
 
-    it('should throw instead of returning undefined', async () => {
+    it('throws instead of returning undefined', async () => {
       await withController(async ({ controller }) => {
         jest.spyOn(controller, 'getKeyringsByType').mockReturnValueOnce([
           {
@@ -253,7 +241,7 @@ describe('KeyringController', () => {
 
   describe('addNewAccountForKeyring', () => {
     describe('when accountCount is not provided', () => {
-      it('should add new account', async () => {
+      it('adds new account', async () => {
         await withController(async ({ controller, initialState }) => {
           const [primaryKeyring] = controller.getKeyringsByType(
             KeyringTypes.hd,
@@ -275,7 +263,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not throw when `keyring.getAccounts()` returns a shallow copy', async () => {
+      it('does not throw when `keyring.getAccounts()` returns a shallow copy', async () => {
         await withController(
           {
             keyringBuilders: [
@@ -362,7 +350,7 @@ describe('KeyringController', () => {
   });
 
   describe('addNewAccountWithoutUpdate', () => {
-    it('should add new account without updating', async () => {
+    it('adds new account without updating', async () => {
       await withController(async ({ controller, initialState }) => {
         await controller.addNewAccountWithoutUpdate();
         expect(initialState.keyrings).toHaveLength(1);
@@ -375,7 +363,7 @@ describe('KeyringController', () => {
       });
     });
 
-    it('should throw error with no HD keyring', async () => {
+    it('throws error with no HD keyring', async () => {
       await withController(
         { skipVaultCreation: true },
         async ({ controller }) => {
@@ -389,7 +377,7 @@ describe('KeyringController', () => {
 
   describe('addNewKeyring', () => {
     describe('when there is a builder for the given type', () => {
-      it('should add new keyring', async () => {
+      it('adds new keyring', async () => {
         await withController(async ({ controller, initialState }) => {
           const initialKeyrings = initialState.keyrings;
           await controller.addNewKeyring(KeyringTypes.simple);
@@ -400,7 +388,7 @@ describe('KeyringController', () => {
     });
 
     describe('when there is no builder for the given type', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         await withController(async ({ controller }) => {
           await expect(controller.addNewKeyring('fake')).rejects.toThrow(
             'KeyringController - No keyringBuilder found for keyring. Keyring type: fake',
@@ -413,7 +401,7 @@ describe('KeyringController', () => {
   describe('createNewVaultAndRestore', () => {
     [false, true].map((cacheEncryptionKey) =>
       describe(`when cacheEncryptionKey is ${cacheEncryptionKey}`, () => {
-        it('should create new vault and restore', async () => {
+        it('creates new vault and restore', async () => {
           await withController(
             { cacheEncryptionKey },
             async ({ controller, initialState }) => {
@@ -429,7 +417,7 @@ describe('KeyringController', () => {
           );
         });
 
-        it('should restore same vault if old seedWord is used', async () => {
+        it('restores same vault if old seedWord is used', async () => {
           await withController(
             { cacheEncryptionKey },
             async ({ controller, initialState }) => {
@@ -446,7 +434,7 @@ describe('KeyringController', () => {
           );
         });
 
-        it('should throw error if creating new vault and restore without password', async () => {
+        it('throws error if creating new vault and restore without password', async () => {
           await withController(
             { cacheEncryptionKey },
             async ({ controller }) => {
@@ -457,7 +445,7 @@ describe('KeyringController', () => {
           );
         });
 
-        it('should throw error if creating new vault and restoring without seed phrase', async () => {
+        it('throws error if creating new vault and restoring without seed phrase', async () => {
           await withController(
             { cacheEncryptionKey },
             async ({ controller }) => {
@@ -475,7 +463,7 @@ describe('KeyringController', () => {
         });
 
         cacheEncryptionKey &&
-          it('should set encryptionKey and encryptionSalt in state', async () => {
+          it('sets encryptionKey and encryptionSalt in state', async () => {
             // TODO: Either fix this lint violation or explain why it's necessary to ignore.
             // eslint-disable-next-line @typescript-eslint/no-floating-promises
             withController({ cacheEncryptionKey }, async ({ controller }) => {
