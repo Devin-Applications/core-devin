@@ -88,7 +88,7 @@ describe('AbstractTestManager', () => {
     expect(message.type).toBe(messageType);
   });
 
-  it('gets all messages', async () => {
+  it('retrieves all messages', async () => {
     const controller = new AbstractTestManager();
     const message = {
       id: messageId,
@@ -370,7 +370,7 @@ describe('AbstractTestManager', () => {
   });
 
   describe('setMetadata', () => {
-    it('should set the given message metadata', async () => {
+    it('sets the given message metadata', async () => {
       const controller = new AbstractTestManager();
       await controller.addMessage({
         id: messageId,
@@ -388,7 +388,7 @@ describe('AbstractTestManager', () => {
       expect(messageAfter?.metadata).toStrictEqual({ foo: 'bar' });
     });
 
-    it('should throw an error if message is not found', () => {
+    it('throws an error if message is not found', () => {
       const controller = new AbstractTestManager();
 
       expect(() => controller.setMetadata(messageId, { foo: 'bar' })).toThrow(
