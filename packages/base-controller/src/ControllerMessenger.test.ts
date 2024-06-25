@@ -8,7 +8,7 @@ describe('ControllerMessenger', () => {
     sinon.restore();
   });
 
-  it('should allow registering and calling an action handler', () => {
+  it('allows registering and calling an action handler', () => {
     type CountAction = { type: 'count'; handler: (increment: number) => void };
     const controllerMessenger = new ControllerMessenger<CountAction, never>();
 
@@ -21,7 +21,7 @@ describe('ControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling multiple different action handlers', () => {
+  it('allows registering and calling multiple different action handlers', () => {
     // These 'Other' types are included to demonstrate that controller messenger
     // generics can indeed be unions of actions and events from different
     // controllers.
@@ -61,7 +61,7 @@ describe('ControllerMessenger', () => {
     expect(message).toBe('hello, world');
   });
 
-  it('should allow registering and calling an action handler with no parameters', () => {
+  it('allows registering and calling an action handler with no parameters', () => {
     type IncrementAction = { type: 'increment'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<
       IncrementAction,
@@ -77,7 +77,7 @@ describe('ControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling an action handler with multiple parameters', () => {
+  it('allows registering and calling an action handler with multiple parameters', () => {
     type MessageAction = {
       type: 'message';
       handler: (to: string, message: string) => void;
@@ -93,7 +93,7 @@ describe('ControllerMessenger', () => {
     expect(messages['0x123']).toBe('hello');
   });
 
-  it('should allow registering and calling an action handler with a return value', () => {
+  it('allows registering and calling an action handler with a return value', () => {
     type AddAction = { type: 'add'; handler: (a: number, b: number) => number };
     const controllerMessenger = new ControllerMessenger<AddAction, never>();
 
@@ -105,7 +105,7 @@ describe('ControllerMessenger', () => {
     expect(result).toBe(15);
   });
 
-  it('should not allow registering multiple action handlers under the same name', () => {
+  it('does not allow registering multiple action handlers under the same name', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -116,7 +116,7 @@ describe('ControllerMessenger', () => {
     }).toThrow('A handler for ping has already been registered');
   });
 
-  it('should throw when calling unregistered action', () => {
+  it('throws when calling unregistered action', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -125,7 +125,7 @@ describe('ControllerMessenger', () => {
     }).toThrow('A handler for ping has not been registered');
   });
 
-  it('should throw when calling an action that has been unregistered', () => {
+  it('throws when calling an action that has been unregistered', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -146,7 +146,7 @@ describe('ControllerMessenger', () => {
     expect(pingCount).toBe(0);
   });
 
-  it('should throw when calling an action after actions have been reset', () => {
+  it('throws when calling an action after actions have been reset', () => {
     type PingAction = { type: 'ping'; handler: () => void };
     const controllerMessenger = new ControllerMessenger<PingAction, never>();
 
@@ -167,7 +167,7 @@ describe('ControllerMessenger', () => {
     expect(pingCount).toBe(0);
   });
 
-  it('should publish event to subscriber', () => {
+  it('publishes event to subscriber', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -179,7 +179,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should allow publishing multiple different events to subscriber', () => {
+  it('allows publishing multiple different events to subscriber', () => {
     type MessageEvent =
       | { type: 'message'; payload: [string] }
       | { type: 'ping'; payload: [] };
@@ -199,7 +199,7 @@ describe('ControllerMessenger', () => {
     expect(pingHandler.callCount).toBe(1);
   });
 
-  it('should publish event with no payload to subscriber', () => {
+  it('publishes event with no payload to subscriber', () => {
     type PingEvent = { type: 'ping'; payload: [] };
     const controllerMessenger = new ControllerMessenger<never, PingEvent>();
 
@@ -211,7 +211,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should publish event with multiple payload parameters to subscriber', () => {
+  it('publishes event with multiple payload parameters to subscriber', () => {
     type MessageEvent = { type: 'message'; payload: [string, string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -223,7 +223,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should publish event once to subscriber even if subscribed multiple times', () => {
+  it('publishes event once to subscriber even if subscribed multiple times', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -236,7 +236,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(1);
   });
 
-  it('should publish event to many subscribers', () => {
+  it('publishes event to many subscribers', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -253,7 +253,7 @@ describe('ControllerMessenger', () => {
   });
 
   describe('on first state change with an initial payload function registered', () => {
-    it('should publish event if selected payload differs', () => {
+    it('publishes event if selected payload differs', () => {
       const state = {
         propA: 1,
         propB: 1,
@@ -284,7 +284,7 @@ describe('ControllerMessenger', () => {
       expect(handler.callCount).toBe(1);
     });
 
-    it('should not publish event if selected payload is the same', () => {
+    it('does not publish event if selected payload is the same', () => {
       const state = {
         propA: 1,
         propB: 1,
@@ -315,7 +315,7 @@ describe('ControllerMessenger', () => {
   });
 
   describe('on first state change without an initial payload function registered', () => {
-    it('should publish event if selected payload differs', () => {
+    it('publishes event if selected payload differs', () => {
       const state = {
         propA: 1,
         propB: 1,
@@ -342,7 +342,7 @@ describe('ControllerMessenger', () => {
       expect(handler.callCount).toBe(1);
     });
 
-    it('should publish event even when selected payload does not change', () => {
+    it('publishes event even when selected payload does not change', () => {
       const state = {
         propA: 1,
         propB: 1,
@@ -368,7 +368,7 @@ describe('ControllerMessenger', () => {
       expect(handler.callCount).toBe(1);
     });
 
-    it('should not publish if selector returns undefined', () => {
+    it('does not publish if selector returns undefined', () => {
       const state = {
         propA: undefined,
         propB: 1,
@@ -395,7 +395,7 @@ describe('ControllerMessenger', () => {
   });
 
   describe('on later state change', () => {
-    it('should call selector event handler with previous selector return value', () => {
+    it('calls selector event handler with previous selector return value', () => {
       type MessageEvent = {
         type: 'complexMessage';
         payload: [Record<string, unknown>];
@@ -419,7 +419,7 @@ describe('ControllerMessenger', () => {
       expect(handler.callCount).toBe(2);
     });
 
-    it('should publish event with selector to subscriber', () => {
+    it('publishes event with selector to subscriber', () => {
       type MessageEvent = {
         type: 'complexMessage';
         payload: [Record<string, unknown>];
@@ -441,7 +441,7 @@ describe('ControllerMessenger', () => {
       expect(handler.callCount).toBe(1);
     });
 
-    it('should not publish event with selector if selector return value is unchanged', () => {
+    it('does not publish event with selector if selector return value is unchanged', () => {
       type MessageEvent = {
         type: 'complexMessage';
         payload: [Record<string, unknown>];
@@ -465,7 +465,7 @@ describe('ControllerMessenger', () => {
     });
   });
 
-  it('should publish event to many subscribers with the same selector', () => {
+  it('publishes event to many subscribers with the same selector', () => {
     type MessageEvent = {
       type: 'complexMessage';
       payload: [Record<string, unknown>];
@@ -502,7 +502,7 @@ describe('ControllerMessenger', () => {
     expect(selector.callCount).toBe(4);
   });
 
-  it('should throw subscriber errors in a timeout', () => {
+  it('throws subscriber errors in a timeout', () => {
     const setTimeoutStub = sinon.stub(globalThis, 'setTimeout');
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
@@ -516,7 +516,7 @@ describe('ControllerMessenger', () => {
     expect(() => onTimeout()).toThrow('Example error');
   });
 
-  it('should continue calling subscribers when one throws', () => {
+  it('continues calling subscribers when one throws', () => {
     const setTimeoutStub = sinon.stub(globalThis, 'setTimeout');
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
@@ -537,7 +537,7 @@ describe('ControllerMessenger', () => {
     expect(() => onTimeout()).toThrow('Example error');
   });
 
-  it('should not call subscriber after unsubscribing', () => {
+  it('does not call subscriber after unsubscribing', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -549,7 +549,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(0);
   });
 
-  it('should not call subscriber with selector after unsubscribing', () => {
+  it('does not call subscriber with selector after unsubscribing', () => {
     type MessageEvent = {
       type: 'complexMessage';
       payload: [Record<string, unknown>];
@@ -566,7 +566,7 @@ describe('ControllerMessenger', () => {
     expect(selector.callCount).toBe(0);
   });
 
-  it('should throw when unsubscribing when there are no subscriptions', () => {
+  it('throws when unsubscribing when there are no subscriptions', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -576,7 +576,7 @@ describe('ControllerMessenger', () => {
     );
   });
 
-  it('should throw when unsubscribing a handler that is not subscribed', () => {
+  it('throws when unsubscribing a handler that is not subscribed', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -589,7 +589,7 @@ describe('ControllerMessenger', () => {
     );
   });
 
-  it('should not call subscriber after clearing event subscriptions', () => {
+  it('does not call subscriber after clearing event subscriptions', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -601,7 +601,7 @@ describe('ControllerMessenger', () => {
     expect(handler.callCount).toBe(0);
   });
 
-  it('should not throw when clearing event that has no subscriptions', () => {
+  it('does not throw when clearing event that has no subscriptions', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
@@ -610,7 +610,7 @@ describe('ControllerMessenger', () => {
     ).not.toThrow();
   });
 
-  it('should not call subscriber after resetting subscriptions', () => {
+  it('does not call subscriber after resetting subscriptions', () => {
     type MessageEvent = { type: 'message'; payload: [string] };
     const controllerMessenger = new ControllerMessenger<never, MessageEvent>();
 
