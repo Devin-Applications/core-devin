@@ -81,7 +81,7 @@ describe('DecryptMessageManager', () => {
       expect(await promise).toStrictEqual(rawSigMock);
     });
 
-    it('rejects with an error when status is "rejected"', async () => {
+    it('rejects with an error if the status is "rejected"', async () => {
       const promise = controller.addUnapprovedMessageAsync({
         from: fromMock,
         data: dataMock,
@@ -98,7 +98,7 @@ describe('DecryptMessageManager', () => {
       );
     });
 
-    it('rejects with an error when decryption errored', async () => {
+    it('rejects with an error if decryption errors', async () => {
       const promise = controller.addUnapprovedMessageAsync({
         from: fromMock,
         data: dataMock,
@@ -115,7 +115,7 @@ describe('DecryptMessageManager', () => {
       );
     });
 
-    it('rejects with an error when unapproved finishes', async () => {
+    it('rejects with an error if unapproved message finishes', async () => {
       const promise = controller.addUnapprovedMessageAsync({
         from: fromMock,
         data: dataMock,

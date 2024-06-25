@@ -31,18 +31,18 @@ describe('PersonalMessageManager', () => {
     detectSIWEMock.mockReturnValue(siweMockNotFound);
   });
 
-  it('should set default state', () => {
+  it('sets default state', () => {
     expect(controller.state).toStrictEqual({
       unapprovedMessages: {},
       unapprovedMessagesCount: 0,
     });
   });
 
-  it('should set default config', () => {
+  it('sets default config', () => {
     expect(controller.config).toStrictEqual({});
   });
 
-  it('should add a valid message', async () => {
+  it('adds a valid message', async () => {
     const messageId = '1';
     const from = '0x0123';
     const messageData = '0x123';
@@ -71,7 +71,7 @@ describe('PersonalMessageManager', () => {
     expect(message.type).toBe(messageType);
   });
 
-  it('should add a valid unapproved message', async () => {
+  it('adds a valid unapproved message', async () => {
     const messageStatus = 'unapproved';
     const messageType = 'personal_sign';
     const messageParams = {
@@ -102,7 +102,7 @@ describe('PersonalMessageManager', () => {
     expect(message.securityAlertResponse?.reason).toBe('reason');
   });
 
-  it('should throw when adding invalid message', async () => {
+  it('throws when adding invalid message', async () => {
     const from = 'foo';
     const messageData = '0x123';
     await expect(
@@ -115,7 +115,7 @@ describe('PersonalMessageManager', () => {
     );
   });
 
-  it('should get correct unapproved messages', async () => {
+  it('gets correct unapproved messages', async () => {
     const firstMessage = {
       id: '1',
       messageParams: { from: '0x1', data: '0x123' },
@@ -139,7 +139,7 @@ describe('PersonalMessageManager', () => {
     });
   });
 
-  it('should approve message', async () => {
+  it('approves message', async () => {
     const firstMessage = { from: fromMock, data: '0x123' };
     const messageId = await controller.addUnapprovedMessage(firstMessage);
     const messageParams = await controller.approveMessage({
@@ -154,7 +154,7 @@ describe('PersonalMessageManager', () => {
     expect(message.status).toBe('approved');
   });
 
-  it('should set message status signed', async () => {
+  it('sets message status signed', async () => {
     const firstMessage = { from: fromMock, data: '0x123' };
     const rawSig = '0x5f7a0';
     const messageId = await controller.addUnapprovedMessage(firstMessage);
@@ -168,7 +168,7 @@ describe('PersonalMessageManager', () => {
     expect(message.status).toBe('signed');
   });
 
-  it('should reject message', async () => {
+  it('rejects message', async () => {
     const firstMessage = { from: fromMock, data: '0x123' };
     const messageId = await controller.addUnapprovedMessage(firstMessage);
     controller.rejectMessage(messageId);
@@ -179,7 +179,7 @@ describe('PersonalMessageManager', () => {
     expect(message.status).toBe('rejected');
   });
 
-  it('should add message including Ethereum sign in data', async () => {
+  it('adds message including Ethereum sign in data', async () => {
     detectSIWEMock.mockReturnValue(siweMockFound);
     const firstMessage = { from: fromMock, data: '0x123' };
     const messageId = await controller.addUnapprovedMessage(firstMessage);
