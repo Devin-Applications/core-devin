@@ -3573,7 +3573,7 @@ async function withController<ReturnValue>(
 function buildKeyringBuilderWithSpy(KeyringConstructor: KeyringClass<Json>): jest.MockedFunction<{ (): EthKeyring<Json>; type: string }> {
   const keyringBuilderWithSpy = jest
     .fn()
-    .mockImplementation((...args) => new KeyringConstructor(...args)) as jest.MockedFunction<{ (): EthKeyring<Json>; type: string }>;
+    .mockImplementation((...args) => new KeyringConstructor(...args)) as unknown as jest.MockedFunction<{ (): EthKeyring<Json>; type: string }>;
   (keyringBuilderWithSpy as unknown as { (): EthKeyring<Json>; type: string }).type = KeyringConstructor.type as string;
   return keyringBuilderWithSpy;
 }
