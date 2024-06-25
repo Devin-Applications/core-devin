@@ -289,7 +289,7 @@ describe('KeyringController', () => {
     });
 
     describe('when accountCount is provided', () => {
-      it('should add new account if accountCount is in sequence', async () => {
+      it('adds new account if accountCount is in sequence', async () => {
         await withController(async ({ controller, initialState }) => {
           const [primaryKeyring] = controller.getKeyringsByType(
             KeyringTypes.hd,
@@ -311,7 +311,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should throw an error if passed accountCount param is out of sequence', async () => {
+      it('throws an error if passed accountCount param is out of sequence', async () => {
         await withController(async ({ controller, initialState }) => {
           const [primaryKeyring] = controller.getKeyringsByType(
             KeyringTypes.hd,
@@ -326,7 +326,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not add a new account if called twice with the same accountCount param', async () => {
+      it('does not add a new account if called twice with the same accountCount param', async () => {
         await withController(async ({ controller, initialState }) => {
           const accountCount = initialState.keyrings[0].accounts.length;
           const [primaryKeyring] = controller.getKeyringsByType(
@@ -483,7 +483,7 @@ describe('KeyringController', () => {
     [false, true].map((cacheEncryptionKey) =>
       describe(`when cacheEncryptionKey is ${cacheEncryptionKey}`, () => {
         describe('when there is no existing vault', () => {
-          it('should create new vault, mnemonic and keychain', async () => {
+          it('creates new vault, mnemonic and keychain', async () => {
             await withController(
               { cacheEncryptionKey },
               async ({ controller, initialState, encryptor }) => {
@@ -514,7 +514,7 @@ describe('KeyringController', () => {
             );
           });
 
-          it('should set default state', async () => {
+          it('sets default state', async () => {
             await withController(async ({ controller }) => {
               expect(controller.state.keyrings).not.toStrictEqual([]);
               const keyring = controller.state.keyrings[0];
@@ -524,7 +524,7 @@ describe('KeyringController', () => {
             });
           });
 
-          it('should throw error if password is of wrong type', async () => {
+          it('throws error if password is of wrong type', async () => {
             await withController(
               { skipVaultCreation: true },
               async ({ controller }) => {
@@ -538,7 +538,7 @@ describe('KeyringController', () => {
             );
           });
 
-          it('should throw error if the first account is not found on the keyring', async () => {
+          it('throws error if the first account is not found on the keyring', async () => {
             jest
               .spyOn(HDKeyring.prototype, 'getAccounts')
               .mockResolvedValue([]);
@@ -554,7 +554,7 @@ describe('KeyringController', () => {
         });
 
         describe('when there is an existing vault', () => {
-          it('should return existing vault', async () => {
+          it('returns existing vault', async () => {
             await withController(
               { cacheEncryptionKey },
               async ({ controller, initialState }) => {
@@ -577,7 +577,7 @@ describe('KeyringController', () => {
         });
 
         cacheEncryptionKey &&
-          it('should set encryptionKey and encryptionSalt in state', async () => {
+          it('sets encryptionKey and encryptionSalt in state', async () => {
             // TODO: Either fix this lint violation or explain why it's necessary to ignore.
             // eslint-disable-next-line @typescript-eslint/no-floating-promises
             withController({ cacheEncryptionKey }, async ({ initialState }) => {
@@ -590,7 +590,7 @@ describe('KeyringController', () => {
   });
 
   describe('setLocked', () => {
-    it('should set locked correctly', async () => {
+    it('sets locked correctly', async () => {
       await withController(async ({ controller }) => {
         expect(controller.isUnlocked()).toBe(true);
         expect(controller.state.isUnlocked).toBe(true);
@@ -602,7 +602,7 @@ describe('KeyringController', () => {
       });
     });
 
-    it('should emit KeyringController:lock event', async () => {
+    it('emits KeyringController:lock event', async () => {
       await withController(async ({ controller, messenger }) => {
         const listener = sinon.spy();
         messenger.subscribe('KeyringController:lock', listener);
@@ -614,7 +614,7 @@ describe('KeyringController', () => {
 
   describe('exportSeedPhrase', () => {
     describe('when mnemonic is not exportable', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         await withController(async ({ controller }) => {
           const primaryKeyring = controller.getKeyringsByType(
             KeyringTypes.hd,
@@ -631,7 +631,7 @@ describe('KeyringController', () => {
 
     describe('when mnemonic is exportable', () => {
       describe('when correct password is provided', () => {
-        it('should export seed phrase', async () => {
+        it('exports seed phrase', async () => {
           await withController(async ({ controller }) => {
             const seed = await controller.exportSeedPhrase(password);
             expect(seed).not.toBe('');
@@ -640,7 +640,7 @@ describe('KeyringController', () => {
       });
 
       describe('when wrong password is provided', () => {
-        it('should export seed phrase', async () => {
+        it('exports seed phrase', async () => {
           await withController(async ({ controller, encryptor }) => {
             sinon
               .stub(encryptor, 'decrypt')
@@ -658,7 +658,7 @@ describe('KeyringController', () => {
     describe('when the keyring for the given address supports exportAccount', () => {
       describe('when correct password is provided', () => {
         describe('when correct account is provided', () => {
-          it('should export account', async () => {
+          it('exports account', async () => {
             await withController(async ({ controller, initialState }) => {
               const account = initialState.keyrings[0].accounts[0];
               const newPrivateKey = await controller.exportAccount(
@@ -671,7 +671,7 @@ describe('KeyringController', () => {
         });
 
         describe('when wrong account is provided', () => {
-          it('should throw error', async () => {
+          it('throws error', async () => {
             await withController(async ({ controller }) => {
               await expect(
                 controller.exportAccount(password, ''),
@@ -684,7 +684,7 @@ describe('KeyringController', () => {
       });
 
       describe('when wrong password is provided', () => {
-        it('should throw error', async () => {
+        it('throws error', async () => {
           await withController(
             async ({ controller, initialState, encryptor }) => {
               const account = initialState.keyrings[0].accounts[0];
@@ -706,7 +706,7 @@ describe('KeyringController', () => {
     });
 
     describe('when the keyring for the given address does not support exportAccount', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         const address = '0x5AC6D462f054690a373FABF8CC28e161003aEB19';
         stubKeyringClassWithAccount(MockKeyring, address);
         await withController(
@@ -724,18 +724,16 @@ describe('KeyringController', () => {
   });
 
   describe('getAccounts', () => {
-    it('should get accounts', async () => {
+    it('gets accounts', async () => {
       await withController(async ({ controller, initialState }) => {
         const initialAccount = initialState.keyrings[0].accounts;
         const accounts = await controller.getAccounts();
         expect(accounts).toStrictEqual(initialAccount);
       });
     });
-  });
 
-  describe('getEncryptionPublicKey', () => {
     describe('when the keyring for the given address supports getEncryptionPublicKey', () => {
-      it('should return the correct encryption public key', async () => {
+      it('returns the correct encryption public key', async () => {
         await withController(async ({ controller }) => {
           const importedAccountAddress =
             await controller.importAccountWithStrategy(
@@ -755,7 +753,7 @@ describe('KeyringController', () => {
     });
 
     describe('when the keyring for the given address does not support getEncryptionPublicKey', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         const address = '0x5AC6D462f054690a373FABF8CC28e161003aEB19';
         stubKeyringClassWithAccount(MockKeyring, address);
         await withController(
@@ -776,7 +774,7 @@ describe('KeyringController', () => {
 
   describe('decryptMessage', () => {
     describe('when the keyring for the given address supports decryptMessage', () => {
-      it('should successfully decrypt a message with valid parameters and return the raw decryption result', async () => {
+      it('successfully decrypts a message with valid parameters and returns the raw decryption result', async () => {
         await withController(async ({ controller }) => {
           const importedAccountAddress =
             await controller.importAccountWithStrategy(
@@ -803,7 +801,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it("should throw an error if the 'from' parameter is not a valid account address", async () => {
+      it("throws an error if the 'from' parameter is not a valid account address", async () => {
         await withController(async ({ controller }) => {
           const messageParams = {
             from: 'invalid address',
@@ -825,7 +823,7 @@ describe('KeyringController', () => {
     });
 
     describe('when the keyring for the given address does not support decryptMessage', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         const address = '0x5AC6D462f054690a373FABF8CC28e161003aEB19';
         stubKeyringClassWithAccount(MockKeyring, address);
         await withController(
@@ -852,7 +850,7 @@ describe('KeyringController', () => {
 
   describe('getKeyringForAccount', () => {
     describe('when existing account is provided', () => {
-      it('should get correct keyring', async () => {
+      it('gets correct keyring', async () => {
         await withController(async ({ controller }) => {
           const normalizedInitialAccounts =
             controller.state.keyrings[0].accounts.map(normalize);
@@ -869,7 +867,7 @@ describe('KeyringController', () => {
     });
 
     describe('when non-existing account is provided', () => {
-      it('should throw error', async () => {
+      it('throws error for non-existing account', async () => {
         await withController(async ({ controller }) => {
           await expect(
             controller.getKeyringForAccount(
@@ -881,7 +879,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should throw an error if there are no keyrings', async () => {
+      it('throws an error if there are no keyrings', async () => {
         await withController(
           { skipVaultCreation: true },
           async ({ controller }) => {
@@ -900,7 +898,7 @@ describe('KeyringController', () => {
 
   describe('getKeyringsByType', () => {
     describe('when existing type is provided', () => {
-      it('should return keyrings of the right type', async () => {
+      it('returns keyrings of the right type', async () => {
         await withController(async ({ controller }) => {
           const keyrings = controller.getKeyringsByType(
             KeyringTypes.hd,
@@ -915,7 +913,7 @@ describe('KeyringController', () => {
     });
 
     describe('when non existing type is provided', () => {
-      it('should return an empty array', async () => {
+      it('returns an empty array', async () => {
         await withController(async ({ controller }) => {
           const keyrings = controller.getKeyringsByType('fake');
           expect(keyrings).toHaveLength(0);
@@ -925,7 +923,7 @@ describe('KeyringController', () => {
   });
 
   describe('persistAllKeyrings', () => {
-    it('should reflect changes made directly to a keyring into the KeyringController state', async () => {
+    it('reflects changes made directly to a keyring in the KeyringController state', async () => {
       await withController(async ({ controller }) => {
         const primaryKeyring = controller.getKeyringsByType(
           KeyringTypes.hd,
@@ -938,7 +936,7 @@ describe('KeyringController', () => {
       });
     });
 
-    it('should throw error when locked', async () => {
+    it('throws error when locked', async () => {
       await withController(async ({ controller }) => {
         await controller.setLocked();
 
@@ -952,7 +950,7 @@ describe('KeyringController', () => {
   describe('importAccountWithStrategy', () => {
     describe('using strategy privateKey', () => {
       describe('when correct key is provided', () => {
-        it('should import account', async () => {
+        it('imports account', async () => {
           await withController(async ({ controller, initialState }) => {
             const address = '0x51253087e6f8358b5f10c0a94315d69db3357859';
             const newKeyring = {
@@ -975,7 +973,7 @@ describe('KeyringController', () => {
 
         // TODO: Either fix this lint violation or explain why it's necessary to ignore.
         // eslint-disable-next-line jest/expect-expect
-        it('should not select imported account', async () => {
+        it('does not select imported account', async () => {
           await withController(async ({ controller }) => {
             await controller.importAccountWithStrategy(
               AccountImportStrategy.privateKey,
@@ -986,7 +984,7 @@ describe('KeyringController', () => {
       });
 
       describe('when wrong key is provided', () => {
-        it('should not import account', async () => {
+        it('does not import account', async () => {
           await withController(async ({ controller }) => {
             await expect(
               controller.importAccountWithStrategy(
@@ -1022,7 +1020,7 @@ describe('KeyringController', () => {
 
     describe('using strategy json', () => {
       describe('when correct data is provided', () => {
-        it('should import account', async () => {
+        it('imports account', async () => {
           await withController(async ({ controller, initialState }) => {
             const somePassword = 'holachao123';
             const address = '0xb97c80fab7a3793bbe746864db80d236f1345ea7';
@@ -1048,7 +1046,7 @@ describe('KeyringController', () => {
 
         // TODO: Either fix this lint violation or explain why it's necessary to ignore.
         // eslint-disable-next-line jest/expect-expect
-        it('should not select imported account', async () => {
+        it('does not select imported account', async () => {
           await withController(async ({ controller }) => {
             const somePassword = 'holachao123';
             await controller.importAccountWithStrategy(
@@ -1058,7 +1056,7 @@ describe('KeyringController', () => {
           });
         });
 
-        it('should throw error when importing a duplicate account', async () => {
+        it('throws error when importing a duplicate account', async () => {
           await withController(async ({ controller }) => {
             const somePassword = 'holachao123';
             await controller.importAccountWithStrategy(
@@ -1077,7 +1075,7 @@ describe('KeyringController', () => {
       });
 
       describe('when wrong data is provided', () => {
-        it('should not import account with empty json', async () => {
+        it('does not import account with empty json', async () => {
           await withController(async ({ controller }) => {
             const somePassword = 'holachao123';
             await expect(
@@ -1089,7 +1087,7 @@ describe('KeyringController', () => {
           });
         });
 
-        it('should not import account with wrong password', async () => {
+        it('does not import account with wrong password', async () => {
           await withController(async ({ controller }) => {
             const somePassword = 'holachao12';
 
@@ -1104,7 +1102,7 @@ describe('KeyringController', () => {
           });
         });
 
-        it('should not import account with empty password', async () => {
+        it('does not import account with empty password', async () => {
           await withController(async ({ controller }) => {
             await expect(
               controller.importAccountWithStrategy(AccountImportStrategy.json, [
@@ -1120,7 +1118,7 @@ describe('KeyringController', () => {
     });
 
     describe('using unrecognized strategy', () => {
-      it('should throw an unexpected import strategy error', async () => {
+      it('throws an unexpected import strategy error', async () => {
         await withController(async ({ controller }) => {
           const somePassword = 'holachao123';
           await expect(
@@ -1146,7 +1144,7 @@ describe('KeyringController', () => {
        * Enforcing this behaviour is not a 100% correct and it should be responsibility of the consumer to handle the accounts
        * and keyrings in a way that it matches the expected behaviour.
        */
-      it('should not remove HD Key Tree keyring nor the single account from state', async () => {
+      it('does not remove HD Key Tree keyring nor the single account from state', async () => {
         await withController(async ({ controller, initialState }) => {
           const account = initialState.keyrings[0].accounts[0] as Hex;
           await expect(controller.removeAccount(account)).rejects.toThrow(
@@ -1157,7 +1155,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should remove account', async () => {
+      it('removes account', async () => {
         await withController(async ({ controller, initialState }) => {
           await controller.importAccountWithStrategy(
             AccountImportStrategy.privateKey,
@@ -1170,7 +1168,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should emit `accountRemoved` event', async () => {
+      it('emits `accountRemoved` event', async () => {
         await withController(async ({ controller, messenger }) => {
           await controller.importAccountWithStrategy(
             AccountImportStrategy.privateKey,
@@ -1186,7 +1184,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not remove account if wrong address is provided', async () => {
+      it('does not remove account if wrong address is provided', async () => {
         await withController(async ({ controller }) => {
           await controller.importAccountWithStrategy(
             AccountImportStrategy.privateKey,
@@ -1211,7 +1209,7 @@ describe('KeyringController', () => {
     });
 
     describe('when the keyring for the given address does not support removeAccount', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         const address = '0x5AC6D462f054690a373FABF8CC28e161003aEB19';
         stubKeyringClassWithAccount(MockKeyring, address);
         await withController(
@@ -1230,7 +1228,7 @@ describe('KeyringController', () => {
 
   describe('signMessage', () => {
     describe('when the keyring for the given address supports signMessage', () => {
-      it('should sign message', async () => {
+      it('signs message', async () => {
         await withController(async ({ controller, initialState }) => {
           const data =
             '0x879a053d4800c6354e76c7985a865d2922c82fb5b3f4577b2fe08b998954f2e0';
@@ -1243,7 +1241,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not sign message if empty data is passed', async () => {
+      it('does not sign message if empty data is passed', async () => {
         await withController(async ({ controller, initialState }) => {
           await expect(() =>
             controller.signMessage({
@@ -1254,7 +1252,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not sign message if from account is not passed', async () => {
+      it('does not sign message if from account is not provided', async () => {
         await withController(async ({ controller }) => {
           await expect(
             controller.signMessage({
@@ -1269,7 +1267,7 @@ describe('KeyringController', () => {
     });
 
     describe('when the keyring for the given address does not support signMessage', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         const address = '0x5AC6D462f054690a373FABF8CC28e161003aEB19';
         stubKeyringClassWithAccount(MockKeyring, address);
         await withController(
@@ -1293,7 +1291,7 @@ describe('KeyringController', () => {
 
   describe('signPersonalMessage', () => {
     describe('when the keyring for the given address supports signPersonalMessage', () => {
-      it('should sign personal message', async () => {
+      it('signs personal message', async () => {
         await withController(async ({ controller, initialState }) => {
           const data = bytesToHex(Buffer.from('Hello from test', 'utf8'));
           const account = initialState.keyrings[0].accounts[0];
@@ -1302,7 +1300,7 @@ describe('KeyringController', () => {
             from: account,
           });
           const recovered = recoverPersonalSignature({ data, signature });
-          expect(account).toBe(recovered);
+          expect(recovered).toBe(account);
         });
       });
 
@@ -1310,7 +1308,7 @@ describe('KeyringController', () => {
        * signPersonalMessage does not fail for empty data value
        * https://github.com/MetaMask/core/issues/799
        */
-      it('should sign personal message even if empty data is passed', async () => {
+      it('signs personal message even if empty data is passed', async () => {
         await withController(async ({ controller, initialState }) => {
           const account = initialState.keyrings[0].accounts[0];
           const signature = await controller.signPersonalMessage({
@@ -1322,7 +1320,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('should not sign personal message if from account is not passed', async () => {
+      it('does not sign personal message if from account is not passed', async () => {
         await withController(async ({ controller }) => {
           await expect(
             controller.signPersonalMessage({
@@ -1337,7 +1335,7 @@ describe('KeyringController', () => {
     });
 
     describe('when the keyring for the given address does not support signPersonalMessage', () => {
-      it('should throw error', async () => {
+      it('throws error', async () => {
         const address = '0x5AC6D462f054690a373FABF8CC28e161003aEB19';
         stubKeyringClassWithAccount(MockKeyring, address);
         await withController(
@@ -3251,7 +3249,7 @@ describe('KeyringController', () => {
       const executionContext = {
         chainId,
       };
-      it('should return an UserOp patch', async () => {
+      it('returns an UserOp patch', async () => {
         await withController(
           async ({ controller, messenger, initialState }) => {
             const userOp = {
@@ -3290,7 +3288,7 @@ describe('KeyringController', () => {
       const executionContext = {
         chainId,
       };
-      it('should return an UserOp signature', async () => {
+      it('returns an UserOp signature', async () => {
         await withController(
           async ({ controller, messenger, initialState }) => {
             const userOp = {
@@ -3325,7 +3323,7 @@ describe('KeyringController', () => {
     });
 
     describe('getKeyringsByType', () => {
-      it('should return correct keyring by type', async () => {
+      it('returns correct keyring by type', async () => {
         jest
           .spyOn(KeyringController.prototype, 'getKeyringsByType')
           .mockReturnValue([
@@ -3345,7 +3343,7 @@ describe('KeyringController', () => {
     });
 
     describe('getKeyringForAccount', () => {
-      it('should return the keyring for the account', async () => {
+      it('returns the keyring for the account', async () => {
         jest
           .spyOn(KeyringController.prototype, 'getKeyringForAccount')
           .mockResolvedValue({
@@ -3361,7 +3359,7 @@ describe('KeyringController', () => {
     });
 
     describe('getAccounts', () => {
-      it('should return all accounts', async () => {
+      it('returns all accounts', async () => {
         jest
           .spyOn(KeyringController.prototype, 'getAccounts')
           .mockResolvedValue(['0x1234']);
@@ -3374,7 +3372,7 @@ describe('KeyringController', () => {
     });
 
     describe('persistAllKeyrings', () => {
-      it('should call persistAllKeyrings', async () => {
+      it('calls persistAllKeyrings', async () => {
         jest
           .spyOn(KeyringController.prototype, 'persistAllKeyrings')
           .mockResolvedValue(true);
@@ -3388,7 +3386,7 @@ describe('KeyringController', () => {
   });
 
   describe('run conditions', () => {
-    it('should not cause run conditions when called multiple times', async () => {
+    it('does not cause run conditions when called multiple times', async () => {
       await withController(async ({ controller, initialState }) => {
         await Promise.all([
           controller.submitPassword(password),
@@ -3401,7 +3399,7 @@ describe('KeyringController', () => {
       });
     });
 
-    it('should not cause run conditions when called multiple times in combination with persistAllKeyrings', async () => {
+    it('does not cause run conditions when called multiple times in combination with persistAllKeyrings', async () => {
       await withController(async ({ controller, initialState }) => {
         await Promise.all([
           controller.submitPassword(password),
@@ -3414,7 +3412,7 @@ describe('KeyringController', () => {
       });
     });
 
-    it('should not cause a deadlock when subscribing to state changes', async () => {
+    it('does not cause a deadlock when subscribing to state changes', async () => {
       await withController(async ({ controller, initialState, messenger }) => {
         let executed = false;
         const listener = jest.fn(async () => {
@@ -3437,7 +3435,7 @@ describe('KeyringController', () => {
 
   describe('atomic operations', () => {
     describe('addNewKeyring', () => {
-      it('should rollback the controller keyrings if the keyring creation fails', async () => {
+      it('rolls back the controller keyrings if the keyring creation fails', async () => {
         const mockAddress = '0x4584d2B4905087A100420AFfCe1b2d73fC69B8E4';
         stubKeyringClassWithAccount(MockKeyring, mockAddress);
         // Mocking the serialize method to throw an error will
@@ -3466,7 +3464,6 @@ describe('KeyringController', () => {
       });
     });
   });
-});
 
 type WithControllerCallback<ReturnValue> = ({
   controller,
@@ -3572,14 +3569,11 @@ async function withController<ReturnValue>(
  * @param KeyringConstructor - The constructor to use for building the keyring.
  * @returns A keyring builder that uses `jest.fn()` to spy on invocations.
  */
-function buildKeyringBuilderWithSpy(KeyringConstructor: KeyringClass<Json>): {
-  (): EthKeyring<Json>;
-  type: string;
-} {
-  const keyringBuilderWithSpy: { (): EthKeyring<Json>; type?: string } = jest
+
+function buildKeyringBuilderWithSpy(KeyringConstructor: KeyringClass<Json>): { (): EthKeyring<Json>; type: string } {
+  const keyringBuilderWithSpy: { (): EthKeyring<Json>; type: string } = jest
     .fn()
     .mockImplementation((...args) => new KeyringConstructor(...args));
-  keyringBuilderWithSpy.type = KeyringConstructor.type;
-  // Not sure why TypeScript isn't smart enough to infer that `type` is set here.
-  return keyringBuilderWithSpy as { (): EthKeyring<Json>; type: string };
+  keyringBuilderWithSpy.type = KeyringConstructor.type as string;
+  return keyringBuilderWithSpy;
 }
