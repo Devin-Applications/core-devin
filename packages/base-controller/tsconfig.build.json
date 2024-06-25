@@ -10,5 +10,5 @@
       "path": "../controller-utils/tsconfig.build.json"
     }
   ],
-  "include": ["../../types", "./src"]
+  "include": ["../../types", "./src", "./src/BaseControllerV1.ts"]
 }

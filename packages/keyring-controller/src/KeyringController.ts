@@ -43,6 +43,7 @@ import { Mutex } from 'async-mutex';
 import type { MutexInterface } from 'async-mutex';
 import Wallet, { thirdparty as importers } from 'ethereumjs-wallet';
 import type { Patch } from 'immer';
+import { produceWithPatches, Draft } from 'immer';
 
 import { KeyringControllerError } from './constants';
 
@@ -646,6 +647,30 @@ export class KeyringController extends BaseController<
     }
 
     this.#registerMessageHandlers();
+  }
+
+  protected update(
+    callback: (state: Draft<KeyringControllerState>) => void | KeyringControllerState,
+  ): {
+    nextState: KeyringControllerState;
+    patches: Patch[];
+    inversePatches: Patch[];
+  } {
+    const [nextState, patches, inversePatches] = (
+      produceWithPatches as unknown as (
+        state: KeyringControllerState,
+        cb: typeof callback,
+      ) => [KeyringControllerState, Patch[], Patch[]]
+    )(this.state, callback);
+
+    this.state = nextState;
+    this.messagingSystem.publish(
+      `${this.name}:stateChange`,
+      nextState,
+      patches,
+    );
+
+    return { nextState, patches, inversePatches };
   }
 
   /**
