@@ -16,12 +16,6 @@
   "include": [
     "../../types",
     "./src",
-    "../base-controller/src",
-    "../message-manager/src",
-    "../base-controller/src/index.ts",
-    "../message-manager/src/index.ts",
-    "../base-controller/src/**/*.ts",
-    "../message-manager/src/**/*.ts",
     "./src/KeyringController.ts",
     "./src/constants.ts",
     "./src/index.ts"
