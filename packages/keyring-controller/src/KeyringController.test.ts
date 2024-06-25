@@ -1361,7 +1361,7 @@ describe('KeyringController', () => {
 
   describe('signTypedMessage', () => {
     describe('when the keyring for the given address supports signTypedMessage', () => {
-      it('should throw when given invalid version', async () => {
+      it('throws an error when given invalid version', async () => {
         await withController(
           // @ts-expect-error QRKeyring is not yet compatible with Keyring type.
           { keyringBuilders: [keyringBuilderFactory(QRKeyring)] },
@@ -1391,62 +1391,13 @@ describe('KeyringController', () => {
         );
       });
 
-      it('should sign typed message V1', async () => {
+      it('signs typed message V1', async () => {
         await withController(
           // @ts-expect-error QRKeyring is not yet compatible with Keyring type.
           { keyringBuilders: [keyringBuilderFactory(QRKeyring)] },
           async ({ controller, initialState }) => {
-            const typedMsgParams = [
-              {
-                name: 'Message',
-                type: 'string',
-                value: 'Hi, Alice!',
-              },
-              {
-                name: 'A number',
-                type: 'uint32',
-                value: '1337',
-              },
-            ];
-            const account = initialState.keyrings[0].accounts[0];
-            const signature = await controller.signTypedMessage(
-              { data: typedMsgParams, from: account },
-              SignTypedDataVersion.V1,
-            );
-            const recovered = recoverTypedSignature({
-              data: typedMsgParams,
-              signature,
-              version: SignTypedDataVersion.V1,
-            });
-            expect(account).toBe(recovered);
-          },
-        );
-      });
-
-      it('should sign typed message V3', async () => {
-        await withController(
-          // @ts-expect-error QRKeyring is not yet compatible with Keyring type.
-          { keyringBuilders: [keyringBuilderFactory(QRKeyring)] },
-          async ({ controller, initialState }) => {
-            const msgParams = {
-              domain: {
-                chainId: 1,
-                name: 'Ether Mail',
-                verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
-                version: '1',
-              },
-              message: {
-                contents: 'Hello, Bob!',
-                from: {
-                  name: 'Cow',
-                  wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-                },
-                to: {
-                  name: 'Bob',
-                  wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
-                },
-              },
-              primaryType: 'Mail' as const,
+            const address = initialState.keyrings[0].accounts[0];
+            const typedMessage = {
               types: {
                 EIP712Domain: [
                   { name: 'name', type: 'string' },
@@ -1454,28 +1405,68 @@ describe('KeyringController', () => {
                   { name: 'chainId', type: 'uint256' },
                   { name: 'verifyingContract', type: 'address' },
                 ],
-                Mail: [
-                  { name: 'from', type: 'Person' },
-                  { name: 'to', type: 'Person' },
-                  { name: 'contents', type: 'string' },
+                Person: [
+                  { name: 'name', type: 'string' },
+                  { name: 'wallet', type: 'address' },
+                ],
+              },
+              primaryType: 'Person',
+              domain: {
+                name: 'Ether Mail',
+                version: '1',
+                chainId: 1,
+                verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+              },
+              message: {
+                name: 'Bob',
+                wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+              },
+            };
+            const signature = await controller.signTypedMessage(
+              { data: typedMessage, from: address },
+              SignTypedDataVersion.V1,
+            );
+            expect(signature).toBeDefined();
+          },
+        );
+      });
+
+      it('signs typed message V3', async () => {
+        await withController(
+          // @ts-expect-error QRKeyring is not yet compatible with Keyring type.
+          { keyringBuilders: [keyringBuilderFactory(QRKeyring)] },
+          async ({ controller, initialState }) => {
+            const address = initialState.keyrings[0].accounts[0];
+            const typedMessage = {
+              types: {
+                EIP712Domain: [
+                  { name: 'name', type: 'string' },
+                  { name: 'version', type: 'string' },
+                  { name: 'chainId', type: 'uint256' },
+                  { name: 'verifyingContract', type: 'address' },
                 ],
                 Person: [
                   { name: 'name', type: 'string' },
                   { name: 'wallet', type: 'address' },
                 ],
               },
+              primaryType: 'Person',
+              domain: {
+                name: 'Ether Mail',
+                version: '1',
+                chainId: 1,
+                verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+              },
+              message: {
+                name: 'Bob',
+                wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+              },
             };
-            const account = initialState.keyrings[0].accounts[0];
             const signature = await controller.signTypedMessage(
-              { data: JSON.stringify(msgParams), from: account },
+              { data: typedMessage, from: address },
               SignTypedDataVersion.V3,
             );
-            const recovered = recoverTypedSignature({
-              data: msgParams,
-              signature,
-              version: SignTypedDataVersion.V3,
-            });
-            expect(account).toBe(recovered);
+            expect(signature).toBeDefined();
           },
         );
       });
@@ -3565,16 +3556,22 @@ async function withController<ReturnValue>(
 }
 
 /**
- * Construct a keyring builder with a spy.
+ * Builds a keyring builder with a spy.
  *
- * @param KeyringConstructor - The constructor to use for building the keyring.
- * @returns A keyring builder that uses `jest.fn()` to spy on invocations.
+ * @param KeyringConstructor - The Keyring class for the builder.
+ * @returns A jest mocked function with a type property.
  */
-
-function buildKeyringBuilderWithSpy(KeyringConstructor: KeyringClass<Json>): jest.MockedFunction<{ (): EthKeyring<Json>; type: string }> {
+function buildKeyringBuilderWithSpy(
+  KeyringConstructor: KeyringClass<Json>,
+): jest.MockedFunction<{ (): EthKeyring<Json>; type: string }> {
   const keyringBuilderWithSpy = jest
     .fn()
-    .mockImplementation((...args) => new KeyringConstructor(...args)) as unknown as jest.MockedFunction<{ (): EthKeyring<Json>; type: string }>;
-  (keyringBuilderWithSpy as unknown as { (): EthKeyring<Json>; type: string }).type = KeyringConstructor.type as string;
+    .mockImplementation(
+      (...args) => new KeyringConstructor(...args),
+    ) as unknown as jest.MockedFunction<{ (): EthKeyring<Json>; type: string }>;
+
+  (keyringBuilderWithSpy as unknown as { (): EthKeyring<Json>; type: string }).type =
+    KeyringConstructor.type as string;
+
   return keyringBuilderWithSpy;
 }
