@@ -13,7 +13,6 @@
   "include": [
     "../../types",
     "./src",
-    "./src/**/*.ts",
-    "./src/BaseControllerV1.ts"
+    "./src/**/*.ts"
   ]
 }
