@@ -1396,7 +1396,6 @@ describe('KeyringController', () => {
           // @ts-expect-error QRKeyring is not yet compatible with Keyring type.
           { keyringBuilders: [keyringBuilderFactory(QRKeyring)] },
           async ({ controller, initialState }) => {
-            const address = initialState.keyrings[0].accounts[0];
             const typedMessage = {
               types: {
                 EIP712Domain: [
@@ -1422,6 +1421,7 @@ describe('KeyringController', () => {
                 wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
               },
             };
+            const address = initialState.keyrings[0].accounts[0];
             const signature = await controller.signTypedMessage(
               { data: typedMessage, from: address },
               SignTypedDataVersion.V1,
