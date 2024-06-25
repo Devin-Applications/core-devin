@@ -157,7 +157,7 @@ describe('KeyringController', () => {
         });
       });
 
-      it('throws an error if passed accountCount param is out of sequence', async () => {
+      it('throws an error if accountCount param is out of sequence', async () => {
         await withController(async ({ controller, initialState }) => {
           const accountCount = initialState.keyrings[0].accounts.length;
           await expect(
