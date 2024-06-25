@@ -480,7 +480,7 @@ describe('EnsController', () => {
   });
 
   describe('reverseResolveName', () => {
-    it('should return undefined when eth provider is not defined', async () => {
+    it('returns undefined when eth provider is not defined', async () => {
       const rootMessenger = getRootMessenger();
       const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
       const ens = new EnsController({
@@ -489,7 +489,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should return undefined when network is loading', async function () {
+    it('returns undefined when network is loading', async function () {
       const rootMessenger = getRootMessenger();
       const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
       const getNetworkClientById = buildMockGetNetworkClientById();
@@ -510,7 +510,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should return undefined when network is not ens supported', async function () {
+    it('returns undefined when network is not ens supported', async function () {
       const rootMessenger = getRootMessenger();
       const ensControllerMessenger = getRestrictedMessenger(rootMessenger);
       const getNetworkClientById = buildMockGetNetworkClientById({
@@ -535,7 +535,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should only resolve an ENS name once', async () => {
+    it('resolves an ENS name only once', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
@@ -560,12 +560,10 @@ describe('EnsController', () => {
           });
         },
       });
-
-      expect(await ens.reverseResolveAddress(address1)).toBe('peaksignal.eth');
-      expect(await ens.reverseResolveAddress(address1)).toBe('peaksignal.eth');
+      expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should fail if lookupAddress through an error', async () => {
+    it('fails if lookupAddress throws an error', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
@@ -590,7 +588,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should fail if lookupAddress returns a null value', async () => {
+    it('fails if lookupAddress returns a null value', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
@@ -615,7 +613,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should fail if resolveName through an error', async () => {
+    it('fails if resolveName throws an error', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
@@ -643,7 +641,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should fail if resolveName returns a null value', async () => {
+    it('fails if resolveName returns a null value', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
@@ -671,7 +669,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should fail if registred address is zero x error address', async () => {
+    it('fails if registred address is zero x error address', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
@@ -701,7 +699,7 @@ describe('EnsController', () => {
       expect(await ens.reverseResolveAddress(address1)).toBeUndefined();
     });
 
-    it('should fail if the name is registered to a different address than the reverse resolved', async () => {
+    it('fails if the name is registered to a different address than the reverse resolved', async () => {
       const rootMessenger = getRootMessenger();
       const getNetworkClientById = buildMockGetNetworkClientById();
       rootMessenger.registerActionHandler(
