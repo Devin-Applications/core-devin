@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { ControllerMessenger } from './ControllerMessenger';
 
 describe('RestrictedControllerMessenger', () => {
-  it('should allow registering and calling an action handler', () => {
+  it('allows registering and calling an action handler', () => {
     type CountAction = {
       type: 'CountController:count';
       handler: (increment: number) => void;
@@ -27,7 +27,7 @@ describe('RestrictedControllerMessenger', () => {
     expect(count).toBe(1);
   });
 
-  it('should allow registering and calling multiple different action handlers', () => {
+  it('allows registering and calling multiple different action handlers', () => {
     type MessageAction =
       | { type: 'MessageController:concat'; handler: (message: string) => void }
       | {
