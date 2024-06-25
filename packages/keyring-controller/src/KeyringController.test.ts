@@ -3464,6 +3464,7 @@ describe('KeyringController', () => {
       });
     });
   });
+});
 
 type WithControllerCallback<ReturnValue> = ({
   controller,
