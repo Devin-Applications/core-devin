@@ -83,7 +83,7 @@ describe('gas utils', () => {
   });
 
   describe('fetchGasEstimates', () => {
-    it('should fetch external gasFeeEstimates when data is valid', async () => {
+    it('fetches external gasFeeEstimates when data is valid', async () => {
       handleFetchMock.mockResolvedValue(mockEIP1559ApiResponses[0]);
       const result = await fetchGasEstimates(
         INFURA_GAS_API_URL_MOCK,
@@ -99,7 +99,7 @@ describe('gas utils', () => {
       expect(result).toMatchObject(mockEIP1559ApiResponses[0]);
     });
 
-    it('should fetch external gasFeeEstimates with client id header when clientId arg is added', async () => {
+    it('fetches external gasFeeEstimates with client id header when clientId arg is added', async () => {
       const clientIdMock = 'test';
       handleFetchMock.mockResolvedValue(mockEIP1559ApiResponses[0]);
       const result = await fetchGasEstimates(
@@ -118,7 +118,7 @@ describe('gas utils', () => {
       expect(result).toMatchObject(mockEIP1559ApiResponses[0]);
     });
 
-    it('should fetch and normalize external gasFeeEstimates when data is has an invalid number of decimals', async () => {
+    it('fetches and normalizes external gasFeeEstimates when data has an invalid number of decimals', async () => {
       const expectedResult = {
         low: {
           minWaitTimeEstimate: 180000,
@@ -151,7 +151,7 @@ describe('gas utils', () => {
   });
 
   describe('fetchLegacyGasPriceEstimates', () => {
-    it('should fetch external gasPrices and return high/medium/low', async () => {
+    it('fetches external gasPrices and returns high/medium/low', async () => {
       handleFetchMock.mockResolvedValue({
         SafeGasPrice: '22',
         ProposeGasPrice: '25',
@@ -179,7 +179,7 @@ describe('gas utils', () => {
       });
     });
 
-    it('should fetch external gasPrices with client id header when clientId arg is passed', async () => {
+    it('fetches external gasPrices with client id header when clientId arg is passed', async () => {
       const clientIdMock = 'test';
       handleFetchMock.mockResolvedValue({
         SafeGasPrice: '22',
@@ -212,7 +212,7 @@ describe('gas utils', () => {
   });
 
   describe('normalizeGWEIDecimalNumbers', () => {
-    it('should convert a whole number to WEI', () => {
+    it('converts a whole number to WEI', () => {
       expect(normalizeGWEIDecimalNumbers(1)).toBe('1');
       expect(normalizeGWEIDecimalNumbers(123)).toBe('123');
       expect(normalizeGWEIDecimalNumbers(101)).toBe('101');
@@ -220,7 +220,7 @@ describe('gas utils', () => {
       expect(normalizeGWEIDecimalNumbers(1000)).toBe('1000');
     });
 
-    it('should convert a number with a decimal part to WEI', () => {
+    it('converts a number with a decimal part to WEI', () => {
       expect(normalizeGWEIDecimalNumbers(1.1)).toBe('1.1');
       expect(normalizeGWEIDecimalNumbers(123.01)).toBe('123.01');
       expect(normalizeGWEIDecimalNumbers(101.001)).toBe('101.001');
@@ -228,21 +228,21 @@ describe('gas utils', () => {
       expect(normalizeGWEIDecimalNumbers(1234.567)).toBe('1234.567');
     });
 
-    it('should convert a number < 1 to WEI', () => {
+    it('converts a number < 1 to WEI', () => {
       expect(normalizeGWEIDecimalNumbers(0.1)).toBe('0.1');
       expect(normalizeGWEIDecimalNumbers(0.01)).toBe('0.01');
       expect(normalizeGWEIDecimalNumbers(0.001)).toBe('0.001');
       expect(normalizeGWEIDecimalNumbers(0.567)).toBe('0.567');
     });
 
-    it('should round to whole WEI numbers', () => {
+    it('rounds to whole WEI numbers', () => {
       expect(normalizeGWEIDecimalNumbers(0.1001)).toBe('0.1001');
       expect(normalizeGWEIDecimalNumbers(0.0109)).toBe('0.0109');
       expect(normalizeGWEIDecimalNumbers(0.0014)).toBe('0.0014');
       expect(normalizeGWEIDecimalNumbers(0.5676)).toBe('0.5676');
     });
 
-    it('should handle inputs with > 9 decimal places', () => {
+    it('handles inputs with > 9 decimal places', () => {
       expect(normalizeGWEIDecimalNumbers(1.0000000162)).toBe('1.000000016');
       expect(normalizeGWEIDecimalNumbers(1.0000000165)).toBe('1.000000017');
       expect(normalizeGWEIDecimalNumbers(1.0000000199)).toBe('1.00000002');
@@ -261,21 +261,21 @@ describe('gas utils', () => {
       );
     });
 
-    it('should work if there are extraneous trailing decimal zeroes', () => {
+    it('works if there are extraneous trailing decimal zeroes', () => {
       expect(normalizeGWEIDecimalNumbers('0.5000')).toBe('0.5');
       expect(normalizeGWEIDecimalNumbers('123.002300')).toBe('123.0023');
       expect(normalizeGWEIDecimalNumbers('123.002300000000')).toBe('123.0023');
       expect(normalizeGWEIDecimalNumbers('0.00000200000')).toBe('0.000002');
     });
 
-    it('should work if there is no whole number specified', () => {
+    it('works if there is no whole number specified', () => {
       expect(normalizeGWEIDecimalNumbers('.1')).toBe('0.1');
       expect(normalizeGWEIDecimalNumbers('.01')).toBe('0.01');
       expect(normalizeGWEIDecimalNumbers('.001')).toBe('0.001');
       expect(normalizeGWEIDecimalNumbers('.567')).toBe('0.567');
     });
 
-    it('should handle NaN', () => {
+    it('handles NaN', () => {
       expect(normalizeGWEIDecimalNumbers(NaN)).toBe('0');
     });
   });
@@ -285,7 +285,7 @@ describe('gas utils', () => {
     // The lower of this vs the maxPriorityFeePerGas is used in the function. This sets the upper bound
     const maxFeePerGas = '9999999999';
 
-    it('should return an unknown upper bound and null lower bound if the max priority fee is < the max of the low estimate', () => {
+    it('returns an unknown upper bound and null lower bound if the max priority fee is < the max of the low estimate', () => {
       const maxPriorityFeePerGas = '2';
       const lowSuggestedMaxPriorityFee = '2000';
 
@@ -303,7 +303,7 @@ describe('gas utils', () => {
       });
     });
 
-    it('should return low min/max wait time estimates when max priority fee is >= the low fee but < med one', () => {
+    it('returns low min/max wait time estimates when max priority fee is >= the low fee but < med one', () => {
       const lowSuggestedMaxPriorityFee = '1';
       const maxPriorityFeePerGas = '2';
       const medSuggestedMaxPriorityFee = '2000';
@@ -327,7 +327,7 @@ describe('gas utils', () => {
       });
     });
 
-    it('should return medium min/max wait time estimates when max priority fee is >= the medium suggested priority fee but < high suggested priority fee', () => {
+    it('returns medium min/max wait time estimates when max priority fee is >= the medium suggested priority fee but < high suggested priority fee', () => {
       const medSuggestedMaxPriorityFee = '1';
       const maxPriorityFeePerGas = '2';
       const highSuggestedMaxPriorityFee = '2000';
@@ -351,7 +351,7 @@ describe('gas utils', () => {
       });
     });
 
-    it('should return high min/max wait time estimates when max priority fee is equals the high priority fee', () => {
+    it('returns high min/max wait time estimates when max priority fee is equals the high priority fee', () => {
       const maxPriorityFeePerGas = '123456789';
       const suggestedMaxPriorityFee = maxPriorityFeePerGas;
 
@@ -370,7 +370,7 @@ describe('gas utils', () => {
       });
     });
 
-    it('should return a lower bound wait time of 0 and an upper bound of the max high wait time if the priority fee is > the highest time estimate', () => {
+    it('returns a lower bound wait time of 0 and an upper bound of the max high wait time if the priority fee is > the highest time estimate', () => {
       const maxPriorityFeePerGas = '123456789';
       const suggestedMaxPriorityFee = '1';
 
