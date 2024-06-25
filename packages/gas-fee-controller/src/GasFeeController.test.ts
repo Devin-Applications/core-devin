@@ -857,7 +857,7 @@ describe('GasFeeController', () => {
         );
       });
 
-      it('should call determineGasFeeCalculations correctly', async () => {
+      it('calls determineGasFeeCalculations correctly', async () => {
         await setupGasFeeController({
           ...defaultConstructorOptions,
           networkControllerState: {
@@ -899,7 +899,7 @@ describe('GasFeeController', () => {
         });
       });
 
-      it('should update the state with a fetched set of estimates', async () => {
+      it('updates the state with a fetched set of estimates', async () => {
         await setupGasFeeController(defaultConstructorOptions);
 
         await gasFeeController.fetchGasFeeEstimates();
@@ -909,7 +909,7 @@ describe('GasFeeController', () => {
         );
       });
 
-      it('should return the same data that it puts into state', async () => {
+      it('returns the same data that it puts into state', async () => {
         await setupGasFeeController(defaultConstructorOptions);
 
         const estimateData = await gasFeeController.fetchGasFeeEstimates();
@@ -917,7 +917,7 @@ describe('GasFeeController', () => {
         expect(estimateData).toMatchObject(mockDetermineGasFeeCalculations);
       });
 
-      it('should call determineGasFeeCalculations with a URL that contains the chain ID', async () => {
+      it('calls determineGasFeeCalculations with a URL that contains the chain ID', async () => {
         await setupGasFeeController({
           ...defaultConstructorOptions,
           getChainId: jest.fn().mockReturnValue('0x1'),
@@ -966,7 +966,7 @@ describe('GasFeeController', () => {
         );
       });
 
-      it('should call determineGasFeeCalculations correctly', async () => {
+      it('calls determineGasFeeCalculations correctly', async () => {
         await setupGasFeeController({
           ...defaultConstructorOptions,
           clientId: '99999',
@@ -1001,7 +1001,7 @@ describe('GasFeeController', () => {
       });
 
       describe("the chainId of the networkClientId matches the globally selected network's chainId", () => {
-        it('should update the globally selected network state with a fetched set of estimates', async () => {
+        it('updates the globally selected network state with a fetched set of estimates', async () => {
           await setupGasFeeController({
             ...defaultConstructorOptions,
             getChainId: jest.fn().mockReturnValue(ChainId.goerli),
@@ -1017,7 +1017,7 @@ describe('GasFeeController', () => {
           );
         });
 
-        it('should update the gasFeeEstimatesByChainId state with a fetched set of estimates', async () => {
+        it('updates the gasFeeEstimatesByChainId state with a fetched set of estimates', async () => {
           await setupGasFeeController({
             ...defaultConstructorOptions,
             getChainId: jest.fn().mockReturnValue(ChainId.goerli),
@@ -1035,7 +1035,7 @@ describe('GasFeeController', () => {
       });
 
       describe("the chainId of the networkClientId does not match the globally selected network's chainId", () => {
-        it('should not update the globally selected network state with a fetched set of estimates', async () => {
+        it('does not update the globally selected network state with a fetched set of estimates', async () => {
           await setupGasFeeController({
             ...defaultConstructorOptions,
             getChainId: jest.fn().mockReturnValue(ChainId.mainnet),
