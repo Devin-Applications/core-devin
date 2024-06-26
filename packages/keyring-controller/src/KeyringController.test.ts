@@ -2125,6 +2125,9 @@ describe('KeyringController', () => {
           await withController(
             { cacheEncryptionKey },
             async ({ controller }) => {
+              // Ensure the vault is created before attempting to unlock
+              await controller.createNewVaultAndRestore(password, uint8ArraySeed);
+              await controller.setLocked();
               console.log('Vault before unlock:', controller.state.vault);
               await expect(
                 controller.createNewVaultAndRestore('', uint8ArraySeed),

@@ -46,6 +46,9 @@ import { produceWithPatches, type Patch, type Draft } from 'immer';
 
 import { KeyringControllerError } from './constants';
 
+HDKeyring.type = 'HD Key Tree';
+SimpleKeyring.type = 'Simple Key Pair';
+
 const name = 'KeyringController';
 
 /**
@@ -73,6 +76,11 @@ export enum KeyringTypes {
   // TODO: Either fix this lint violation or explain why it's necessary to ignore.
   // eslint-disable-next-line @typescript-eslint/naming-convention
   snap = 'Snap Keyring',
+}
+
+export interface PagedAccount {
+  address: string;
+  balance: string;
 }
 
 /**
@@ -423,8 +431,8 @@ export function keyringBuilderFactory(KeyringConstructor: KeyringClass<Json>) {
 }
 
 const defaultKeyringBuilders = [
-  keyringBuilderFactory(SimpleKeyring),
-  keyringBuilderFactory(HDKeyring),
+  keyringBuilderFactory(SimpleKeyring as unknown as KeyringClass<Json>),
+  keyringBuilderFactory(HDKeyring as unknown as KeyringClass<Json>),
 ];
 
 export const getDefaultKeyringState = (): KeyringControllerState => {
@@ -669,7 +677,6 @@ export class KeyringController extends BaseController<
       nextState,
       patches,
     );
-    this.state = nextState;
     return { nextState, patches, inversePatches };
   }
 
@@ -1024,7 +1031,7 @@ export class KeyringController extends BaseController<
     args: any[],
   ): Promise<string> {
     return this.#persistOrRollback(async () => {
-      let privateKey;
+      let privateKey: string;
       switch (strategy) {
         case 'privateKey':
           const [importedKey] = args;
@@ -1033,7 +1040,7 @@ export class KeyringController extends BaseController<
           }
           const prefixed = add0x(importedKey);
 
-          let bufferedPrivateKey;
+          let bufferedPrivateKey: Buffer;
           try {
             bufferedPrivateKey = toBuffer(prefixed);
           } catch {
@@ -1051,7 +1058,7 @@ export class KeyringController extends BaseController<
           privateKey = remove0x(prefixed);
           break;
         case 'json':
-          let wallet;
+          let wallet: Wallet | undefined;
           const [input, password] = args;
           try {
             wallet = importers.fromEtherWallet(input, password);
@@ -1679,7 +1686,7 @@ export class KeyringController extends BaseController<
     return this.#persistOrRollback(async () => {
       try {
         const keyring = this.getQRKeyring() || (await this.#addQRKeyring());
-        let accounts;
+        let accounts: PagedAccount[] = [];
         switch (page) {
           case -1:
             accounts = await keyring.getPreviousPage();
@@ -1987,7 +1994,7 @@ export class KeyringController extends BaseController<
         throw new Error(KeyringControllerError.VaultError);
       }
 
-      let vault;
+      let vault: any; // TODO: Replace 'any' with a more specific type if known
       const updatedState: Partial<KeyringControllerState> = {};
 
       if (this.#cacheEncryptionKey) {
@@ -2456,6 +2463,8 @@ export class KeyringController extends BaseController<
   }
 }
 
+export default KeyringController;
+
 /**
  * Lock the given mutex before executing the given function,
  * and release it after the function is resolved or after an
@@ -2479,5 +2488,3 @@ async function withLock<T>(
     releaseLock();
   }
 }
-
-export default KeyringController;

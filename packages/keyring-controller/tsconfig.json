@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "typeRoots": ["./node_modules/@types", "../base-controller/dist", "../message-manager/dist"],
+    "types": ["jest"]
   },
   "references": [
     {
@@ -11,5 +13,5 @@
       "path": "../message-manager"
     }
   ],
-  "include": ["../../types", "./src", "./tests"]
+  "include": ["./src", "./tests"]
 }
