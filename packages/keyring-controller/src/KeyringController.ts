@@ -662,14 +662,14 @@ export class KeyringController extends BaseController<
         state: KeyringControllerState,
         cb: typeof callback,
       ) => [KeyringControllerState, Patch[], Patch[]]
-    )(this.state as KeyringControllerState, callback);
+    )(this.state, callback);
 
-    (this.messagingSystem as KeyringControllerMessenger).publish(
+    this.messagingSystem.publish(
       'KeyringController:stateChange',
       nextState,
       patches,
     );
-    (this.state as KeyringControllerState) = nextState;
+    this.state = nextState;
     return { nextState, patches, inversePatches };
   }
 
