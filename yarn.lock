@@ -2550,7 +2550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/base-controller@^6.0.0, @metamask/base-controller@workspace:packages/base-controller":
+"@metamask/base-controller@^6.0.0, @metamask/base-controller@workspace:^, @metamask/base-controller@workspace:packages/base-controller":
   version: 0.0.0-use.local
   resolution: "@metamask/base-controller@workspace:packages/base-controller"
   dependencies:
@@ -3250,7 +3250,7 @@ __metadata:
     "@keystonehq/metamask-airgapped-keyring": ^0.14.1
     "@lavamoat/allow-scripts": ^3.0.4
     "@metamask/auto-changelog": ^3.4.4
-    "@metamask/base-controller": ^6.0.0
+    "@metamask/base-controller": "workspace:^"
     "@metamask/browser-passworder": ^4.3.0
     "@metamask/eth-hd-keyring": ^7.0.1
     "@metamask/eth-sig-util": ^7.0.1
