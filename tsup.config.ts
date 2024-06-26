@@ -39,6 +39,13 @@ const config: Options = {
   // Split the output into chunks. This is useful for tree-shaking.
   // https://tsup.egoist.dev/#code-splitting
   splitting: true,
+
+  // Generate TypeScript declaration files using the experimental flag.
+  experimentalDts: true,
+
+  // Specify the TypeScript configuration file to use.
+  tsconfig:
+    '/home/ubuntu/core-devin/packages/base-controller/tsconfig.build.json',
 };
 
 export default config;

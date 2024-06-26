@@ -42,9 +42,12 @@ import {
 import { Mutex } from 'async-mutex';
 import type { MutexInterface } from 'async-mutex';
 import Wallet, { thirdparty as importers } from 'ethereumjs-wallet';
-import type { Patch } from 'immer';
+import { produceWithPatches, type Patch, type Draft } from 'immer';
 
 import { KeyringControllerError } from './constants';
+
+HDKeyring.type = 'HD Key Tree';
+SimpleKeyring.type = 'Simple Key Pair';
 
 const name = 'KeyringController';
 
@@ -73,6 +76,11 @@ export enum KeyringTypes {
   // TODO: Either fix this lint violation or explain why it's necessary to ignore.
   // eslint-disable-next-line @typescript-eslint/naming-convention
   snap = 'Snap Keyring',
+}
+
+export interface PagedAccount {
+  address: string;
+  balance: string;
 }
 
 /**
@@ -423,8 +431,8 @@ export function keyringBuilderFactory(KeyringConstructor: KeyringClass<Json>) {
 }
 
 const defaultKeyringBuilders = [
-  keyringBuilderFactory(SimpleKeyring),
-  keyringBuilderFactory(HDKeyring),
+  keyringBuilderFactory(SimpleKeyring as unknown as KeyringClass<Json>),
+  keyringBuilderFactory(HDKeyring as unknown as KeyringClass<Json>),
 ];
 
 export const getDefaultKeyringState = (): KeyringControllerState => {
@@ -648,6 +656,30 @@ export class KeyringController extends BaseController<
     this.#registerMessageHandlers();
   }
 
+  protected update(
+    callback: (
+      state: Draft<KeyringControllerState>,
+    ) => void | KeyringControllerState,
+  ): {
+    nextState: KeyringControllerState;
+    patches: Patch[];
+    inversePatches: Patch[];
+  } {
+    const [nextState, patches, inversePatches] = (
+      produceWithPatches as unknown as (
+        state: KeyringControllerState,
+        cb: typeof callback,
+      ) => [KeyringControllerState, Patch[], Patch[]]
+    )(this.state, callback);
+
+    this.messagingSystem.publish(
+      'KeyringController:stateChange',
+      nextState,
+      patches,
+    );
+    return { nextState, patches, inversePatches };
+  }
+
   /**
    * Adds a new account to the default (first) HD seed phrase keyring.
    *
@@ -814,10 +846,11 @@ export class KeyringController extends BaseController<
    * @param password - Password of the keyring.
    */
   async verifyPassword(password: string) {
-    if (!this.state.vault) {
+    const { vault } = this.state as KeyringControllerState;
+    if (!vault) {
       throw new Error(KeyringControllerError.VaultError);
     }
-    await this.#encryptor.decrypt(password, this.state.vault);
+    await this.#encryptor.decrypt(password, vault);
   }
 
   /**
@@ -826,7 +859,7 @@ export class KeyringController extends BaseController<
    * @returns Boolean returning true if the vault is unlocked.
    */
   isUnlocked(): boolean {
-    return this.state.isUnlocked;
+    return (this.state as KeyringControllerState).isUnlocked;
   }
 
   /**
@@ -867,7 +900,7 @@ export class KeyringController extends BaseController<
    * @returns A promise resolving to an array of addresses.
    */
   async getAccounts(): Promise<string[]> {
-    return this.state.keyrings.reduce<string[]>(
+    return (this.state as KeyringControllerState).keyrings.reduce<string[]>(
       (accounts, keyring) => accounts.concat(keyring.accounts),
       [],
     );
@@ -998,7 +1031,7 @@ export class KeyringController extends BaseController<
     args: any[],
   ): Promise<string> {
     return this.#persistOrRollback(async () => {
-      let privateKey;
+      let privateKey: string;
       switch (strategy) {
         case 'privateKey':
           const [importedKey] = args;
@@ -1007,7 +1040,7 @@ export class KeyringController extends BaseController<
           }
           const prefixed = add0x(importedKey);
 
-          let bufferedPrivateKey;
+          let bufferedPrivateKey: Buffer;
           try {
             bufferedPrivateKey = toBuffer(prefixed);
           } catch {
@@ -1025,7 +1058,7 @@ export class KeyringController extends BaseController<
           privateKey = remove0x(prefixed);
           break;
         case 'json':
-          let wallet;
+          let wallet: Wallet | undefined;
           const [input, password] = args;
           try {
             wallet = importers.fromEtherWallet(input, password);
@@ -1078,7 +1111,10 @@ export class KeyringController extends BaseController<
       }
     });
 
-    this.messagingSystem.publish(`${name}:accountRemoved`, address);
+    (this.messagingSystem as KeyringControllerMessenger).publish(
+      `${name}:accountRemoved`,
+      address,
+    );
   }
 
   /**
@@ -1098,7 +1134,9 @@ export class KeyringController extends BaseController<
         state.keyrings = [];
       });
 
-      this.messagingSystem.publish(`${name}:lock`);
+      (this.messagingSystem as KeyringControllerMessenger).publish(
+        `${name}:lock`,
+      );
     });
   }
 
@@ -1304,7 +1342,7 @@ export class KeyringController extends BaseController<
    */
   changePassword(password: string): Promise<void> {
     return this.#persistOrRollback(async () => {
-      if (!this.state.isUnlocked) {
+      if (!(this.state as KeyringControllerState).isUnlocked) {
         throw new Error(KeyringControllerError.MissingCredentials);
       }
 
@@ -1648,7 +1686,7 @@ export class KeyringController extends BaseController<
     return this.#persistOrRollback(async () => {
       try {
         const keyring = this.getQRKeyring() || (await this.#addQRKeyring());
-        let accounts;
+        let accounts: PagedAccount[] = [];
         switch (page) {
           case -1:
             accounts = await keyring.getPreviousPage();
@@ -1956,7 +1994,7 @@ export class KeyringController extends BaseController<
         throw new Error(KeyringControllerError.VaultError);
       }
 
-      let vault;
+      let vault: any; // TODO: Replace 'any' with a more specific type if known
       const updatedState: Partial<KeyringControllerState> = {};
 
       if (this.#cacheEncryptionKey) {
@@ -2425,6 +2463,8 @@ export class KeyringController extends BaseController<
   }
 }
 
+export default KeyringController;
+
 /**
  * Lock the given mutex before executing the given function,
  * and release it after the function is resolved or after an
@@ -2448,5 +2488,3 @@ async function withLock<T>(
     releaseLock();
   }
 }
-
-export default KeyringController;

@@ -13,5 +13,8 @@
       "path": "../message-manager/tsconfig.build.json"
     }
   ],
-  "include": ["../../types", "./src"]
+  "include": [
+    "../../types",
+    "./src/**/*.ts"
+  ]
 }

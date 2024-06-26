@@ -32,3 +32,9 @@ scripts/coverage
 
 # typescript
 packages/*/*.tsbuildinfo
+
+# Ignore build artifacts in src and tests directories
+packages/*/src/*.js
+packages/*/src/*.d.ts
+packages/*/tests/**/*.js
+packages/*/tests/**/*.d.ts
