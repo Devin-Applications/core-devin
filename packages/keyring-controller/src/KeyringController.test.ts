@@ -106,7 +106,9 @@ describe('KeyringController', () => {
     });
 
     it('allows overwriting the built-in HD keyring builder', async () => {
-      const mockHdKeyringBuilder = buildKeyringBuilderWithSpy(HDKeyring);
+      const mockHdKeyringBuilder = buildKeyringBuilderWithSpy(
+        HDKeyring as unknown as KeyringClass<Json>,
+      );
       await withController(
         { keyringBuilders: [mockHdKeyringBuilder] },
         async () => {
@@ -2118,6 +2120,18 @@ describe('KeyringController', () => {
               expect(controller.state.encryptionSalt).toBeDefined();
             });
           });
+
+        it('throws error if creating new vault and restore without password', async () => {
+          await withController(
+            { cacheEncryptionKey },
+            async ({ controller }) => {
+              console.log('Vault before unlock:', controller.state.vault);
+              await expect(
+                controller.createNewVaultAndRestore('', uint8ArraySeed),
+              ).rejects.toThrow(KeyringControllerError.InvalidEmptyPassword);
+            },
+          );
+        });
       }),
     );
   });
