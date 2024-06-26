@@ -40,8 +40,8 @@ const config: Options = {
   // https://tsup.egoist.dev/#code-splitting
   splitting: true,
 
-  // Generate TypeScript declaration files.
-  dts: true,
+  // Generate TypeScript declaration files using the experimental flag.
+  experimentalDts: true,
 
   // Specify the TypeScript configuration file to use.
   tsconfig:

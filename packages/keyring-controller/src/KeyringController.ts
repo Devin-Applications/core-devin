@@ -662,14 +662,14 @@ export class KeyringController extends BaseController<
         state: KeyringControllerState,
         cb: typeof callback,
       ) => [KeyringControllerState, Patch[], Patch[]]
-    )(this.state, callback);
+    )(this.state as KeyringControllerState, callback);
 
-    this.messagingSystem.publish(
+    (this.messagingSystem as KeyringControllerMessenger).publish(
       'KeyringController:stateChange',
       nextState,
       patches,
     );
-
+    (this.state as KeyringControllerState) = nextState;
     return { nextState, patches, inversePatches };
   }
 
@@ -839,10 +839,11 @@ export class KeyringController extends BaseController<
    * @param password - Password of the keyring.
    */
   async verifyPassword(password: string) {
-    if (!this.state.vault) {
+    const { vault } = this.state as KeyringControllerState;
+    if (!vault) {
       throw new Error(KeyringControllerError.VaultError);
     }
-    await this.#encryptor.decrypt(password, this.state.vault);
+    await this.#encryptor.decrypt(password, vault);
   }
 
   /**
@@ -851,7 +852,7 @@ export class KeyringController extends BaseController<
    * @returns Boolean returning true if the vault is unlocked.
    */
   isUnlocked(): boolean {
-    return this.state.isUnlocked;
+    return (this.state as KeyringControllerState).isUnlocked;
   }
 
   /**
@@ -892,7 +893,7 @@ export class KeyringController extends BaseController<
    * @returns A promise resolving to an array of addresses.
    */
   async getAccounts(): Promise<string[]> {
-    return this.state.keyrings.reduce<string[]>(
+    return (this.state as KeyringControllerState).keyrings.reduce<string[]>(
       (accounts, keyring) => accounts.concat(keyring.accounts),
       [],
     );
@@ -1103,7 +1104,10 @@ export class KeyringController extends BaseController<
       }
     });
 
-    this.messagingSystem.publish(`${name}:accountRemoved`, address);
+    (this.messagingSystem as KeyringControllerMessenger).publish(
+      `${name}:accountRemoved`,
+      address,
+    );
   }
 
   /**
@@ -1123,7 +1127,9 @@ export class KeyringController extends BaseController<
         state.keyrings = [];
       });
 
-      this.messagingSystem.publish(`${name}:lock`);
+      (this.messagingSystem as KeyringControllerMessenger).publish(
+        `${name}:lock`,
+      );
     });
   }
 
@@ -1329,7 +1335,7 @@ export class KeyringController extends BaseController<
    */
   changePassword(password: string): Promise<void> {
     return this.#persistOrRollback(async () => {
-      if (!this.state.isUnlocked) {
+      if (!(this.state as KeyringControllerState).isUnlocked) {
         throw new Error(KeyringControllerError.MissingCredentials);
       }
 
